@@ -444,11 +444,11 @@ async function placeOrder() {
 
         // 2. Create Order on Server
 
-        // Show "Waking up server" message if it takes time (Render Free Tier)
+        // Show "Connecting" message if it takes time (Render Free Tier)
         const wakeUpTimer = setTimeout(() => {
-            msg.textContent = "Waking up server (this may take 30s)...";
-            msg.style.color = 'orange';
-        }, 2500);
+            msg.textContent = "Connecting to secure payment server...";
+            msg.style.color = '#333'; // Neutral color
+        }, 4000); // Wait 4 seconds before showing
 
         const orderRes = await fetch(`${API_URL}/create-razorpay-order`, {
             method: 'POST',
