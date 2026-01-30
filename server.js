@@ -28,7 +28,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 /* -------------------- MIDDLEWARE -------------------- */
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all origins for now (Phone/Desktop/etc)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 
@@ -246,7 +250,8 @@ app.delete("/api/admin/orders/reset", adminAuth, (req, res) => {
 app.use(express.static(path.join(__dirname)));
 
 const server = app.listen(PORT, "0.0.0.0", () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    console.log(`🚀 Server successfully started on port ${PORT}`);
+    console.log(`Health check available at http://0.0.0.0:${PORT}/`);
 });
 
 /* -------------------- ERROR HANDLING -------------------- */
