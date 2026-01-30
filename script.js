@@ -7,6 +7,15 @@ const API_URL = (window.location.hostname === '127.0.0.1' || window.location.hos
     ? (window.location.port === '3000' ? '/api' : 'http://localhost:3000/api')
     : PRODUCTION_API_URL;
 
+// --- Auto-Wake Server (Free Tier Optimization) ---
+// Pings server immediately on load so it wakes up while user browses
+(function wakeUpServer() {
+    const rootUrl = API_URL.replace('/api', ''); // Convert .../api to root /
+    fetch(rootUrl + '/')
+        .then(() => console.log("Server woke up!"))
+        .catch(err => console.log("Wake-up ping sent"));
+})();
+
 // --- WhatsApp Floating Button Injection ---
 document.addEventListener('DOMContentLoaded', () => {
     // Check if button already exists to prevent duplicates
