@@ -1,7 +1,18 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const db = require("./database"); // make sure this file exists
+let db;
+try {
+    db = require("./database");
+} catch (err) {
+    console.error("CRITICAL: Database failed to initialize:", err);
+    // Create a mock db object to prevent crash on route access
+    db = {
+        run: (q, p, cb) => { if (cb) cb(new Error("DB_OFFLINE")); },
+        get: (q, p, cb) => { if (cb) cb(new Error("DB_OFFLINE")); },
+        all: (q, p, cb) => { if (cb) cb(new Error("DB_OFFLINE")); }
+    };
+}
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 
