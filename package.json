@@ -16,7 +16,6 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.2.1",
-    "razorpay": "^2.9.6",
-    "sqlite3": "^5.1.7"
+    "razorpay": "^2.9.6"
   }
 }
