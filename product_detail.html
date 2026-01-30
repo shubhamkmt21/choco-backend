@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Choco Blossom</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <!-- Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .product-detail-container {
+            padding: 140px 0 60px;
+            /* Increased from 140px */
+            min-height: 80vh;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .detail-image {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .detail-image img {
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .detail-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .detail-info h1 {
+            font-size: 3rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-category {
+            color: var(--color-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .detail-price {
+            font-size: 2rem;
+            color: var(--color-primary);
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .detail-desc {
+            font-size: 1.1rem;
+            color: var(--color-text);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .ingredients-box {
+            background-color: #FFF8E1;
+            /* Light Gold/Cream */
+            border: 1px solid var(--color-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .ingredients-box h4 {
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .ingredients-box p {
+            color: #5D4037;
+            font-size: 0.95rem;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        @media(max-width: 768px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .detail-info h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Related Products & Reviews */
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--color-primary);
+            margin-bottom: 2rem;
+            font-family: var(--font-heading);
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .related-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .related-img {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .related-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .related-card:hover .related-img img {
+            transform: scale(1.05);
+        }
+
+        .related-info {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .related-info h4 {
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .related-price {
+            color: var(--color-secondary);
+            font-weight: 600;
+        }
+
+        /* Reviews Section */
+        .reviews-container {
+            background: #fdfbf7;
+            padding: 4rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .stars {
+            color: #FFC107;
+            margin-bottom: 1rem;
+        }
+
+        .review-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .reviewer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .google-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            margin-top: 2rem;
+            transition: 0.3s;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .google-btn:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .google-logo {
+            width: 20px;
+        }
+
+        /* Review Form */
+        .review-form-container {
+            display: none;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+            max-width: 600px;
+            margin: 2rem auto;
+            text-align: left;
+            animation: slideDown 0.4s ease-out;
+            border: 1px solid var(--color-border);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .star-rating i {
+            color: #ddd;
+            transition: color 0.2s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <p><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above ₹2500 via Shiprocket
+            </p>
+        </div>
+    </div>
+
+    <!-- Header (Same as index) -->
+    <header>
+        <div class="container navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.png" alt="Choco Blossom Logo">
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">Our Story</a>
+                <a href="products.html">Collections</a>
+                <div class="dropdown mega-dropdown">
+                    <a href="products.html" class="dropbtn">Occasions <i class="fas fa-chevron-down"
+                            style="margin-left: 6px; font-size: 0.7em;"></i></a>
+                    <div class="mega-content">
+                        <div class="mega-grid">
+                            <!-- Column 1: Celebrations -->
+                            <div class="mega-column">
+                                <h4>Celebrations</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Birthday">Birthday Gifts</a></li>
+                                    <li><a href="products.html?category=Wedding">Wedding Gifts</a></li>
+                                    <li><a href="products.html?category=Anniversary">Anniversary</a></li>
+                                    <li><a href="products.html?category=Baby+Shower">Baby Shower</a></li>
+                                    <li><a href="products.html?category=Baby+Announcement">Baby Announcement</a></li>
+                                    <li><a href="products.html?category=House+Warming">House Warming</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 2: Festivals -->
+                            <div class="mega-column">
+                                <h4>Festivals</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Diwali">Diwali Gifts</a></li>
+                                    <li><a href="products.html?category=Rakhi">Rakhi Gifts</a></li>
+                                    <li><a href="products.html?category=Christmas">Christmas & New Year</a></li>
+                                    <li><a href="products.html?category=Holi">Holi Gifts</a></li>
+                                    <li><a href="products.html?category=Ramadan">Ramadan Gifts</a></li>
+                                    <li><a href="products.html?category=Bhai+Dooj">Bhai Dooj</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 3: Special Days -->
+                            <div class="mega-column">
+                                <h4>Special Days</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Valentines">Valentine’s Day</a></li>
+                                    <li><a href="products.html?category=Mothers+Day">Mother’s Day</a></li>
+                                    <li><a href="products.html?category=Fathers+Day">Father’s Day</a></li>
+                                    <li><a href="products.html?category=Womens+Day">Women’s Day</a></li>
+                                    <li><a href="products.html?category=Kids">Kid's Gifts</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 4: Collections -->
+                            <div class="mega-column">
+                                <h4>Collections</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Bestsellers">Best Sellers</a></li>
+                                    <li><a href="products.html?category=Corporate">Corporate Gifts</a></li>
+                                    <li><a href="products.html?category=Dark">Dark Chocolates</a></li>
+                                    <li><a href="products.html?category=Pick+Mix">Pick & Mix Gifts</a></li>
+                                    <li><a href="products.html?category=Studio">Studio Creations</a></li>
+                                    <li><a href="gift_cards.html">Gift Cards</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="corporate.html">Corporate Gifting</a>
+                <a href="partners.html">Growth Partner</a>
+                <a href="wedding.html">Wedding Gifts</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+
+            <div class="nav-icons">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search...">
+                    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
+                </div>
+                <a href="cart.html" class="cart-icon" id="cart-btn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count">(0)</span>
+                </a>
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container product-detail-container">
+        <div id="product-detail-content" class="detail-grid">
+            <!-- Content Loaded dynamically -->
+            <div style="grid-column: 1/-1; text-align: center;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--color-primary);"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products Section -->
+    <div class="container" style="margin-top: 4rem;">
+        <h2 class="section-title">You May Also Like</h2>
+        <div id="related-products" class="related-grid">
+            <!-- Populated via JS -->
+        </div>
+    </div>
+
+    <!-- Customer Reviews Section -->
+    <div class="reviews-container">
+        <div class="container" style="text-align: center;">
+            <h2 class="section-title">Happy Customers</h2>
+            <p style="margin-bottom: 3rem; color: #666;">Rated 4.9/5 by our chocolate lovers</p>
+
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="review-text">"Absolutely divine! The packaging was so elegant, and the chocolates melted
+                        in my mouth. Perfect for gifting!"</p>
+                    <div class="reviewer">
+                        <div class="reviewer-avatar">RP</div>
+                        <div>
+                            <strong>Riya Patel</strong>
+                            <div style="font-size: 0.8rem; color: #999;">Verified Buyer</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="review-text">"I ordered the assorted box for my anniversary. My wife loved every piece.
+                        The delivery was super fast too."</p>
+                    <div class="reviewer">
+                        <div class="reviewer-avatar">AS</div>
+                        <div>
+                            <strong>Amit Shah</strong>
+                            <div style="font-size: 0.8rem; color: #999;">Verified Buyer</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="review-text">"The best chocolates in Ahmedabad! The texture and richness are unmatched.
+                        Highly recommend the hazelnut ones."</p>
+                    <div class="reviewer">
+                        <div class="reviewer-avatar">NK</div>
+                        <div>
+                            <strong>Neha Kapoor</strong>
+                            <div style="font-size: 0.8rem; color: #999;">Verified Buyer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="review-section"></div>
+    <button id="write-review-btn" class="google-btn" onclick="toggleReviewForm()"
+        style="cursor: pointer; border: 1px solid #ddd;">
+        <i class="fas fa-pen" style="color: var(--color-primary);"></i> Write a Review
+    </button>
+
+    <div id="review-form" class="review-form-container">
+        <h3
+            style="color: var(--color-primary); margin-bottom: 1.5rem; text-align: center; font-family: var(--font-heading);">
+            Share your experience</h3>
+        <form onsubmit="submitReview(event)">
+            <div class="form-group">
+                <label>Rating</label>
+                <div class="star-rating" id="star-rating">
+                    <i class="fas fa-star" data-value="1"></i>
+                    <i class="fas fa-star" data-value="2"></i>
+                    <i class="fas fa-star" data-value="3"></i>
+                    <i class="fas fa-star" data-value="4"></i>
+                    <i class="fas fa-star" data-value="5"></i>
+                </div>
+                <input type="hidden" id="rating-value" required>
+            </div>
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" required placeholder="e.g. John Doe">
+            </div>
+            <div class="form-group">
+                <label>Your Review</label>
+                <textarea rows="4" required placeholder="Tell us what you liked..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit & Post on Google</button>
+        </form>
+    </div>
+
+    <p style="font-size: 0.85rem; color: #999; margin-top: 10px;">Your review helps us grow!</p>
+    </div>
+    </div>
+
+    <!-- Shipping Marquee -->
+    <div class="shipping-marquee">
+        <div class="marquee-content">
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="logo.png" alt="Choco Blossom"
+                        style="width: 140px; margin-bottom: 1rem; border-radius: 8px;">
+                    <p style="color: rgba(255,255,255,0.7);">Crafting memories with premium chocolates. Based
+                        in Ahmedabad, delivering happiness nationwide.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/chocoblossomIndia/" target="_blank" class="social-icon"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/chocoblossomindia/" target="_blank" class="social-icon"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@Choco-blossom" target="_blank" class="social-icon"><i
+                                class="fab fa-youtube"></i></a>
+                        <a href="https://www.linkedin.com/company/chocoblossom/" target="_blank" class="social-icon"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Shop All</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Customer Care</h4>
+                    <ul class="footer-links">
+                        <li><a href="shipping.html">Shipping Policy</a></li>
+                        <li><a href="returns.html">Returns & Refunds</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="#">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-links">
+                        <li style="color: rgba(255,255,255,0.8); display: flex; gap: 10px;">
+                            <i class="fas fa-map-marker-alt" style="margin-top: 5px;"></i>
+                            <a href="https://maps.app.goo.gl/Jihe6SA3eRXgMHd29" target="_blank"
+                                style="color: inherit; text-decoration: none;">
+                                <span>28, Saurasthra Society, Paldi, Ahmedabad, Gujarat 380007</span>
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="tel:+919227088688" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-phone" style="width: 20px;"></i> +91 92270 88688
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="mailto:chocoblossom12@gmail.com" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-envelope" style="width: 20px;"></i> chocoblossom12@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div style="text-align: center;">
+                    <p>&copy; 2026 Choco Blossom. All rights reserved.</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.2rem;">Based in Ahmedabad, Gujarat</p>
+                </div>
+                <div class="payment-icons">
+                    <i class="fab fa-google-pay"></i>
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load Data & Scripts -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            const container = document.getElementById('product-detail-content');
+
+            if (!id || !window.findProductById) {
+                container.innerHTML = '<p>Product not found.</p>';
+                return;
+            }
+
+            const p = window.findProductById(id);
+            if (!p) {
+                container.innerHTML = '<p>Product not found.</p>';
+                return;
+            }
+
+            document.title = `${p.name} | Choco Blossom`;
+
+            container.innerHTML = `
+                <div class="detail-image reveal">
+                    <img id="main-product-img" src="${p.image}" alt="${p.name}" onerror="this.src='https://placehold.co/600x600/3E2723/FFF?text=No+Image'">
+                    
+                    ${p.images && p.images.length > 0 ? `
+                        <div class="image-thumbnails" style="display: flex; gap: 10px; margin-top: 1rem; justify-content: center;">
+                            ${p.images.map((img, i) => `
+                                <img src="${img}" 
+                                     class="thumb ${i === 0 ? 'active-thumb' : ''}" 
+                                     onclick="changeMainImage('${img}', this)"
+                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid ${i === 0 ? 'var(--color-primary)' : 'transparent'}; transition: all 0.2s;">
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+                <div class="detail-info slideUp">
+                    <span class="detail-category">${p.category}</span>
+                    <h1>${p.name}</h1>
+                    <div class="detail-price">₹${p.price}</div>
+                    
+                    <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <div style="color: #FFC107; font-size: 0.9rem;">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <a href="#review-section" onclick="toggleReviewForm(); return false;" style="color: var(--color-primary); font-size: 0.9rem; text-decoration: underline; cursor: pointer;">Write a review</a>
+                    </div>
+                    
+                    <p class="detail-desc">${p.description}</p>
+                    
+                    <div class="ingredients-box">
+                        <h4><i class="fas fa-leaf" style="color: var(--color-secondary); margin-right: 5px;"></i> Ingredients & Allergens</h4>
+                        <p>${p.ingredients}</p>
+                    </div>
+
+                    ${p.flavors && p.flavors.length > 0 ? `
+                        <div class="flavor-selector" style="margin-bottom: 2rem;">
+                            <h4 style="color: var(--color-primary); margin-bottom: 0.8rem; font-size: 1rem;">Select Flavor:</h4>
+                            <div class="flavor-options" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                ${p.flavors.map((flavor, index) => `
+                                    <label class="flavor-option" style="cursor: pointer;">
+                                        <input type="radio" name="flavor" value="${flavor}" ${index === 0 ? 'checked' : ''} style="display: none;" onchange="updateSelectedFlavor(this.value)">
+                                        <span class="flavor-chip" style="padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 20px; font-size: 0.9rem; transition: all 0.2s; display: inline-block;">
+                                            ${flavor}
+                                        </span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                            <!-- Style embedded for simplicity, ideally in css -->
+                            <style>
+                                .flavor-option input:checked + .flavor-chip {
+                                    background-color: var(--color-primary);
+                                    color: #fff;
+                                    border-color: var(--color-primary);
+                                }
+                                .flavor-chip:hover {
+                                    border-color: var(--color-primary);
+                                }
+                            </style>
+                        </div>
+                    ` : ''}
+
+                    <!-- Delivery Check -->
+                    <div class="delivery-check" style="margin-bottom: 2rem; background: #fff; border: 1px solid #eee; padding: 1.2rem; border-radius: 8px;">
+                        <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.8rem; color: #555;">
+                            <i class="fas fa-truck" style="margin-right: 5px; color: var(--color-primary);"></i> Check Delivery
+                        </h4>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" id="pincode-input" placeholder="Enter Pincode" maxlength="6" 
+                                style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 4px; flex: 1; max-width: 160px; font-size: 0.9rem;"
+                                onkeypress="if(event.key === 'Enter') checkDelivery()">
+                            <button class="btn-check" onclick="checkDelivery()" 
+                                style="padding: 0.6rem 1.2rem; background: var(--color-secondary); color: var(--color-primary); border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
+                                Check
+                            </button>
+                        </div>
+                        <p id="delivery-msg" style="font-size: 0.85rem; margin-top: 0.8rem; min-height: 1.2em; font-weight: 500;"></p>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick='buyNowWithFlavor(${JSON.stringify(p)})'>Buy Now</button>
+                        <button class="btn btn-outline" onclick='addToCartWithFlavor(${JSON.stringify(p)})'>Add to Cart</button>
+                    </div>
+                </div>
+            `;
+
+            // Need to manually trigger reveal since observer might be attached too early in script.js
+            setTimeout(() => {
+                document.querySelectorAll('.reveal, .slideUp').forEach(el => el.classList.add('active'));
+            }, 100);
+
+            // Initialize Flavors & Related Products
+            initFlavor(p);
+        });
+
+        // Wrapper to buy now -> add to cart then redirect
+        let selectedFlavor = null;
+
+        // Initialize default flavor if product has them
+        function initFlavor(p) {
+            if (p.flavors && p.flavors.length > 0) {
+                selectedFlavor = p.flavors[0];
+            }
+
+            // Render Related Products
+            renderRelatedProducts(p.id, p.category);
+        }
+
+        function renderRelatedProducts(currentId, category) {
+            const container = document.getElementById('related-products');
+            let related = [];
+
+            // 1. Try to find same category
+            if (window.PRODUCTS_DATA) {
+                related = window.PRODUCTS_DATA.filter(prod => prod.id != currentId && prod.category === category);
+
+                // 2. If not enough, fill with others
+                if (related.length < 4) {
+                    const others = window.PRODUCTS_DATA.filter(prod => prod.id != currentId && prod.category !== category);
+                    // Shuffle others
+                    others.sort(() => 0.5 - Math.random());
+                    related = related.concat(others);
+                }
+            }
+
+            // Shuffle and slice to 4
+            related.sort(() => 0.5 - Math.random());
+            related = related.slice(0, 4);
+
+            container.innerHTML = related.map(prod => `
+                <a href="product_detail.html?id=${prod.id}" class="related-card">
+                    <div class="related-img">
+                        <img src="${prod.image}" alt="${prod.name}" onerror="this.src='https://placehold.co/400x400?text=No+Image'">
+                    </div>
+                    <div class="related-info">
+                        <h4>${prod.name}</h4>
+                        <div class="related-price">₹${prod.price}</div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        window.updateSelectedFlavor = function (val) {
+            selectedFlavor = val;
+            console.log("Flavor selected:", val);
+        }
+
+        window.addToCartWithFlavor = function (product) {
+            // Create a copy to modify name/id for cart
+            let productToAdd = { ...product };
+
+            // If flavor is selected, append to name and modify ID to avoid duplicates of different flavors
+            if (productToAdd.flavors && productToAdd.flavors.length > 0) {
+                // Determine which flavor is currently checked in the DOM
+                const checked = document.querySelector('input[name="flavor"]:checked');
+                if (checked) selectedFlavor = checked.value;
+
+                if (selectedFlavor) {
+                    productToAdd.name = `${productToAdd.name} - ${selectedFlavor}`;
+                    productToAdd.id = `${productToAdd.id}-${selectedFlavor}`;
+                }
+            }
+
+            window.addToCart(productToAdd);
+        }
+
+        window.buyNowWithFlavor = function (product) {
+            window.addToCartWithFlavor(product);
+            window.location.href = 'cart.html';
+        }
+
+        // Delivery Check Logic
+        window.checkDelivery = function () {
+            const pin = document.getElementById('pincode-input').value;
+            const msg = document.getElementById('delivery-msg');
+
+            if (!/^\d{6}$/.test(pin)) {
+                msg.style.color = '#C62828'; // Red
+                msg.innerHTML = '<i class="fas fa-times-circle"></i> Please enter a valid 6-digit pincode.';
+                return;
+            }
+
+            // Mock Delivery Logic (Random 3-5 days)
+            const days = Math.floor(Math.random() * 3) + 3; // 3 to 5
+            const today = new Date();
+            const deliveryDate = new Date(today);
+            deliveryDate.setDate(today.getDate() + days);
+
+            const options = { weekday: 'short', month: 'short', day: 'numeric' };
+            const dateStr = deliveryDate.toLocaleDateString('en-US', options);
+
+            msg.style.color = '#2E7D32'; // Green
+            msg.innerHTML = `<i class="fas fa-check-circle"></i> Estimated delivery by <strong>${dateStr}</strong>`;
+        }
+
+        // Gallery Swap Logic
+        window.changeMainImage = function (src, thumb) {
+            document.getElementById('main-product-img').src = src;
+
+            // Update active styling
+            document.querySelectorAll('.image-thumbnails .thumb').forEach(el => {
+                el.style.borderColor = 'transparent';
+                el.classList.remove('active-thumb');
+            });
+            thumb.style.borderColor = 'var(--color-primary)';
+            thumb.classList.add('active-thumb');
+        }
+
+        // Review Form Logic
+        function toggleReviewForm() {
+            const form = document.getElementById('review-form');
+            if (form.style.display === 'block') {
+                form.style.display = 'none';
+            } else {
+                form.style.display = 'block';
+                form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Star Rating Events
+        const stars = document.querySelectorAll('#star-rating i');
+        const ratingInput = document.getElementById('rating-value');
+
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function () {
+                const val = this.getAttribute('data-value');
+                highlightStars(val);
+            });
+
+            star.addEventListener('mouseout', function () {
+                const saved = ratingInput.value;
+                resetStars();
+                if (saved) highlightStars(saved);
+            });
+
+            star.addEventListener('click', function () {
+                const val = this.getAttribute('data-value');
+                ratingInput.value = val;
+                highlightStars(val);
+            });
+        });
+
+        function highlightStars(count) {
+            stars.forEach(s => {
+                if (s.getAttribute('data-value') <= count) s.style.color = '#FFC107'; // Gold
+            });
+        }
+
+        function resetStars() {
+            stars.forEach(s => s.style.color = '#ddd');
+        }
+
+        function submitReview(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const reviewText = e.target.querySelector('textarea').value;
+            const originalText = btn.innerHTML;
+
+            // Feedback
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Copying & Redirecting...';
+            btn.disabled = true;
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(reviewText).then(() => {
+                if (window.showToast) window.showToast("Review text copied! Paste it on Google.");
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+
+            setTimeout(() => {
+                window.open('https://maps.app.goo.gl/Jihe6SA3eRXgMHd29', '_blank');
+
+                // Reset UI
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                document.getElementById('review-form').style.display = 'none';
+                e.target.reset();
+                resetStars();
+                ratingInput.value = '';
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>

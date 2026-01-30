@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections | Choco Blossom India</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="stylesheet" href="./style.css?v=1.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Specific Styles for Products Page */
+        .products-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg) 0;
+            /* Offset for fixed header + top bar */
+        }
+
+        .filters {
+            background: #fff;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .filter-group h3 {
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .filter-list li:hover {
+            color: var(--color-primary);
+        }
+
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkbox::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 10px;
+            color: #fff;
+            display: none;
+        }
+
+        .filter-list li.active .checkbox {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .filter-list li.active .checkbox::after {
+            display: block;
+        }
+
+        .sort-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        @media (max-width: 768px) {
+            .products-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                display: none;
+                /* Hide filters on mobile for now */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <p><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above ₹2500 via Shiprocket
+            </p>
+        </div>
+    </div>
+
+    <!-- Header (Same as index) -->
+    <header>
+        <div class="container navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.png" alt="Choco Blossom Logo">
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">Our Story</a>
+                <a href="products.html" class="active">Collections</a>
+                <div class="dropdown mega-dropdown">
+                    <a href="products.html" class="dropbtn">Occasions <i class="fas fa-chevron-down"
+                            style="margin-left: 6px; font-size: 0.7em;"></i></a>
+                    <div class="mega-content">
+                        <div class="mega-grid">
+                            <!-- Column 1: Celebrations -->
+                            <div class="mega-column">
+                                <h4>Celebrations</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Birthday">Birthday Gifts</a></li>
+                                    <li><a href="products.html?category=Wedding">Wedding Gifts</a></li>
+                                    <li><a href="products.html?category=Anniversary">Anniversary</a></li>
+                                    <li><a href="products.html?category=Baby+Shower">Baby Shower</a></li>
+                                    <li><a href="products.html?category=Baby+Announcement">Baby Announcement</a></li>
+                                    <li><a href="products.html?category=House+Warming">House Warming</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 2: Festivals -->
+                            <div class="mega-column">
+                                <h4>Festivals</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Diwali">Diwali Gifts</a></li>
+                                    <li><a href="products.html?category=Rakhi">Rakhi Gifts</a></li>
+                                    <li><a href="products.html?category=Christmas">Christmas & New Year</a></li>
+                                    <li><a href="products.html?category=Holi">Holi Gifts</a></li>
+                                    <li><a href="products.html?category=Ramadan">Ramadan Gifts</a></li>
+                                    <li><a href="products.html?category=Bhai+Dooj">Bhai Dooj</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 3: Special Days -->
+                            <div class="mega-column">
+                                <h4>Special Days</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Valentines">Valentine’s Day</a></li>
+                                    <li><a href="products.html?category=Mothers+Day">Mother’s Day</a></li>
+                                    <li><a href="products.html?category=Fathers+Day">Father’s Day</a></li>
+                                    <li><a href="products.html?category=Womens+Day">Women’s Day</a></li>
+                                    <li><a href="products.html?category=Kids">Kid's Gifts</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 4: Collections -->
+                            <div class="mega-column">
+                                <h4>Collections</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Bestsellers">Best Sellers</a></li>
+                                    <li><a href="products.html?category=Corporate">Corporate Gifts</a></li>
+                                    <li><a href="products.html?category=Dark">Dark Chocolates</a></li>
+                                    <li><a href="products.html?category=Pick+Mix">Pick & Mix Gifts</a></li>
+                                    <li><a href="products.html?category=Studio">Studio Creations</a></li>
+                                    <li><a href="gift_cards.html">Gift Cards</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="corporate.html">Corporate Gifting</a>
+                <a href="partners.html">Growth Partner</a>
+                <a href="wedding.html">Wedding Gifts</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+            <div class="nav-icons">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search...">
+                    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
+                </div>
+                <a href="cart.html" class="cart-icon" id="cart-btn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count">(0)</span>
+                </a>
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="section" style="background: var(--color-background); padding: 120px 0 40px; text-align: center;">
+        <div class="container">
+            <h1 class="liquid-reveal" id="collection-title">Our Collections</h1>
+            <p style="max-width: 600px; margin: 0 auto;">Explore our range of handcrafted chocolates, from intense dark
+                bars to festive gift hampers.</p>
+        </div>
+        <script>
+            // Update Heading based on URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            if (category) {
+                // Decode and format: "Mothers+Day" -> "Mother's Day"
+                let title = decodeURIComponent(category).replace(/\+/g, ' ');
+                // Manual overrides for specific slugs if needed
+                if (title === 'Valentines') title = "Valentine's Day";
+                if (title === 'Kids') title = "Kid's Gifts";
+
+                document.getElementById('collection-title').innerText = title;
+            }
+        </script>
+    </section>
+
+    <!-- Main Content -->
+    <!-- React Application Root -->
+    <div id="product-root" class="container" style="margin-top: 2rem; min-height: 60vh;"></div>
+
+    <!-- Shipping Marquee -->
+    <div class="shipping-marquee">
+        <div class="marquee-content">
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="logo.png" alt="Choco Blossom"
+                        style="width: 140px; margin-bottom: 1rem; border-radius: 8px;">
+                    <p style="color: rgba(255,255,255,0.7);">Crafting memories with premium chocolates. Based
+                        in Ahmedabad, delivering happiness nationwide.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/chocoblossomIndia/" target="_blank" class="social-icon"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/chocoblossomindia/" target="_blank" class="social-icon"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@Choco-blossom" target="_blank" class="social-icon"><i
+                                class="fab fa-youtube"></i></a>
+                        <a href="https://www.linkedin.com/company/chocoblossom/" target="_blank" class="social-icon"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Shop All</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Customer Care</h4>
+                    <ul class="footer-links">
+                        <li><a href="shipping.html">Shipping Policy</a></li>
+                        <li><a href="returns.html">Returns & Refunds</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="#">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-links">
+                        <li style="color: rgba(255,255,255,0.8); display: flex; gap: 10px;">
+                            <i class="fas fa-map-marker-alt" style="margin-top: 5px;"></i>
+                            <a href="https://maps.app.goo.gl/Jihe6SA3eRXgMHd29" target="_blank"
+                                style="color: inherit; text-decoration: none;">
+                                <span>28, Saurasthra Society, Paldi, Ahmedabad, Gujarat 380007</span>
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="tel:+919227088688" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-phone" style="width: 20px;"></i> +91 92270 88688
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="mailto:chocoblossom12@gmail.com" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-envelope" style="width: 20px;"></i> chocoblossom12@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div style="text-align: center;">
+                    <p>&copy; 2026 Choco Blossom. All rights reserved.</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.2rem;">Based in Ahmedabad, Gujarat</p>
+                </div>
+                <div class="payment-icons">
+                    <i class="fab fa-google-pay"></i>
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load Shared Data -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+
+    <!-- React & Babel CDNs -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- React Product Component -->
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function ProductApp() {
+            const [products, setProducts] = useState([]);
+            const [loading, setLoading] = useState(true);
+
+            // Read URL Param for Initial Filter
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialCategory = urlParams.get('category') || 'All Products';
+            const initialSearch = urlParams.get('search') || '';
+
+            const [filter, setFilter] = useState(initialCategory);
+            const [searchQuery, setSearchQuery] = useState(initialSearch);
+            const [priceFilter, setPriceFilter] = useState('');
+
+            useEffect(() => {
+                fetchProducts();
+            }, [filter, priceFilter]);
+
+            // Offline Fallback Data: Priority to Admin Changes (LocalStorage) -> then Shared Data
+            const getStoredProducts = () => {
+                let products = window.PRODUCTS_DATA || [];
+                const adminData = localStorage.getItem('adminProducts');
+
+                if (adminData) {
+                    try {
+                        const localProducts = JSON.parse(adminData);
+                        // Merge strategies:
+                        // 1. If admin has data, use it.
+                        // 2. But also make sure we don't lose the new static items (ID 101, 102, 103).
+                        // Simple merge: Use Local, then append any Static items that aren't in Local by ID.
+                        const localIds = new Set(localProducts.map(p => p.id));
+                        const missingStatic = products.filter(p => !localIds.has(p.id));
+                        products = [...localProducts, ...missingStatic];
+                    } catch (e) {
+                        console.error("Error parsing adminProducts", e);
+                    }
+                }
+
+                // CRITICAL FIX: Ensure image paths and flavors update if changed in data.js
+                // If a product exists in both but data.js image is different, update it.
+                if (products && products.length > 0) {
+                    window.PRODUCTS_DATA.forEach(staticP => {
+                        const match = products.find(p => p.id == staticP.id);
+                        if (match) {
+                            // Sync Image
+                            if (match.image !== staticP.image) {
+                                console.log(`Updating image for ${match.name} from static data`);
+                                match.image = staticP.image;
+                            }
+                            // Sync Flavors (Remove if static doesn't have it, or Update if changed)
+                            if (!staticP.flavors && match.flavors) {
+                                console.log(`Removing flavors for ${match.name} from static data`);
+                                delete match.flavors;
+                            } else if (JSON.stringify(staticP.flavors) !== JSON.stringify(match.flavors)) {
+                                match.flavors = staticP.flavors;
+                            }
+                        }
+                    });
+                }
+
+                return products;
+            };
+
+            const FALLBACK_PRODUCTS = getStoredProducts();
+
+            const fetchProducts = async () => {
+                setLoading(true);
+
+                const getUrl = (base) => {
+                    let url = `${base}/products?category=${encodeURIComponent(filter)}`;
+                    if (searchQuery) {
+                        url += `&search=${encodeURIComponent(searchQuery)}`;
+                    }
+                    if (priceFilter) {
+                        url += `&priceRange=${encodeURIComponent(priceFilter)}`;
+                    }
+                    return url;
+                };
+
+                try {
+                    let response;
+                    let usedUrl;
+
+                    // STRATEGY 1: Try Relative Path (Standard for Hosted)
+                    try {
+                        const url1 = getUrl('/api');
+                        console.log("Attempt 1: Fetching from", url1);
+                        response = await fetch(url1);
+
+                        // If 404/500, throw to trigger fallback (Assume we hit Live Server not API)
+                        if (!response.ok) throw new Error(`Relative path returned ${response.status}`);
+
+                        usedUrl = url1;
+                    } catch (e1) {
+                        // STRATEGY 2: Fallback to Localhost:3000 (Standard for Local Dev / Live Server)
+                        console.warn(`Attempt 1 failed (${e1.message}), trying fallback to localhost:3000...`);
+                        const url2 = getUrl('http://localhost:3000/api');
+                        console.log("Attempt 2: Fetching from", url2);
+                        response = await fetch(url2);
+
+                        if (!response.ok) throw new Error(`Fallback failed with status ${response.status}`);
+                        usedUrl = url2;
+                    }
+
+                    const json = await response.json();
+
+                    if (json.data && Array.isArray(json.data)) {
+                        console.log(`Success! Loaded ${json.data.length} products using API: ${usedUrl}`);
+
+                        // MERGE FIX: Ensure we include local items but ALSO respect the filters
+                        let mergedProducts = [...json.data];
+                        const apiIds = new Set(json.data.map(p => p.id));
+
+                        if (FALLBACK_PRODUCTS) {
+                            FALLBACK_PRODUCTS.forEach(staticP => {
+                                // Only add if ID is missing AND it matches the current filters
+                                if (!apiIds.has(staticP.id)) {
+
+                                    // 1. Category Filter
+                                    if (filter !== 'All Products' && staticP.category !== filter) return;
+
+                                    // 2. Search Filter
+                                    if (searchQuery) {
+                                        const q = searchQuery.toLowerCase();
+                                        const match = staticP.name.toLowerCase().includes(q) ||
+                                            (staticP.description && staticP.description.toLowerCase().includes(q));
+                                        if (!match) return;
+                                    }
+
+                                    // 3. Price Filter (Simple Logic)
+                                    if (priceFilter) {
+                                        if (priceFilter === 'under-500' && staticP.price >= 500) return;
+                                        if (priceFilter === '500-1000' && (staticP.price < 500 || staticP.price > 1000)) return;
+                                        if (priceFilter === 'above-1000' && staticP.price <= 1000) return;
+                                    }
+
+                                    // If we got here, it's a match and it's missing from API
+                                    // console.log(`Merging matching static product: ${staticP.name}`);
+                                    mergedProducts.push(staticP);
+                                }
+                            });
+                        }
+
+                        setProducts(mergedProducts);
+                    } else {
+                        // If API returns valid JSON but bad data format
+                        console.warn("Invalid data format from API, using fallback.");
+                        setProducts(FALLBACK_PRODUCTS);
+                    }
+
+                } catch (error) {
+                    console.error("All fetch attempts failed. Activating Offline Mode.", error);
+                    // OFFLINE MODE: Load hardcoded products instead of showing error
+                    // Apply Client-Side Filtering since API didn't do it
+                    let offlineData = FALLBACK_PRODUCTS;
+
+                    if (filter && filter !== 'All Products') {
+                        offlineData = offlineData.filter(p => p.category === filter);
+                    }
+
+                    if (searchQuery) {
+                        const q = searchQuery.toLowerCase();
+                        offlineData = offlineData.filter(p =>
+                            p.name.toLowerCase().includes(q) ||
+                            (p.description && p.description.toLowerCase().includes(q))
+                        );
+                    }
+
+                    if (priceFilter) {
+                        if (priceFilter === 'under-500') offlineData = offlineData.filter(p => p.price < 500);
+                        if (priceFilter === '500-1000') offlineData = offlineData.filter(p => p.price >= 500 && p.price <= 1000);
+                        if (priceFilter === 'above-1000') offlineData = offlineData.filter(p => p.price > 1000);
+                    }
+
+                    setProducts(offlineData);
+
+                    // Optional: Log to console so developer knows, but user sees products
+                    console.log("Displaying cached/offline products due to connection error.");
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const handleAddToCart = (product) => {
+                if (window.addToCart) {
+                    window.addToCart(product);
+                }
+            };
+
+            return (
+                <div className="container products-container">
+                    <aside className="filters" style={{ display: 'block' }}>
+                        <div className="filter-group">
+                            <h3>Categories</h3>
+                            <ul className="filter-list">
+                                {['All Products', 'Truffles', 'Bars', 'Assorted Chocolates', 'Chocoblossom Special', 'Cookies', 'Drages', 'Rocca and Florentine',].map(cat => (
+                                    <li
+                                        key={cat}
+                                        className={filter === cat ? 'active' : ''}
+                                        onClick={() => setFilter(cat)}
+                                    >
+                                        <span className="checkbox"></span>{cat}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="filter-group">
+                            <h3>Price Range</h3>
+                            <ul className="filter-list">
+                                {[
+                                    { label: 'All Prices', val: '' },
+                                    { label: 'Under ₹500', val: 'under-500' },
+                                    { label: '₹500 - ₹1000', val: '500-1000' },
+                                    { label: 'Above ₹1000', val: 'above-1000' }
+                                ].map(p => (
+                                    <li
+                                        key={p.label}
+                                        className={priceFilter === p.val ? 'active' : ''}
+                                        onClick={() => setPriceFilter(p.val)}
+                                    >
+                                        <span className="checkbox"></span>{p.label}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </aside>
+
+                    <main style={{ flex: 1 }}>
+                        <div className="sort-bar">
+                            <div>{loading ? 'Loading...' : `${products.length} Products Found`}</div>
+                        </div>
+
+                        {loading ? (
+                            <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '2rem' }}>
+                                <i className="fas fa-spinner fa-spin" style={{ fontSize: '2rem', color: '#3E2723' }}></i>
+                                <p style={{ marginTop: '1rem' }}>Loading chocolates...</p>
+                            </div>
+                        ) : products.length === 0 ? (
+                            <div style={{ textAlign: 'center', padding: '3rem', background: '#f9f9f9', borderRadius: '8px' }}>
+                                <i className="fas fa-box-open" style={{ fontSize: '3rem', color: '#ccc', marginBottom: '1rem' }}></i>
+                                <h3>No Products Found</h3>
+                                <p>Try adjusting your filters or ensure the server is running.</p>
+                                <button className="btn btn-outline" style={{ marginTop: '1rem' }} onClick={() => { setFilter('All Products'); setPriceFilter(''); }}>Clear Filters</button>
+                            </div>
+                        ) : (
+                            <div className="product-grid">
+                                {products.map(p => (
+                                    <div key={p.id} className="product-card">
+                                        <a href={`product_detail.html?id=${p.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+                                            <div className="product-image">
+                                                <img src={p.image} alt={p.name} onError={(e) => e.target.src = 'https://placehold.co/600x600/3E2723/FFF?text=No+Image'} />
+                                            </div>
+                                            <div className="product-info">
+                                                <div className="product-category">{p.category}</div>
+                                                <h3 className="product-title">{p.name}</h3>
+                                                <div className="product-price">₹{p.price}</div>
+                                                {p.description && <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', lineHeight: '1.4' }}>{p.description}</p>}
+                                            </div>
+                                        </a>
+                                        <div style={{ padding: '0 1.5rem 1.5rem' }}>
+                                            <button className="add-btn" onClick={(e) => { e.stopPropagation(); handleAddToCart(p); }}>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </main>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('product-root'));
+        root.render(<ProductApp />);
+    </script>
+    <script>
+        // Disable default script.js fetch logic
+        window.fetchProducts = () => { }; 
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story | Choco Blossom India</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="stylesheet" href="./style.css?v=1.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Accordion Styles */
+        .accordion-item {
+            border: 1px solid #eee;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: 1.2rem;
+            background: #fff;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .accordion-header:hover {
+            background: #fdfbf7;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 1.2rem;
+            background: #fff;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .accordion-item.active {
+            border-color: var(--color-accent);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .accordion-item.active .accordion-header {
+            background: #fdfbf7;
+            color: var(--color-primary);
+        }
+
+        .accordion-item.active .accordion-header i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 150px;
+            /* Adjust based on content */
+            padding: 1.2rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* Blog Selection Styles */
+        .blog-card {
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 8px;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-card.selected {
+            border: 2px solid var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(93, 64, 55, 0.1);
+        }
+
+        .blog-card:hover .blog-img img {
+            transform: scale(1.05);
+        }
+    </style>
+    <script>
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            const isActive = item.classList.contains('active');
+
+            // Close all
+            document.querySelectorAll('.accordion-item').forEach(i => {
+                i.classList.remove('active');
+            });
+
+            // Toggle current
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+
+        function selectBlog(card) {
+            document.querySelectorAll('.blog-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <p><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above ₹2500 via Shiprocket
+            </p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.png" alt="Choco Blossom Logo">
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html" class="active">Our Story</a>
+                <a href="products.html">Collections</a>
+                <div class="dropdown mega-dropdown">
+                    <a href="products.html" class="dropbtn">Occasions <i class="fas fa-chevron-down"
+                            style="margin-left: 6px; font-size: 0.7em;"></i></a>
+                    <div class="mega-content">
+                        <div class="mega-grid">
+                            <!-- Column 1: Celebrations -->
+                            <div class="mega-column">
+                                <h4>Celebrations</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Birthday">Birthday Gifts</a></li>
+                                    <li><a href="products.html?category=Wedding">Wedding Gifts</a></li>
+                                    <li><a href="products.html?category=Anniversary">Anniversary</a></li>
+                                    <li><a href="products.html?category=Baby+Shower">Baby Shower</a></li>
+                                    <li><a href="products.html?category=Baby+Announcement">Baby Announcement</a></li>
+                                    <li><a href="products.html?category=House+Warming">House Warming</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 2: Festivals -->
+                            <div class="mega-column">
+                                <h4>Festivals</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Diwali">Diwali Gifts</a></li>
+                                    <li><a href="products.html?category=Rakhi">Rakhi Gifts</a></li>
+                                    <li><a href="products.html?category=Christmas">Christmas & New Year</a></li>
+                                    <li><a href="products.html?category=Holi">Holi Gifts</a></li>
+                                    <li><a href="products.html?category=Ramadan">Ramadan Gifts</a></li>
+                                    <li><a href="products.html?category=Bhai+Dooj">Bhai Dooj</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 3: Special Days -->
+                            <div class="mega-column">
+                                <h4>Special Days</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Valentines">Valentine’s Day</a></li>
+                                    <li><a href="products.html?category=Mothers+Day">Mother’s Day</a></li>
+                                    <li><a href="products.html?category=Fathers+Day">Father’s Day</a></li>
+                                    <li><a href="products.html?category=Womens+Day">Women’s Day</a></li>
+                                    <li><a href="products.html?category=Kids">Kid's Gifts</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 4: Collections -->
+                            <div class="mega-column">
+                                <h4>Collections</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Bestsellers">Best Sellers</a></li>
+                                    <li><a href="products.html?category=Corporate">Corporate Gifts</a></li>
+                                    <li><a href="products.html?category=Dark">Dark Chocolates</a></li>
+                                    <li><a href="products.html?category=Pick+Mix">Pick & Mix Gifts</a></li>
+                                    <li><a href="products.html?category=Studio">Studio Creations</a></li>
+                                    <li><a href="gift_cards.html">Gift Cards</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="corporate.html">Corporate Gifting</a>
+                <a href="partners.html">Growth Partner</a>
+                <a href="wedding.html">Wedding Gifts</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+            <div class="nav-icons">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search...">
+                    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
+                </div>
+                <a href="#" class="cart-icon" id="cart-btn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count">(0)</span>
+                </a>
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="section" style="background: var(--color-background); padding: 120px 0 60px; text-align: center;">
+        <div class="container">
+            <h1 class="liquid-reveal">The Choco Blossom Story</h1>
+            <p style="max-width: 600px; margin: 0 auto; font-style: italic;">"Where passion meets premium cocoa"</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="section">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); align-items: center;">
+                <div>
+                    <img src="founder.jpg" alt="Ankita Patel - Founder of Choco Blossom"
+                        style="border-radius: 8px; box-shadow: var(--shadow-md);">
+                </div>
+                <div>
+                    <h2 style="color: var(--color-secondary);">Ahmedabad's Finest Confectionery</h2>
+                    <p>Choco Blossom India is recognized as the best confectioner and chocolate wholesaler in Ahmedabad.
+                        We specialize in crafting premium chocolates that add a touch of sweetness to every occasion,
+                        from Diwali and weddings to corporate events and personalized gifting.</p>
+                    <p>Located in the heart of Paldi, we source the finest ingredients to create chocolates that are not
+                        only delicious but also a visual delight. Our commitment to quality and customer satisfaction
+                        has made us a trusted name in Gujarat and beyond.</p>
+
+                    <div style="margin-top: 2rem;">
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                            <i class="fas fa-check-circle" style="color: var(--color-secondary); margin-top: 5px;"></i>
+                            <div>
+                                <strong>Wholesale & Personalised</strong>
+                                <p style="font-size: 0.9rem;">Specializing in bulk orders, corporate gifting, and
+                                    customized chocolate hampers.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                            <i class="fas fa-check-circle" style="color: var(--color-secondary); margin-top: 5px;"></i>
+                            <div>
+                                <strong>Premium Quality</strong>
+                                <p style="font-size: 0.9rem;">The best quality chocolates, ensuring a rich and authentic
+                                    taste in every bite.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="section" style="background-color: var(--color-primary); color: #fff;">
+        <div class="container">
+            <h2 class="text-center" style="color: var(--color-secondary); margin-bottom: 3rem;">Our Core Values</h2>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); text-align: center;">
+                <div style="padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <i class="fas fa-star"
+                        style="font-size: 2rem; color: var(--color-secondary); margin-bottom: 1rem;"></i>
+                    <h3>Quality</h3>
+                    <p style="color: rgba(255,255,255,0.8);">We never compromise on ingredients. Only the best makes it
+                        into our boxes.</p>
+                </div>
+                <div style="padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <i class="fas fa-heart"
+                        style="font-size: 2rem; color: var(--color-secondary); margin-bottom: 1rem;"></i>
+                    <h3>Passion</h3>
+                    <p style="color: rgba(255,255,255,0.8);">Chocolate making is art. We pour our heart into every
+                        creation.</p>
+                </div>
+                <div style="padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <i class="fas fa-users"
+                        style="font-size: 2rem; color: var(--color-secondary); margin-bottom: 1rem;"></i>
+                    <h3>Community</h3>
+                    <p style="color: rgba(255,255,255,0.8);">We love our customers and strive to make every celebration
+                        sweeter.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Journey (Accordion/Dropdown) -->
+    <section class="section">
+        <div class="container">
+            <h2 class="text-center" style="color: var(--color-primary); margin-bottom: 2rem;">Our Journey</h2>
+            <div class="accordion" style="max-width: 800px; margin: 0 auto;">
+
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>2020: The Beginning</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Started as a small home kitchen project in Paldi, experimenting with organic cacao beans and
+                            traditional tempering techniques.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>2022: First Store</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Opened our first flagship store in Ahmedabad, introducing our signature 'Dark Hazelnut' bar
+                            which became an instant bestseller.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>2024: Pan-India Shipping</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Expanded our operations to ship nationwide, ensuring that the taste of pure handcrafted
+                            chocolate reaches every corner of India.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>2026: The Global Vision</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Partnering with international cocoa farms and launching our 'Studio Collection' for the
+                            connoisseurs of fine chocolate.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog / Stories Section -->
+    <section class="section" style="background: #fdfbf7;">
+        <div class="container">
+            <h2 class="text-center" style="color: var(--color-primary); margin-bottom: 3rem;">Chocolate Chronicles</h2>
+            <div class="blog-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+
+                <!-- Blog Card 1 -->
+                <div class="blog-card" onclick="selectBlog(this)">
+                    <div class="blog-img" style="height: 200px; overflow: hidden; border-radius: 8px 8px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1548907040-4baa42d10919?q=80&w=800"
+                            alt="Cocoa Beans" style="width: 100%; height: 100%; object-fit: cover; transition: 0.3s;">
+                    </div>
+                    <div class="blog-content"
+                        style="padding: 1.5rem; background: #fff; border-radius: 0 0 8px 8px; border: 1px solid rgba(0,0,0,0.05);">
+                        <span style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600;">KNOWLEDGE</span>
+                        <h3 style="margin: 0.5rem 0; font-size: 1.2rem;">Bean to Bar: The Process</h3>
+                        <p style="font-size: 0.9rem; color: #666;">Understand the intricate journey of how a raw cacao
+                            bean transforms into the silky bar you love.</p>
+                        <a href="#"
+                            style="color: var(--color-primary); font-size: 0.9rem; font-weight: 600; margin-top: 1rem; display: inline-block;">Read
+                            More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Blog Card 2 -->
+                <div class="blog-card" onclick="selectBlog(this)">
+                    <div class="blog-img" style="height: 200px; overflow: hidden; border-radius: 8px 8px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1623945958611-c990b79339e7?q=80&w=800"
+                            alt="Health Benefits"
+                            style="width: 100%; height: 100%; object-fit: cover; transition: 0.3s;">
+                    </div>
+                    <div class="blog-content"
+                        style="padding: 1.5rem; background: #fff; border-radius: 0 0 8px 8px; border: 1px solid rgba(0,0,0,0.05);">
+                        <span style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600;">WELLNESS</span>
+                        <h3 style="margin: 0.5rem 0; font-size: 1.2rem;">Why Dark Chocolate is Superfood</h3>
+                        <p style="font-size: 0.9rem; color: #666;">Rich in antioxidants and minerals, discover why a
+                            daily dose of dark chocolate is good for you.</p>
+                        <a href="#"
+                            style="color: var(--color-primary); font-size: 0.9rem; font-weight: 600; margin-top: 1rem; display: inline-block;">Read
+                            More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Blog Card 3 -->
+                <div class="blog-card" onclick="selectBlog(this)">
+                    <div class="blog-img" style="height: 200px; overflow: hidden; border-radius: 8px 8px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1575372573252-f41a87640283?q=80&w=800"
+                            alt="Gifting Guide" style="width: 100%; height: 100%; object-fit: cover; transition: 0.3s;">
+                    </div>
+                    <div class="blog-content"
+                        style="padding: 1.5rem; background: #fff; border-radius: 0 0 8px 8px; border: 1px solid rgba(0,0,0,0.05);">
+                        <span style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600;">LIFESTYLE</span>
+                        <h3 style="margin: 0.5rem 0; font-size: 1.2rem;">The Art of Corporate Gifting</h3>
+                        <p style="font-size: 0.9rem; color: #666;">How to leave a lasting impression on your clients and
+                            partners with premium chocolate hampers.</p>
+                        <a href="#"
+                            style="color: var(--color-primary); font-size: 0.9rem; font-weight: 600; margin-top: 1rem; display: inline-block;">Read
+                            More &rarr;</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Shipping Marquee -->
+    <div class="shipping-marquee">
+        <div class="marquee-content">
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above
+                ₹2500 via Shiprocket</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <!-- Same Footer as Index -->
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="logo.png" alt="Choco Blossom"
+                        style="width: 140px; margin-bottom: 1rem; border-radius: 8px;">
+                    <p style="color: rgba(255,255,255,0.7);">Crafting memories with premium chocolates. Based
+                        in Ahmedabad, delivering happiness nationwide.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/chocoblossomIndia/" target="_blank" class="social-icon"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/chocoblossomindia/" target="_blank" class="social-icon"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@Choco-blossom" target="_blank" class="social-icon"><i
+                                class="fab fa-youtube"></i></a>
+                        <a href="https://www.linkedin.com/company/chocoblossom/" target="_blank" class="social-icon"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Shop All</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Customer Care</h4>
+                    <ul class="footer-links">
+                        <li><a href="shipping.html">Shipping Policy</a></li>
+                        <li><a href="returns.html">Returns & Refunds</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="#">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-links">
+                        <li style="color: rgba(255,255,255,0.8); display: flex; gap: 10px;">
+                            <i class="fas fa-map-marker-alt" style="margin-top: 5px;"></i>
+                            <a href="https://maps.app.goo.gl/Jihe6SA3eRXgMHd29" target="_blank"
+                                style="color: inherit; text-decoration: none;">
+                                <span>28, Saurasthra Society, Paldi, Ahmedabad, Gujarat 380007</span>
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="tel:+919227088688" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-phone" style="width: 20px;"></i> +91 92270 88688
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="mailto:chocoblossom12@gmail.com" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-envelope" style="width: 20px;"></i> chocoblossom12@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div style="text-align: center;">
+                    <p>&copy; 2026 Choco Blossom. All rights reserved.</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.2rem;">Based in Ahmedabad, Gujarat</p>
+                </div>
+                <div class="payment-icons">
+                    <i class="fab fa-google-pay"></i>
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
