@@ -1,6 +1,6 @@
 // --- CONFIGURATION ---
 // AFTER DEPLOYING TO RENDER, PASTE YOUR URL HERE:
-const PRODUCTION_API_URL = "https://your-app-name.onrender.com/api";
+const PRODUCTION_API_URL = "https://choco-backend-k0jv.onrender.com/api";
 
 // API Base URL - Auto-detects environment
 const API_URL = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')

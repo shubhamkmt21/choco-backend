@@ -5,8 +5,8 @@ const db = require("./database"); // make sure this file exists
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 
-const RAZORPAY_KEY_ID = "rzp_live_Qg11jTM5s0KRbh";
-const RAZORPAY_KEY_SECRET = "5XwoEMtB1t66TcbrmNrj5N10"; // Updated by User
+const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || "rzp_live_Qg11jTM5s0KRbh";
+const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || "5XwoEMtB1t66TcbrmNrj5N10";
 
 const razorpay = new Razorpay({
     key_id: RAZORPAY_KEY_ID,
