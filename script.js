@@ -434,11 +434,20 @@ async function placeOrder() {
         const amount = Math.round(total);
 
         // 2. Create Order on Server
+
+        // Show "Waking up server" message if it takes time (Render Free Tier)
+        const wakeUpTimer = setTimeout(() => {
+            msg.textContent = "Waking up server (this may take 30s)...";
+            msg.style.color = 'orange';
+        }, 2500);
+
         const orderRes = await fetch(`${API_URL}/create-razorpay-order`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: amount, currency: "INR" })
         });
+
+        clearTimeout(wakeUpTimer); // Clear message if fast
 
         const orderData = await orderRes.json();
 
