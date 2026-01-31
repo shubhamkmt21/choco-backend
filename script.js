@@ -4,7 +4,7 @@ const PRODUCTION_API_URL = "https://choco-backend-k0jv.onrender.com/api";
 
 // API Base URL - Auto-detects environment
 const API_URL = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:')
-    ? 'http://localhost:3000/api'
+    ? 'http://127.0.0.1:3000/api'
     : PRODUCTION_API_URL;
 
 // --- Auto-Wake Server (Free Tier Optimization) ---

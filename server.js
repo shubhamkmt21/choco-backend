@@ -23,7 +23,6 @@ const products = [
     { id: 16, name: "Chocolate Thins In Dark", category: "Chocoblossom Special", price: 550, image: "images/thins_dark.jpg", description: "Intense 70% dark chocolate wafers for the true cocoa connoisseur." },
     { id: 17, name: "Almond Roca", category: "Chocoblossom Special", price: 750, image: "images/almond_roca.jpg", description: "Buttercrunch toffee with almonds, covered in chocolate and almond dust." },
     { id: 18, name: "Chocolate Coated Orange Peel", category: "Chocoblossom Special", price: 600, image: "https://images.unsplash.com/photo-1548811234-a2b16ac9892c?q=80&w=600&auto=format", description: "Zesty candied orange peels enrobed in smooth dark chocolate." },
-    { id: 18, name: "Chocolate Coated Orange Peel", category: "Chocoblossom Special", price: 600, image: "https://images.unsplash.com/photo-1548811234-a2b16ac9892c?q=80&w=600&auto=format", description: "Zesty candied orange peels enrobed in smooth dark chocolate." },
     { id: 19, name: "Chocolate Thins In White", category: "Chocoblossom Special", price: 550, image: "https://images.unsplash.com/photo-1614088685112-0a760b7163c8?q=80&w=600&auto=format", description: "Sweet and creamy white chocolate wafers with a hint of vanilla." }
 ];
 
