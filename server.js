@@ -225,10 +225,18 @@ app.post("/api/orders", (req, res) => {
 
 // --- WHATSAPP HELPER FUNCTION ---
 async function sendWhatsapp(phone, name) {
-    // Format phone: remove + or spaces, ensure it starts with 91 if indian?
-    // User sample has 918588898477. Assuming input is clean or just needs generic cleanup.
-    let cleanPhone = phone.replace(/\D/g, '');
-    if (cleanPhone.length === 10) cleanPhone = "91" + cleanPhone; // Add 91 if missing
+    // Format phone: remove + or spaces, ensure it starts with 91 if indian
+    let cleanPhone = phone.toString().replace(/\D/g, '');
+
+    // Case 1: 10 digits (e.g., 9876543210) -> Add 91
+    if (cleanPhone.length === 10) {
+        cleanPhone = "91" + cleanPhone;
+    }
+    // Case 2: 11 digits starting with 0 (e.g., 09876543210) -> Replace 0 with 91
+    else if (cleanPhone.length === 11 && cleanPhone.startsWith('0')) {
+        cleanPhone = "91" + cleanPhone.substring(1);
+    }
+    // Case 3: Already has 91 (e.g., 919876543210) -> Keep as is
 
     console.log(`📱 Sending WhatsApp to ${cleanPhone}...`);
 
