@@ -172,7 +172,7 @@ app.post("/api/orders", (req, res) => {
 
     const {
         customer_name,
-        customer_email,
+        customer_phone,
         shipping_address,
         total_amount,
         items,
@@ -211,12 +211,62 @@ app.post("/api/orders", (req, res) => {
 
         console.log(`✅ Order saved successfully. ID: ${this.lastID}`);
 
+        // --- SEND WHATSAPP NOTIFICATION ---
+        if (customer_phone) {
+            sendWhatsapp(customer_phone, customer_name);
+        }
+
         res.json({
             message: "success",
             orderId: this.lastID,
         });
     });
 });
+
+// --- WHATSAPP HELPER FUNCTION ---
+async function sendWhatsapp(phone, name) {
+    // Format phone: remove + or spaces, ensure it starts with 91 if indian?
+    // User sample has 918588898477. Assuming input is clean or just needs generic cleanup.
+    let cleanPhone = phone.replace(/\D/g, '');
+    if (cleanPhone.length === 10) cleanPhone = "91" + cleanPhone; // Add 91 if missing
+
+    console.log(`📱 Sending WhatsApp to ${cleanPhone}...`);
+
+    const data = {
+        "key": "df66364294d64d7cbb2031cffb273847",
+        "username": "chocoblossom1089588",
+        "name": "whatsapp",
+        "remarks": `Thank you for choosing *ChocoBlossom.* \n\nYour order is confirmed and is being crafted with care ✨\nOur delivery partner will keep you updated on the shipment 📦`,
+        "whatsapp": {
+            "to": cleanPhone,
+            "type": "template",
+            "category": "UTILITY",
+            "recipient_type": "individual",
+            "template": {
+                "namespace": "",
+                "language": {
+                    "policy": "deterministic",
+                    "code": "en"
+                },
+                "name": "order_msg"
+            }
+        }
+    };
+
+    try {
+        const response = await fetch('https://services.kit19.com/IMS/Whatsapp/Template', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log("✅ WhatsApp Sent:", result);
+    } catch (error) {
+        console.error("❌ WhatsApp Error:", error);
+    }
+}
 
 // Create Razorpay Order
 app.post("/api/create-razorpay-order", async (req, res) => {

@@ -496,6 +496,7 @@ async function placeOrder() {
                     const finalOrder = {
                         customer_name: name,
                         customer_email: email,
+                        customer_phone: phone, // Added for WhatsApp
                         shipping_address: {
                             street: "Razorpay Checkout",
                             city: "India",
@@ -545,7 +546,12 @@ async function placeOrder() {
 
     } catch (err) {
         console.error(err);
-        msg.textContent = 'Payment Error: ' + (err.message || 'Connection failed');
+        if (err.message.includes("Failed to fetch")) {
+            msg.textContent = "Error: Backend unreachable. Check Render Server.";
+            alert("Connection Failed! 🛑\n\nYour Backend Server (Render) appears to be DOWN or SLEEPING.\nPlease go to your Render Dashboard and check the status.");
+        } else {
+            msg.textContent = 'Payment Error: ' + (err.message || 'Connection failed');
+        }
         msg.style.color = 'red';
     }
 }
