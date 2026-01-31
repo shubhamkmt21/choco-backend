@@ -1,6 +1,6 @@
 {
   "name": "chocolate-ecommerce",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "products.js",
   "scripts": {
     "start": "node server.js",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.2.1",
+    "express": "^4.19.2",
     "razorpay": "^2.9.6"
   }
 }
