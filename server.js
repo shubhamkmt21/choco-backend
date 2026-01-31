@@ -23,26 +23,74 @@ const products = [
     { id: 16, name: "Chocolate Thins In Dark", category: "Chocoblossom Special", price: 550, image: "images/thins_dark.jpg", description: "Intense 70% dark chocolate wafers for the true cocoa connoisseur." },
     { id: 17, name: "Almond Roca", category: "Chocoblossom Special", price: 750, image: "images/almond_roca.jpg", description: "Buttercrunch toffee with almonds, covered in chocolate and almond dust." },
     { id: 18, name: "Chocolate Coated Orange Peel", category: "Chocoblossom Special", price: 600, image: "https://images.unsplash.com/photo-1548811234-a2b16ac9892c?q=80&w=600&auto=format", description: "Zesty candied orange peels enrobed in smooth dark chocolate." },
+    { id: 18, name: "Chocolate Coated Orange Peel", category: "Chocoblossom Special", price: 600, image: "https://images.unsplash.com/photo-1548811234-a2b16ac9892c?q=80&w=600&auto=format", description: "Zesty candied orange peels enrobed in smooth dark chocolate." },
     { id: 19, name: "Chocolate Thins In White", category: "Chocoblossom Special", price: 550, image: "https://images.unsplash.com/photo-1614088685112-0a760b7163c8?q=80&w=600&auto=format", description: "Sweet and creamy white chocolate wafers with a hint of vanilla." }
 ];
 
+// In-Memory Order Storage
+const orders = [];
+
 const db = {
     all: function (sql, params, cb) {
-        // Return products for any product query
+        // Return products
         if (sql.includes("products")) {
             let result = products;
-            // Simple logic to mock filtering if needed
             if (params && params.length > 0 && sql.includes("category")) {
                 result = result.filter(p => p.category === params[0]);
             }
-            console.log(`Mock DB: Returned ${result.length} products`);
             return cb(null, result);
+        }
+        // Return orders
+        if (sql.includes("FROM orders")) {
+            return cb(null, orders);
         }
         return cb(null, []);
     },
     run: function (sql, params, cb) {
-        console.log("Mock DB: Saved Data (In-Memory Only)", params);
-        // Simulate successful insert
+        console.log("Mock DB: Executing", sql);
+
+        // Handle Order Insertion
+        if (sql.includes("INSERT INTO orders")) {
+            const newOrder = {
+                id: orders.length + 1,
+                customer_name: params[0],
+                customer_email: params[1],
+                shipping_address: params[2], // Already JSON string
+                total_amount: params[3],
+                items: params[4], // Already JSON string
+                payment_status: params[5],
+                transaction_id: params[6],
+                payment_method: params[7],
+                status: 'pending',
+                created_at: new Date().toISOString()
+            };
+            orders.unshift(newOrder); // Add to top
+            console.log("Mock DB: Order Saved!", newOrder.id);
+            if (cb) cb.call({ lastID: newOrder.id }, null);
+            return;
+        }
+
+        // Handle Order Status Update
+        if (sql.includes("UPDATE orders SET status")) {
+            // sql: UPDATE orders SET status = ? WHERE id = ?
+            const id = params[1];
+            const status = params[0];
+            const order = orders.find(o => o.id == id);
+            if (order) {
+                order.status = status;
+                console.log(`Mock DB: Order ${id} updated to ${status}`);
+            }
+            if (cb) cb.call({ changes: 1 }, null);
+            return;
+        }
+
+        // Handle Delete
+        if (sql.includes("DELETE FROM orders")) {
+            orders.length = 0; // Clear array
+            if (cb) cb.call({ changes: 0 }, null);
+            return;
+        }
+
         if (cb) cb.call({ lastID: Date.now() }, null);
     },
     get: function (sql, params, cb) {
