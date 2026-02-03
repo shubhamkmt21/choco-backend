@@ -1460,6 +1460,7 @@ img {
         bottom: 90px;
     }
 }
+
 /* Loader */
 .loader-wrapper {
     position: fixed;
@@ -1483,11 +1484,14 @@ img {
 .choco-loader {
     width: 80px;
     height: 100px;
-    background: #5D4037; /* Chocolate Color */
+    background: #5D4037;
+    /* Chocolate Color */
     border-radius: 4px;
     position: relative;
-    box-shadow: 2px 2px 0 #3E2723; /* 3D effect */
-    display: flex; /* For alignment if needed */
+    box-shadow: 2px 2px 0 #3E2723;
+    /* 3D effect */
+    display: flex;
+    /* For alignment if needed */
 }
 
 /* Chocolate Segments (Grid lines) */
@@ -1498,9 +1502,10 @@ img {
     left: 50%;
     width: 2px;
     height: 100%;
-    background: rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.1);
     transform: translateX(-50%);
 }
+
 .choco-loader::after {
     content: '';
     position: absolute;
@@ -1508,7 +1513,7 @@ img {
     left: 0;
     width: 100%;
     height: 2px;
-    background: rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.1);
     transform: translateY(-50%);
 }
 
@@ -1517,21 +1522,25 @@ img {
     position: absolute;
     width: 30px;
     height: 30px;
-    background: var(--color-background); /* Matches background to look like a hole */
+    background: var(--color-background);
+    /* Matches background to look like a hole */
     border-radius: 50%;
-    opacity: 0; /* Hidden initially */
+    opacity: 0;
+    /* Hidden initially */
 }
 
 .bite-1 {
     top: -12px;
     right: -12px;
-    animation: bite-in 0.1s forwards 0.5s; /* Appears at 0.5s */
+    animation: bite-in 0.1s forwards 0.5s;
+    /* Appears at 0.5s */
 }
 
 .bite-2 {
     top: -12px;
     left: -12px;
-    animation: bite-in 0.1s forwards 1.0s; /* Appears at 1.0s */
+    animation: bite-in 0.1s forwards 1.0s;
+    /* Appears at 1.0s */
 }
 
 .bite-3 {
@@ -1539,11 +1548,18 @@ img {
     right: 15px;
     width: 45px;
     height: 45px;
-    animation: bite-in 0.1s forwards 1.5s; /* Appears at 1.5s */
+    animation: bite-in 0.1s forwards 1.5s;
+    /* Appears at 1.5s */
 }
 
 @keyframes bite-in {
-    to { opacity: 1; transform: scale(1); }
-    from { opacity: 0; transform: scale(0.5); }
-}
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
