@@ -102,7 +102,7 @@
     </header>
     <!-- Partners Hero Section -->
     <section class="partners-hero">
-        <div class="hero-overlay"></div>
+        <!-- Overlay removed for transparent look -->
         <div class="container hero-content text-center">
             <h1 class="liquid-reveal">Partner with Choco Blossom</h1>
             <p class="hero-subtitle">Join us in spreading happiness through premium handcrafted chocolates.</p>
@@ -114,40 +114,29 @@
     <style>
         .partners-hero {
             position: relative;
-            background: linear-gradient(135deg, #3e2723, #1a120b);
-            /* Dark Chocolate Gradient */
-            height: 50vh;
-            /* Slightly reduced height since no image to show off */
-            min-height: 350px;
+            background: transparent;
+            /* Transparent as requested */
+            padding: 80px 0 40px;
+            /* Spacing instead of fixed height */
             display: flex;
             align-items: center;
             justify-content: center;
             margin-top: 80px;
-            color: #fff;
-        }
-
-        .partners-hero .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 1;
+            color: var(--color-primary);
+            /* Dark text */
         }
 
         .partners-hero .hero-content {
             position: relative;
             z-index: 2;
             max-width: 800px;
-            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
         }
 
         .partners-hero h1 {
             font-family: 'Playfair Display', serif;
             font-size: 3.5rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: var(--color-primary);
         }
 
         .partners-hero .hero-subtitle {
@@ -156,6 +145,7 @@
             font-weight: 500;
             margin-bottom: 1.5rem;
             color: var(--color-secondary);
+            /* Gold accent */
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -163,7 +153,8 @@
         .partners-hero .hero-desc {
             font-size: 1.1rem;
             line-height: 1.6;
-            color: rgba(255, 255, 255, 0.9);
+            color: #555555;
+            /* Dark grey for readability */
         }
 
         @media (max-width: 768px) {
@@ -171,6 +162,36 @@
                 font-size: 2.5rem;
             }
         }
+    </style>
+
+    .partners-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .partners-hero .hero-subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: var(--color-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    }
+
+    .partners-hero .hero-desc {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    }
+
+    @media (max-width: 768px) {
+    .partners-hero h1 {
+    font-size: 2.5rem;
+    }
+    }
     </style>
     <!-- Partner Application Form -->
     <section class="section" style="background-color: #f9f5f0; padding-bottom: 5rem;">
