@@ -256,11 +256,11 @@
         <div class="container">
             <h2 class="text-center" style="margin-bottom: 2rem;">Trusted By</h2>
             <div class="partners-logo-grid">
-                <img src="./images/partner_health1.png" alt="Partner" style="height: 60px; opacity: 0.7;">
-                <img src="./images/partner_johnson.jpg" alt="Partner" style="height: 60px; opacity: 0.7;">
-                <img src="./images/partner_asopalav.jpg" alt="Partner" style="height: 60px; opacity: 0.7;">
-                <img src="./images/partner_adani.jpg" alt="Partner" style="height: 60px; opacity: 0.7;">
-                <img src="./images/partner_devaashish.png" alt="Partner" style="height: 60px; opacity: 0.7;">
+                <img src="./images/partner_health1.png" alt="Partner">
+                <img src="./images/partner_johnson.jpg" alt="Partner">
+                <img src="./images/partner_asopalav.jpg" alt="Partner">
+                <img src="./images/partner_adani.jpg" alt="Partner">
+                <img src="./images/partner_devaashish.png" alt="Partner">
             </div>
         </div>
     </section>
@@ -581,6 +581,21 @@
             gap: 3rem;
             flex-wrap: wrap;
             align-items: center;
+        }
+
+        .partners-logo-grid img {
+            height: 100px;
+            width: 180px;
+            object-fit: contain;
+            opacity: 0.7;
+            filter: grayscale(100%);
+            transition: all 0.3s ease;
+        }
+
+        .partners-logo-grid img:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: scale(1.05);
         }
 
         @media (max-width: 768px) {
