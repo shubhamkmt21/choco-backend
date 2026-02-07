@@ -213,11 +213,19 @@ async function fetchBestsellers() {
     if (!container) return;
 
     try {
-        // Fetch all products, slicing the first 4 for bestsellers
-        // In a real app, you might have a specific endpoint or flag
-        const response = await fetch(`${API_URL}/products`);
-        const json = await response.json();
-        const allProducts = json.data;
+        let allProducts = [];
+
+        // OPTIMIZATION: Use local data if available (Instant Load)
+        if (window.PRODUCTS_DATA && window.PRODUCTS_DATA.length > 0) {
+            console.log("Using local data for bestsellers (Fast Mode)");
+            allProducts = window.PRODUCTS_DATA;
+        } else {
+            // Fallback to fetch if local data missing
+            console.log("Fetching bestsellers from API...");
+            const response = await fetch(`${API_URL}/products`);
+            const json = await response.json();
+            allProducts = json.data;
+        }
 
         // Curate Bestsellers: Specific IDs requested by user
         // 107: Almond Rocca, 12: Pistachio Kunafa Bar, 110: Valentine's Gift Box
