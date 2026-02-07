@@ -252,56 +252,11 @@
                     style="margin: 0 auto 2rem; opacity: 0.5;" alt="divider">
             </div>
 
-            <div class="product-grid bestsellers-grid" id="bestseller-grid">
-                <!-- Product 1: Almond Roca -->
-                <div class="product-card reveal">
-                    <div class="product-image">
-                        <img src="images/almond_roca.jpg" alt="Almond Roca">
-                        <span class="badge">Bestseller</span>
-                        <div class="overlay">
-                            <button class="btn btn-primary"
-                                onclick="addToCart({id: 17, name: 'Almond Roca', price: 650, image: 'images/almond_roca.jpg'})">Add
-                                to Cart</button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Almond Roca</h3>
-                        <p class="price">₹650</p>
-                    </div>
-                </div>
-
-                <!-- Product 2: Kunafa Bar -->
-                <div class="product-card reveal" style="transition-delay: 0.1s;">
-                    <div class="product-image">
-                        <img src="images/bar_kunafa.jpg" alt="Pistachio Kunafa Bar">
-                        <span class="badge">Trending</span>
-                        <div class="overlay">
-                            <button class="btn btn-primary"
-                                onclick="addToCart({id: 12, name: 'Pistachio Kunafa Bar', price: 750, image: 'images/bar_kunafa.jpg'})">Add
-                                to Cart</button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Pistachio Kunafa Bar</h3>
-                        <p class="price">₹750</p>
-                    </div>
-                </div>
-
-                <!-- Product 3: Valentine's Gift Box -->
-                <div class="product-card reveal" style="transition-delay: 0.2s;">
-                    <div class="product-image">
-                        <img src="images/valentines_box_1.jpg?v=1" alt="Valentine's Gift Box">
-                        <span class="badge" style="background: #E91E63;">Valentine's Special</span>
-                        <div class="overlay">
-                            <button class="btn btn-primary"
-                                onclick="addToCart({id: 110, name: 'Valentine\'s Gift Box', price: 400, image: 'images/valentines_box_1.jpg?v=1'})">Add
-                                to Cart</button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Valentine's Gift Box</h3>
-                        <p class="price">₹400</p>
-                    </div>
+            <div class="product-grid" id="bestseller-grid">
+                <!-- Products will be loaded here dynamically via script.js -->
+                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                    <i class="fas fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--color-primary);"></i>
+                    <p>Loading Bestsellers...</p>
                 </div>
             </div>
 

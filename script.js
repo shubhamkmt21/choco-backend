@@ -219,21 +219,18 @@ async function fetchBestsellers() {
         const json = await response.json();
         const allProducts = json.data;
 
-        // Curate Bestsellers: Prioritize 'Chocoblossom Special' or 'Truffles'
-        let bestsellers = allProducts.filter(p => p.category === 'Chocoblossom Special');
+        // Curate Bestsellers: Specific IDs requested by user
+        // 107: Almond Rocca, 12: Pistachio Kunafa Bar, 110: Valentine's Gift Box
+        const BESTSELLER_IDS = [107, 12, 110];
 
-        // If not enough specials, fill with Truffles or others
-        if (bestsellers.length < 4) {
-            const truffles = allProducts.filter(p => p.category === 'Truffles');
-            bestsellers = [...bestsellers, ...truffles];
-        }
+        let bestsellers = allProducts.filter(p => BESTSELLER_IDS.includes(p.id));
 
-        // Final fallback to just taking the first few if still empty
-        if (bestsellers.length === 0) {
-            bestsellers = allProducts;
-        }
+        // Sort them to match the requested order
+        bestsellers.sort((a, b) => {
+            return BESTSELLER_IDS.indexOf(a.id) - BESTSELLER_IDS.indexOf(b.id);
+        });
 
-        // Limit to 4 to fit the grid
+        // Limit to 4 to fit the grid (if more added later)
         const products = bestsellers.slice(0, 4);
 
         container.innerHTML = '';
@@ -277,10 +274,9 @@ async function fetchBestsellers() {
 
         // FALLBACK DATA: Ensure Bestsellers ALWAYS show Premium items even if offline
         const FALLBACK_BESTSELLERS = [
-            { id: 13, name: "English Brittle", category: "Chocoblossom Special", price: 650, image: "images/english_brittle.jpg" },
-            { id: 14, name: "Chocolate Thins In Milk", category: "Chocoblossom Special", price: 550, image: "images/thins_milk.jpg" },
-            { id: 17, name: "Almond Roca", category: "Chocoblossom Special", price: 750, image: "images/almond_roca.jpg" },
-            { id: 12, name: "Pistachio Kunafa Bar", category: "Bars", price: 750, image: "images/bar_kunafa.jpg" }
+            { id: 107, name: "Almond Rocca", category: "Rocca and Florentine", price: 650, image: "images/almond_rocca_3.png?v=2" },
+            { id: 12, name: "Pistachio Kunafa Bar", category: "Bars", price: 750, image: "images/bar_kunafa.jpg" },
+            { id: 110, name: "Valentine's Gift Box", category: "Valentines", price: 400, image: "images/valentines_box_1.jpg?v=1" }
         ];
 
         container.innerHTML = '';
