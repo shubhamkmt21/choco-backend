@@ -220,8 +220,8 @@ async function fetchBestsellers() {
         const allProducts = json.data;
 
         // Curate Bestsellers: Specific IDs requested by user
-        // 107: Almond Rocca, 12: Pistachio Kunafa Bar, 110: Valentine's Gift Box
-        const BESTSELLER_IDS = [107, 12, 110];
+        // 12: Pistachio Kunafa Bar, 9: Roasted Almond Bar, 110: Valentine's Gift Box
+        const BESTSELLER_IDS = [12, 9, 110];
 
         let bestsellers = allProducts.filter(p => BESTSELLER_IDS.includes(p.id));
 
@@ -274,8 +274,8 @@ async function fetchBestsellers() {
 
         // FALLBACK DATA: Ensure Bestsellers ALWAYS show Premium items even if offline
         const FALLBACK_BESTSELLERS = [
-            { id: 107, name: "Almond Rocca", category: "Rocca and Florentine", price: 650, image: "images/almond_rocca_3.png?v=2" },
             { id: 12, name: "Pistachio Kunafa Bar", category: "Bars", price: 750, image: "images/bar_kunafa.jpg" },
+            { id: 9, name: "Roasted Almond Bar", category: "Bars", price: 480, image: "images/bar_roasted_almond.jpg" },
             { id: 110, name: "Valentine's Gift Box", category: "Valentines", price: 400, image: "images/valentines_box_1.jpg?v=1" }
         ];
 
