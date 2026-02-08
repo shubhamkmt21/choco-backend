@@ -1563,3 +1563,70 @@ img {
         transform: scale(0.5);
     }
 }
+
+/* --- Responsive Navigation (Added for Mobile Smoothness) --- */
+@media (max-width: 768px) {
+    .mobile-toggle {
+        display: block !important;
+        z-index: 1002;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 75%;
+        max-width: 300px;
+        background-color: var(--color-surface);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5rem 2rem;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1001;
+        gap: 1.5rem;
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    /* Style links in mobile menu */
+    .nav-links a {
+        font-size: 1.1rem;
+        width: 100%;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none;
+    }
+
+    /* Navbar Adjustments */
+    .navbar {
+        padding: 0 1rem;
+    }
+
+    .logo img {
+        height: 40px;
+    }
+
+    /* Mega Menu Mobile Overrides */
+    .mega-dropdown:hover .mega-content {
+        position: static;
+        box-shadow: none;
+        padding: 0;
+        margin-top: 10px;
+        background: #f9f9f9;
+        display: block;
+        animation: none;
+    }
+
+    .mega-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+}
