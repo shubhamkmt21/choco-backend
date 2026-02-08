@@ -70,7 +70,15 @@ function handleSearch(query) {
 
 // --- Cart Management ---
 function getCart() {
-    return JSON.parse(localStorage.getItem('chocoCart')) || [];
+    try {
+        const stored = localStorage.getItem('chocoCart');
+        if (!stored) return [];
+        return JSON.parse(stored) || [];
+    } catch (e) {
+        console.error("Cart data corrupted, resetting.", e);
+        localStorage.removeItem('chocoCart');
+        return [];
+    }
 }
 
 function saveCart(cart) {
@@ -78,7 +86,15 @@ function saveCart(cart) {
     updateCartMetadata(); // Updates header count
 }
 
-// Make globally available for React/Vue
+function updateCartMetadata() {
+    const cart = getCart();
+    const count = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    const badge = document.getElementById('cart-count');
+    if (badge) {
+        badge.textContent = `(${count})`;
+    }
+}
+
 window.getCart = getCart;
 window.saveCart = saveCart;
 
@@ -208,105 +224,68 @@ async function fetchProducts() {
 }
 
 // --- Homepage Bestsellers Logic ---
-async function fetchBestsellers() {
+// --- Homepage Bestsellers Logic ---
+function fetchBestsellers() {
+    // OPTIMIZATION: Use Local Data for Zero Latency
+    // Bestsellers are critical for first impressions, so we render them instantly
+    // instead of waiting for the backend to wake up.
     const container = document.getElementById('bestseller-grid');
-    if (!container) return;
+    if (!container) return; // Exit if not on homepage
 
-    try {
-        // Fetch all products, slicing the first 4 for bestsellers
-        // In a real app, you might have a specific endpoint or flag
-        const response = await fetch(`${API_URL}/products`);
-        const json = await response.json();
-        const allProducts = json.data;
+    console.log("Rendering Bestsellers (Instant Local Mode)");
 
-        // Curate Bestsellers: Specific IDs requested by user
-        // 12: Pistachio Kunafa Bar, 9: Roasted Almond Bar, 110: Valentine's Gift Box
-        const BESTSELLER_IDS = [12, 9, 110];
+    // Curate Bestsellers: Specific IDs requested by user
+    // 12: Pistachio Kunafa Bar, 9: Roasted Almond Bar, 110: Valentine's Gift Box
+    const BESTSELLER_IDS = [12, 9, 110];
 
-        let bestsellers = allProducts.filter(p => BESTSELLER_IDS.includes(p.id));
+    // Use the global PRODUCTS_DATA from data.js
+    const sourceData = window.PRODUCTS_DATA || [];
+    let bestsellers = sourceData.filter(p => BESTSELLER_IDS.includes(p.id));
 
-        // Sort them to match the requested order
-        bestsellers.sort((a, b) => {
-            return BESTSELLER_IDS.indexOf(a.id) - BESTSELLER_IDS.indexOf(b.id);
-        });
+    // Sort them to match the requested order
+    bestsellers.sort((a, b) => {
+        return BESTSELLER_IDS.indexOf(a.id) - BESTSELLER_IDS.indexOf(b.id);
+    });
 
-        // Limit to 4 to fit the grid (if more added later)
-        const products = bestsellers.slice(0, 4);
-
-        container.innerHTML = '';
-
-        products.forEach((p, index) => {
-            const card = document.createElement('div');
-            card.className = 'product-card reveal';
-            // Add staggered delay
-            card.style.transitionDelay = `${index * 0.1}s`;
-
-            card.innerHTML = `
-                <a href="product_detail.html?id=${p.id}" style="text-decoration: none; color: inherit; display: block;">
-                    <div class="product-image">
-                        <img src="${p.image}" alt="${p.name}">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">${p.category}</div>
-                        <h3 class="product-title">${p.name}</h3>
-                        <div class="product-price">₹${p.price}</div>
-                    </div>
-                </a>
-                <div style="padding: 0 1.5rem 1.5rem;">
-                     <button class="add-btn" onclick='event.stopPropagation(); addToCart(${JSON.stringify(p)})'>Add to Cart</button>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-
-        // Re-trigger observer for new elements
-        if (typeof observer !== 'undefined') {
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        } else {
-            // Fallback if observer isn't global yet (handled in init)
-            setTimeout(() => {
-                document.querySelectorAll('#bestseller-grid .reveal').forEach(el => el.classList.add('active'));
-            }, 100);
-        }
-
-    } catch (error) {
-        console.error('Error fetching bestsellers (Using Fallback):', error);
-
-        // FALLBACK DATA: Ensure Bestsellers ALWAYS show Premium items even if offline
-        const FALLBACK_BESTSELLERS = [
+    // If local data missing for some reason, fallback to hardcoded safety net
+    if (bestsellers.length === 0) {
+        bestsellers = [
             { id: 12, name: "Pistachio Kunafa Bar", category: "Bars", price: 750, image: "images/bar_kunafa.jpg" },
             { id: 9, name: "Roasted Almond Bar", category: "Bars", price: 480, image: "images/bar_roasted_almond.jpg" },
             { id: 110, name: "Valentine's Gift Box", category: "Valentines", price: 400, image: "images/valentines_box_1.jpg?v=1" }
         ];
-
-        container.innerHTML = '';
-        FALLBACK_BESTSELLERS.forEach((p, index) => {
-            const card = document.createElement('div');
-            card.className = 'product-card reveal';
-            card.style.transitionDelay = `${index * 0.1}s`;
-            card.innerHTML = `
-                 <a href="product_detail.html?id=${p.id}" style="text-decoration: none; color: inherit; display: block;">
-                     <div class="product-image">
-                         <img src="${p.image}" alt="${p.name}" onError="this.src='https://placehold.co/600x600/3E2723/FFF?text=Choco+Delight'">
-                     </div>
-                     <div class="product-info">
-                         <div class="product-category">${p.category}</div>
-                         <h3 class="product-title">${p.name}</h3>
-                         <div class="product-price">₹${p.price}</div>
-                     </div>
-                 </a>
-                 <div style="padding: 0 1.5rem 1.5rem;">
-                      <button class="add-btn" onclick='event.stopPropagation(); addToCart(${JSON.stringify(p)})'>Add to Cart</button>
-                 </div>
-             `;
-            container.appendChild(card);
-        });
-
-        // Trigger generic reveal
-        setTimeout(() => {
-            document.querySelectorAll('#bestseller-grid .reveal').forEach(el => el.classList.add('active'));
-        }, 100);
     }
+
+    container.innerHTML = '';
+
+    bestsellers.forEach((p, index) => {
+        const card = document.createElement('div');
+        card.className = 'product-card reveal';
+        // Add staggered delay
+        card.style.transitionDelay = `${index * 0.1}s`;
+
+        card.innerHTML = `
+            <a href="product_detail.html?id=${p.id}" style="text-decoration: none; color: inherit; display: block;">
+                <div class="product-image">
+                    <img src="${p.image}" alt="${p.name}" onError="this.src='https://placehold.co/600x600/3E2723/FFF?text=Choco+Delight'">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">${p.category}</div>
+                    <h3 class="product-title">${p.name}</h3>
+                    <div class="product-price">₹${p.price}</div>
+                </div>
+            </a>
+            <div style="padding: 0 1.5rem 1.5rem;">
+                 <button class="add-btn" onclick='event.stopPropagation(); addToCart(${JSON.stringify(p)})'>Add to Cart</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+
+    // Trigger animation immediately
+    setTimeout(() => {
+        document.querySelectorAll('#bestseller-grid .reveal').forEach(el => el.classList.add('active'));
+    }, 50);
 }
 
 // Setup Filters

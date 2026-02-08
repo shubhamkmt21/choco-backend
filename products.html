@@ -408,121 +408,35 @@
             const FALLBACK_PRODUCTS = getStoredProducts();
 
             const fetchProducts = async () => {
-                setLoading(true);
+                // OPTIMIZATION: Instant Local Loading
+                // Removed network calls to ensure "perfectly smooth and fast" experience.
 
-                const getUrl = (base) => {
-                    let url = `${base}/products?category=${encodeURIComponent(filter)}`;
-                    if (searchQuery) {
-                        url += `&search=${encodeURIComponent(searchQuery)}`;
-                    }
-                    if (priceFilter) {
-                        url += `&priceRange=${encodeURIComponent(priceFilter)}`;
-                    }
-                    return url;
-                };
+                // 1. Get Base Data (Local + Admin Edits)
+                let data = getStoredProducts();
 
-                try {
-                    let response;
-                    let usedUrl;
-
-                    // STRATEGY 1: Try Relative Path (Standard for Hosted)
-                    try {
-                        const url1 = getUrl('/api');
-                        console.log("Attempt 1: Fetching from", url1);
-                        response = await fetch(url1);
-
-                        // If 404/500, throw to trigger fallback (Assume we hit Live Server not API)
-                        if (!response.ok) throw new Error(`Relative path returned ${response.status}`);
-
-                        usedUrl = url1;
-                    } catch (e1) {
-                        // STRATEGY 2: Fallback to Localhost:3000 (Standard for Local Dev / Live Server)
-                        console.warn(`Attempt 1 failed (${e1.message}), trying fallback to localhost:3000...`);
-                        const url2 = getUrl('http://localhost:3000/api');
-                        console.log("Attempt 2: Fetching from", url2);
-                        response = await fetch(url2);
-
-                        if (!response.ok) throw new Error(`Fallback failed with status ${response.status}`);
-                        usedUrl = url2;
-                    }
-
-                    const json = await response.json();
-
-                    if (json.data && Array.isArray(json.data)) {
-                        console.log(`Success! Loaded ${json.data.length} products using API: ${usedUrl}`);
-
-                        // MERGE FIX: Ensure we include local items but ALSO respect the filters
-                        let mergedProducts = [...json.data];
-                        const apiIds = new Set(json.data.map(p => p.id));
-
-                        if (FALLBACK_PRODUCTS) {
-                            FALLBACK_PRODUCTS.forEach(staticP => {
-                                // Only add if ID is missing AND it matches the current filters
-                                if (!apiIds.has(staticP.id)) {
-
-                                    // 1. Category Filter
-                                    if (filter !== 'All Products' && staticP.category !== filter) return;
-
-                                    // 2. Search Filter
-                                    if (searchQuery) {
-                                        const q = searchQuery.toLowerCase();
-                                        const match = staticP.name.toLowerCase().includes(q) ||
-                                            (staticP.description && staticP.description.toLowerCase().includes(q));
-                                        if (!match) return;
-                                    }
-
-                                    // 3. Price Filter (Simple Logic)
-                                    if (priceFilter) {
-                                        if (priceFilter === 'under-500' && staticP.price >= 500) return;
-                                        if (priceFilter === '500-1000' && (staticP.price < 500 || staticP.price > 1000)) return;
-                                        if (priceFilter === 'above-1000' && staticP.price <= 1000) return;
-                                    }
-
-                                    // If we got here, it's a match and it's missing from API
-                                    // console.log(`Merging matching static product: ${staticP.name}`);
-                                    mergedProducts.push(staticP);
-                                }
-                            });
-                        }
-
-                        setProducts(mergedProducts);
-                    } else {
-                        // If API returns valid JSON but bad data format
-                        console.warn("Invalid data format from API, using fallback.");
-                        setProducts(FALLBACK_PRODUCTS);
-                    }
-
-                } catch (error) {
-                    console.error("All fetch attempts failed. Activating Offline Mode.", error);
-                    // OFFLINE MODE: Load hardcoded products instead of showing error
-                    // Apply Client-Side Filtering since API didn't do it
-                    let offlineData = FALLBACK_PRODUCTS;
-
-                    if (filter && filter !== 'All Products') {
-                        offlineData = offlineData.filter(p => p.category === filter);
-                    }
-
-                    if (searchQuery) {
-                        const q = searchQuery.toLowerCase();
-                        offlineData = offlineData.filter(p =>
-                            p.name.toLowerCase().includes(q) ||
-                            (p.description && p.description.toLowerCase().includes(q))
-                        );
-                    }
-
-                    if (priceFilter) {
-                        if (priceFilter === 'under-500') offlineData = offlineData.filter(p => p.price < 500);
-                        if (priceFilter === '500-1000') offlineData = offlineData.filter(p => p.price >= 500 && p.price <= 1000);
-                        if (priceFilter === 'above-1000') offlineData = offlineData.filter(p => p.price > 1000);
-                    }
-
-                    setProducts(offlineData);
-
-                    // Optional: Log to console so developer knows, but user sees products
-                    console.log("Displaying cached/offline products due to connection error.");
-                } finally {
-                    setLoading(false);
+                // 2. Apply Filters Client-Side
+                if (filter && filter !== 'All Products') {
+                    // Fuzzy match for categories to handle "Drages" vs "Dragees"
+                    data = data.filter(p => p.category.includes(filter) || filter.includes(p.category));
                 }
+
+                if (searchQuery) {
+                    const q = searchQuery.toLowerCase();
+                    data = data.filter(p =>
+                        p.name.toLowerCase().includes(q) ||
+                        (p.description && p.description.toLowerCase().includes(q))
+                    );
+                }
+
+                if (priceFilter) {
+                    if (priceFilter === 'under-500') data = data.filter(p => p.price < 500);
+                    if (priceFilter === '500-1000') data = data.filter(p => p.price >= 500 && p.price <= 1000);
+                    if (priceFilter === 'above-1000') data = data.filter(p => p.price > 1000);
+                }
+
+                // 3. Update State
+                setProducts(data);
+                setLoading(false);
             };
 
             const handleAddToCart = (product) => {
