@@ -17,13 +17,7 @@ const products = [
     { id: 10, name: "Pistachio Cranberry Bar", category: "Bars", price: 550, image: "images/bar_pistachio_cranberry.jpg", description: "Tangy cranberries meet premium pistachios in white chocolate." },
     { id: 11, name: "Handcrafted Pecan Bar", category: "Bars", price: 600, image: "images/bar_pecan.jpg", description: "Buttery pecans with caramel notes in artisan chocolate." },
     { id: 12, name: "Pistachio Kunafa Bar", category: "Bars", price: 750, image: "images/bar_kunafa.jpg", description: "Viral sensation! Crunchy kunafa pastry with pistachio cream." },
-    { id: 13, name: "English Brittle", category: "Chocoblossom Special", price: 650, image: "images/english_brittle.jpg", description: "Classic crunchy caramelized sugar with embedded roasted nuts." },
-    { id: 14, name: "Chocolate Thins In Milk", category: "Chocoblossom Special", price: 550, image: "images/thins_milk.jpg", description: "Delicate, wafer-thin sheets of creamy milk chocolate that melt on the tongue." },
-    { id: 15, name: "Almond Florentine", category: "Chocoblossom Special", price: 700, image: "images/almond_florentine.jpg", description: "Crispy almond discs coated in caramel and dipped in chocolate." },
-    { id: 16, name: "Chocolate Thins In Dark", category: "Chocoblossom Special", price: 550, image: "images/thins_dark.jpg", description: "Intense 70% dark chocolate wafers for the true cocoa connoisseur." },
-    { id: 17, name: "Almond Roca", category: "Chocoblossom Special", price: 750, image: "images/almond_roca.jpg", description: "Buttercrunch toffee with almonds, covered in chocolate and almond dust." },
-    { id: 18, name: "Chocolate Coated Orange Peel", category: "Chocoblossom Special", price: 600, image: "https://images.unsplash.com/photo-1548811234-a2b16ac9892c?q=80&w=600&auto=format", description: "Zesty candied orange peels enrobed in smooth dark chocolate." },
-    { id: 19, name: "Chocolate Thins In White", category: "Chocoblossom Special", price: 550, image: "https://images.unsplash.com/photo-1614088685112-0a760b7163c8?q=80&w=600&auto=format", description: "Sweet and creamy white chocolate wafers with a hint of vanilla." }
+
 ];
 
 // In-Memory Order Storage
