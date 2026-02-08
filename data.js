@@ -2,15 +2,7 @@
 // Centralized Product Data with Ingredients
 // Used for fallback and Product Detail Page
 const PRODUCTS_DATA = [
-    {
-        id: 101,
-        name: "Classic Choco Cookie",
-        category: "Cookies",
-        price: 350,
-        image: "images/cookie1.jpg",
-        description: "Crunchy double chocolate chip cookies.",
-        ingredients: "Flour, Cocoa Powder, Chocolate Chips, Butter, Sugar, Vanilla."
-    },
+
     {
         id: 103,
         name: "Chocolate Drenched",
@@ -125,15 +117,7 @@ const PRODUCTS_DATA = [
             "images/valentines_box_3.jpg?v=1"
         ]
     },
-    {
-        id: 102,
-        name: "Roasted Almond Dragees",
-        category: "Drages",
-        price: 650,
-        image: "images/dragees1.jpg",
-        description: "Caramelized almonds coated in smooth milk chocolate.",
-        ingredients: "Roasted Almonds, Milk Chocolate, Caramel, Cocoa Powder."
-    },
+
     {
         id: 1,
         name: "Classic Almond Truffles",
