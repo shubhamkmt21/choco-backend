@@ -57,6 +57,17 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll globally */
+    width: 100%;
+}
+
+/* GLOBAL IMAGE RESET: Prevents overflow */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    /* Removes bottom spacing */
 }
 
 body {
@@ -65,6 +76,7 @@ body {
     color: var(--color-text-main);
     line-height: 1.6;
     overflow-x: hidden;
+    /* Fixes right-side gap/scroll */
 }
 
 h1,
@@ -97,6 +109,18 @@ h3 {
 p {
     margin-bottom: var(--spacing-sm);
     color: var(--color-text-muted);
+}
+
+/* Accessibility: Premium Focus Ring */
+:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 4px;
+}
+
+/* Button Active State for Tactile Feel */
+button:active,
+.btn:active {
+    transform: scale(0.96);
 }
 
 a {
@@ -457,7 +481,7 @@ header {
 /* Featured Collections */
 .collections-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-md);
 }
 
@@ -503,7 +527,8 @@ header {
 /* Products Grid */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    /* Adjusted to 240px to fit smaller screens better, potentially 2 cols on tablets */
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: var(--spacing-md);
 }
 
@@ -920,14 +945,17 @@ body {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: var(--shadow-lg);
-    min-height: 400px;
-    /* Ensure visibility */
+    /* min-height: 400px; Replaced with aspect-ratio for better responsiveness */
+    aspect-ratio: 4/3;
+    background-color: #f0f0f0;
+    /* Placeholder color */
 }
 
 .spotlight-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* position: absolute; - Not needed with aspect-ratio behavior usually, but keeping for safety if reusing styles */
     position: absolute;
     top: 0;
     left: 0;
@@ -1438,6 +1466,16 @@ img {
 @media (max-width: 768px) {
     .marquee-item {
         font-size: 0.85rem;
+    }
+
+    /* Footer Touch Targets */
+    .footer-links li {
+        margin-bottom: 0.8rem;
+    }
+
+    .footer-links a {
+        padding: 5px 0;
+        display: inline-block;
     }
 }
 
