@@ -527,9 +527,17 @@ header {
 /* Products Grid */
 .product-grid {
     display: grid;
-    /* Adjusted to 240px to fit smaller screens better, potentially 2 cols on tablets */
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    /* Desktop: Larger, premium cards */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+    .product-grid {
+        /* Mobile: Compact, 2 columns guaranteed */
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
+    }
 }
 
 .product-card {
@@ -1680,6 +1688,16 @@ img {
 
     .logo img {
         height: 40px;
+    }
+
+    /* Homepage Specific: White Toggle on Hero */
+    .home .mobile-toggle {
+        color: #fff;
+    }
+
+    /* Revert to Dark on Scroll */
+    .home header.glass-nav .mobile-toggle {
+        color: var(--color-primary);
     }
 
     /* Mega Menu Mobile Overrides */

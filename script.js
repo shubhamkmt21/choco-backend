@@ -665,7 +665,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 entry.target.classList.add('active');
             }
         });
-    }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+    }, { threshold: 0.1, rootMargin: "0px" });
 
     // Observe both old .reveal and new .liquid-reveal
     document.querySelectorAll('.reveal, .liquid-reveal').forEach(el => observer.observe(el));

@@ -96,8 +96,20 @@
             }
 
             .filters {
-                display: none;
-                /* Hide filters on mobile for now */
+                display: block;
+                /* Show filters */
+                position: relative;
+                /* Unstick */
+                top: 0;
+                margin-bottom: 2rem;
+                height: auto;
+                border: 1px solid var(--color-border);
+            }
+
+            /* Make filter list collapsible or smaller if needed, but for now just visible */
+            .filter-group {
+                border-bottom: 1px solid #eee;
+                padding-bottom: 10px;
             }
         }
     </style>
