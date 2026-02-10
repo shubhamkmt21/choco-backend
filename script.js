@@ -722,7 +722,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="choco-loader">
                 <div class="bite bite-1"></div>
                 <div class="bite bite-2"></div>
-                <div class="bite bite-4"></div>
+                <div class="bite bite-3"></div>
             </div>
         </div>
     `;

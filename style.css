@@ -167,6 +167,19 @@ img {
     z-index: 1;
 }
 
+/* Clickable Section Interaction */
+.clickable-section {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+    /* Optional: adds polish on hover */
+}
+
+.clickable-section:hover {
+    background-color: #f9f9f9;
+    /* Subtle highlight */
+}
+
 .btn-primary {
     background: var(--color-primary);
     color: var(--color-secondary);
@@ -414,15 +427,13 @@ header {
 }
 
 /* Hero Slider */
-/* Hero Slider */
 .hero-slider {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
-    /* Was -1, fixed to show above body background */
+    z-index: -1;
     overflow: hidden;
 }
 
@@ -439,11 +450,21 @@ header {
     transition: opacity 2s ease-in-out, transform 10s linear;
 }
 
+@keyframes kenBurns {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.15);
+    }
+}
+
 .hero-slide.active {
     opacity: 1;
-    transform: scale(1.1);
-    /* Subtle zoom effect (Ken Burns) */
     z-index: 1;
+    animation: kenBurns 12s linear forwards;
+    /* Smoother, continuous zoom */
 }
 
 /* Dark Overlay for Text Readability */
@@ -456,14 +477,12 @@ header {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     /* Semi-transparent black */
-    z-index: 1;
-    /* Overlay on top of slider */
+    z-index: 0;
 }
 
 .hero-content {
     position: relative;
-    z-index: 2;
-    /* Text on top of everything */
+    z-index: 1;
     /* Ensure text is above overlay and video */
     max-width: 800px;
     padding: 2rem;
