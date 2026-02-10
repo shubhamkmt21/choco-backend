@@ -9,6 +9,27 @@
     <link rel="stylesheet" href="./style.css?v=1.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Specific Styles for About Page */
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+
+            /* Ensure image takes full width */
+            .story-grid img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
         /* Accordion Styles */
         .accordion-item {
             border: 1px solid #eee;
@@ -224,10 +245,10 @@
     <!-- Main Content -->
     <section class="section">
         <div class="container">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); align-items: center;">
+            <div class="story-grid">
                 <div>
                     <img src="founder.jpg" alt="Ankita Patel - Founder of Choco Blossom"
-                        style="border-radius: 8px; box-shadow: var(--shadow-md);">
+                        style="width: 100%; border-radius: 8px; box-shadow: var(--shadow-md);">
                 </div>
                 <div>
                     <h2 style="color: var(--color-secondary);">Ahmedabad's Finest Confectionery</h2>
