@@ -295,6 +295,48 @@
                     bar is my new addiction."</p>
                 <div class="client-name">- Anjali M., Delhi</div>
             </div>
+    </section>
+
+    <!-- Real-Time Google Reviews -->
+    <section class="section google-reviews-section">
+        <div class="container">
+            <div class="reviews-header text-center">
+                <h2 style="color: #d4af37;">What Google Says</h2>
+                <div class="google-rating-overview">
+                    <span class="big-rating" style="font-size: 3rem; font-weight: bold; color: #333;">4.8</span>
+                    <div class="stars-static" style="color: #fbbc04;">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews-carousel-container" style="position: relative; margin: 2rem 0;">
+                <button class="review-nav prev" onclick="scrollReviews(-1)"
+                    style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); z-index: 10; background: #fff; border: 1px solid #ddd; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;"><i
+                        class="fas fa-chevron-left"></i></button>
+
+                <div class="reviews-carousel" id="google-reviews-container"
+                    style="display: flex; overflow-x: auto; gap: 20px; padding: 20px 0; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;">
+                    <!-- Reviews will be injected here -->
+                    <div class="loading-reviews" style="text-align: center; width: 100%;">Loading reviews...</div>
+                </div>
+
+                <button class="review-nav next" onclick="scrollReviews(1)"
+                    style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); z-index: 10; background: #fff; border: 1px solid #ddd; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;"><i
+                        class="fas fa-chevron-right"></i></button>
+            </div>
+
+            <div class="text-center" style="margin-top: 2rem;">
+                <a href="https://search.google.com/local/writereview?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4"
+                    target="_blank" class="btn btn-primary">
+                    <i class="fab fa-google"></i> Review us on Google
+                </a>
+                <div class="powered-by-google" style="margin-top: 15px; opacity: 0.6; font-size: 0.8rem;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google"
+                        style="height: 16px; vertical-align: middle;"> rating
+                </div>
+            </div>
         </div>
     </section>
 

@@ -752,4 +752,98 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         window.addEventListener('load', hideLoader);
     }
+
+    // --- Google Reviews Logic ---
+    initGoogleReviews();
 });
+
+function initGoogleReviews() {
+    const container = document.getElementById('google-reviews-container');
+    if (!container) return; // Not on homepage
+
+    // MOCK DATA - REPLACE THIS WITH API FETCH LATER
+    const mockReviews = [
+        {
+            author_name: "Priya Sharma",
+            profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjWb9j...", // Use generic if needed
+            rating: 5,
+            text: "Absolutely the best chocolates in Ahmedabad! The hampers are so elegant and the taste is divine. Highly recommend for wedding favors.",
+            relative_time_description: "2 weeks ago"
+        },
+        {
+            author_name: "Rahul Mehta",
+            profile_photo_url: null,
+            rating: 5,
+            text: "Ordered a custom box for my wife. She loved the dark chocolate truffles. Packaging was top notch. Will order again!",
+            relative_time_description: "1 month ago"
+        },
+        {
+            author_name: "Sonal Patel",
+            profile_photo_url: null,
+            rating: 4,
+            text: "Great variety of flavors. The almond rocks are my favorite. Delivery was a bit slow but worth the wait.",
+            relative_time_description: "2 months ago"
+        },
+        {
+            author_name: "Amit Desai",
+            profile_photo_url: null,
+            rating: 5,
+            text: "Visited the store recently. The aroma itself is mesmerizing. Bought the assortment box and every piece was a delight.",
+            relative_time_description: "3 days ago"
+        },
+        {
+            author_name: "Neha Gupta",
+            profile_photo_url: null,
+            rating: 5,
+            text: "Perfect for corporate gifting. We ordered 50 boxes for Diwali and our clients were very impressed. Professional service.",
+            relative_time_description: "3 months ago"
+        }
+    ];
+
+    renderReviews(mockReviews);
+}
+
+function renderReviews(reviews) {
+    const container = document.getElementById('google-reviews-container');
+    container.innerHTML = ''; // Clear loading
+
+    reviews.forEach(review => {
+        const card = document.createElement('div');
+        card.className = 'review-card';
+
+        // Handle missing photo
+        const photoUrl = review.profile_photo_url || 'https://lh3.googleusercontent.com/a/default-user=s40-c';
+
+        // Star generation
+        let starsHtml = '';
+        for (let i = 0; i < 5; i++) {
+            if (i < review.rating) {
+                starsHtml += '<i class="fas fa-star"></i>';
+            } else {
+                starsHtml += '<i class="far fa-star"></i>';
+            }
+        }
+
+        card.innerHTML = `
+            <div class="reviewer-header">
+                <img src="${photoUrl}" alt="${review.author_name}" class="reviewer-img" onerror="this.src='https://ui-avatars.com/api/?name=${review.author_name}&background=random'">
+                <div class="reviewer-info">
+                    <h4>${review.author_name}</h4>
+                    <div class="review-stars">${starsHtml}</div>
+                </div>
+            </div>
+            <div class="review-text">"${review.text}"</div>
+            <div class="review-date">${review.relative_time_description}</div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function scrollReviews(direction) {
+    const container = document.getElementById('google-reviews-container');
+    const scrollAmount = 320; // Card width + gap
+    container.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
