@@ -98,6 +98,50 @@ function updateCartMetadata() {
 window.getCart = getCart;
 window.saveCart = saveCart;
 
+// --- Helper: Fetch with Retry (For Sleeping Servers) ---
+async function fetchWithRetry(url, options, msgElement, retries = 3, backoff = 1000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const res = await fetch(url, options);
+            if (!res.ok) {
+                if (res.status >= 500) throw new Error(`Server Error: ${res.status}`);
+                return await res.json(); // Return error response from server if 4xx
+            }
+            return await res.json(); // Success
+        } catch (err) {
+            console.warn(`Attempt ${i + 1} failed: ${err.message}`);
+
+            if (i < retries - 1) {
+                if (msgElement) {
+                    msgElement.textContent = `Waking up secure server... (Attempt ${i + 1}/${retries})`;
+                    msgElement.style.color = 'orange';
+                }
+                // Wait before retrying (exponential backoff: 1s, 2s, 4s)
+                await new Promise(r => setTimeout(r, backoff * (i + 1)));
+            } else {
+                throw err; // Final failure
+            }
+        }
+    }
+}
+
+// --- Aggressive Wake-Up on Cart Interaction ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Ping server when user hovers over checkout form (Pre-emptive Wake-up)
+    const checkoutForm = document.querySelector('.checkout-form');
+    if (checkoutForm) {
+        checkoutForm.addEventListener('mouseenter', () => {
+            fetch(`${API_URL.replace('/api', '')}/`).catch(() => { });
+            console.log("Pre-emptive server wake-up sent.");
+        }, { once: true });
+    }
+
+    // Also ping if we are on cart page specifically
+    if (window.location.pathname.includes('cart.html')) {
+        fetch(`${API_URL.replace('/api', '')}/`).catch(() => { });
+    }
+});
+
 window.addToCart = function (product) {
     console.log("Adding to cart:", product); // Debug log
     const cart = getCart();
@@ -420,20 +464,20 @@ async function placeOrder() {
         // 2. Create Order on Server
 
         // Show "Connecting" message if it takes time (Render Free Tier)
-        const wakeUpTimer = setTimeout(() => {
-            msg.textContent = "Connecting to secure payment server...";
-            msg.style.color = '#333'; // Neutral color
-        }, 4000); // Wait 4 seconds before showing
-
-        const orderRes = await fetch(`${API_URL}/create-razorpay-order`, {
+        // 2. Create Order on Server with RETRY Logic (Fix for Sleeping Server)
+        const orderData = await fetchWithRetry(`${API_URL}/create-razorpay-order`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: amount, currency: "INR" })
-        });
+        }, msg);
 
-        clearTimeout(wakeUpTimer); // Clear message if fast
+        if (!orderData) {
+            throw new Error("Server failed to respond after multiple attempts.");
+        }
 
-        const orderData = await orderRes.json();
+        // clearTimeout(wakeUpTimer); // Removed: Handled by fetchWithRetry logic now
+
+        // const orderData = await orderRes.json(); // Removed: Handled above
 
         if (orderData.error) {
             console.error("Razorpay Order Error:", orderData.error);
