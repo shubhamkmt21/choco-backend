@@ -99,7 +99,7 @@ window.getCart = getCart;
 window.saveCart = saveCart;
 
 // --- Helper: Fetch with Retry (For Sleeping Servers) ---
-async function fetchWithRetry(url, options, msgElement, retries = 3, backoff = 1000) {
+async function fetchWithRetry(url, options, msgElement, retries = 6, backoff = 2500) {
     for (let i = 0; i < retries; i++) {
         try {
             const res = await fetch(url, options);
