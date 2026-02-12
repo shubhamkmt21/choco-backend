@@ -382,7 +382,13 @@ app.delete("/api/admin/orders/reset", adminAuth, (req, res) => {
 /* -------------------- STATIC FILES -------------------- */
 // Serve static frontend files from root directory (AFTER API ROUTES)
 // This ensures /api requests are handled by routes above, not looked for as files
-app.use(express.static(path.join(__dirname)));
+// Serve static frontend files from React's build directory
+app.use(express.static(path.join(__dirname, 'frontend/dist')));
+
+// Handle React Routing, return all requests to React app
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
+});
 
 const server = app.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Server successfully started on port ${PORT}`);
