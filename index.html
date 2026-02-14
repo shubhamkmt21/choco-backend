@@ -551,12 +551,19 @@
                         }
                     } else {
                         console.error('Google Places Service Status:', status);
-                        reviewsContainer.innerHTML = '<div style="text-align:center; width:100%;">Unable to load reviews (API Status: ' + status + ')</div>';
+                        // Detailed Error for User Debugging
+                        if (status === 'REQUEST_DENIED') {
+                            reviewsContainer.innerHTML = '<div style="text-align:center; color:red;">API Error: Request Denied (Check Key/Billing)</div>';
+                        } else if (status === 'ZERO_RESULTS') {
+                            reviewsContainer.innerHTML = '<div style="text-align:center;">No reviews found for this location.</div>';
+                        } else {
+                            reviewsContainer.innerHTML = `<div style="text-align:center; color:red;">Reviews Error: ${status}</div>`;
+                        }
                     }
                 });
             } else {
                 console.error("Google Maps API not loaded");
-                reviewsContainer.innerHTML = '<div style="text-align:center; width:100%;">Google Maps API failed to load.</div>';
+                reviewsContainer.innerHTML = '<div style="text-align:center; width:100%;">Map API failed to load. Check Console.</div>';
             }
 
             function startAutoScroll() {
