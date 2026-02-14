@@ -1,9 +1,20 @@
 // --- CONFIGURATION ---
-// Vercel handles API routing automatically via vercel.json
-const API_URL = '/api';
+// AFTER DEPLOYING TO RENDER, PASTE YOUR URL HERE:
+const PRODUCTION_API_URL = "https://choco-backend-k0jv.onrender.com/api";
 
-// --- Auto-Wake Server (REMOVED) ---
-// Vercel Serverless functions wake up instantly. No ping needed.
+// API Base URL - Auto-detects environment
+const API_URL = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:')
+    ? 'http://127.0.0.1:3000/api'
+    : PRODUCTION_API_URL;
+
+// --- Auto-Wake Server (Free Tier Optimization) ---
+// Pings server immediately on load so it wakes up while user browses
+(function wakeUpServer() {
+    const rootUrl = API_URL.replace('/api', ''); // Convert .../api to root /
+    fetch(rootUrl + '/')
+        .then(() => console.log("Server woke up!"))
+        .catch(err => console.log("Wake-up ping sent"));
+})();
 
 // --- WhatsApp Floating Button Injection ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -88,9 +99,31 @@ window.getCart = getCart;
 window.saveCart = saveCart;
 
 // --- Helper: Fetch with Retry (For Sleeping Servers) ---
-// --- Helper: Fetch (Simplified) ---
-// Vercel/Localhost is instant, so no retry logic needed.
-const fetchWithRetry = null;
+async function fetchWithRetry(url, options, msgElement, retries = 6, backoff = 2500) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const res = await fetch(url, options);
+            if (!res.ok) {
+                if (res.status >= 500) throw new Error(`Server Error: ${res.status}`);
+                return await res.json(); // Return error response from server if 4xx
+            }
+            return await res.json(); // Success
+        } catch (err) {
+            console.warn(`Attempt ${i + 1} failed: ${err.message}`);
+
+            if (i < retries - 1) {
+                if (msgElement) {
+                    msgElement.textContent = `Waking up secure server... (Attempt ${i + 1}/${retries})`;
+                    msgElement.style.color = 'orange';
+                }
+                // Wait before retrying (exponential backoff: 1s, 2s, 4s)
+                await new Promise(r => setTimeout(r, backoff * (i + 1)));
+            } else {
+                throw err; // Final failure
+            }
+        }
+    }
+}
 
 // --- Aggressive Wake-Up on Cart Interaction ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -425,24 +458,32 @@ async function placeOrder() {
     msg.style.color = 'blue';
 
     try {
+        // 1. Convert to integer format for Razorpay (in paise)
         const amount = Math.round(total);
 
-        // Vercel Serverless Call (Action: create_order)
-        const orderRes = await fetch(`${API_URL}/razorpay`, {
+        // 2. Create Order on Server
+
+        // Show "Connecting" message if it takes time (Render Free Tier)
+        // 2. Create Order on Server with RETRY Logic (Fix for Sleeping Server)
+        const orderData = await fetchWithRetry(`${API_URL}/create-razorpay-order`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: 'create_order',
-                amount: amount,
-                currency: "INR"
-            })
-        });
+            body: JSON.stringify({ amount: amount, currency: "INR" })
+        }, msg);
 
-        const orderData = await orderRes.json();
+        if (!orderData) {
+            throw new Error("Server failed to respond after multiple attempts.");
+        }
+
+        // clearTimeout(wakeUpTimer); // Removed: Handled by fetchWithRetry logic now
+
+        // const orderData = await orderRes.json(); // Removed: Handled above
 
         if (orderData.error) {
             console.error("Razorpay Order Error:", orderData.error);
+            // Fallback for demo if server fails
             alert("Payment gateway error. Proceeding with COD/Standard for testing.");
+            // ... (original fallback logic could go here)
             return;
         }
 
@@ -460,14 +501,11 @@ async function placeOrder() {
                 console.log("Payment Successful!", response);
                 msg.textContent = "Payment successful! Verifying...";
 
-                // 4. Verify Payment on Server (Action: verify_payment)
-                const verifyRes = await fetch(`${API_URL}/razorpay`, {
+                // 4. Verify Payment on Server
+                const verifyRes = await fetch(`${API_URL}/verify-payment`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'verify_payment',
-                        ...response
-                    })
+                    body: JSON.stringify(response)
                 });
 
                 const verifyData = await verifyRes.json();

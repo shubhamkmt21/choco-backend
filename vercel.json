@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "rewrites": [
+        {
+            "source": "/api/products",
+            "destination": "/api/products.js"
+        },
+        {
+            "source": "/api/create-razorpay-order",
+            "destination": "/api/razorpay.js"
+        },
+        {
+            "source": "/api/verify-payment",
+            "destination": "/api/razorpay.js"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ],
+    "functions": {
+        "api/*.js": {
+            "maxDuration": 10
+        }
+    }
+}
