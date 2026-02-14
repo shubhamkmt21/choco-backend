@@ -2009,3 +2009,252 @@ textarea.form-control {
     font-weight: 600;
     letter-spacing: 0.5px;
 }
+
+
+/* Reset only inside testimonial section */
+#testimonials * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#testimonials {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    padding: 80px 20px;
+}
+
+/* Container */
+#testimonials .testimonial-section {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+#testimonials .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+#testimonials .section-tag {
+    color: #b76e79;
+    /* premium chocolate rose tone */
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+#testimonials .section-title {
+    font-size: 44px;
+    font-weight: 700;
+    color: #3e2723;
+    /* dark chocolate */
+    line-height: 1.2;
+}
+
+/* Business Info Card */
+#testimonials .business-info {
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+/* Refresh indicator */
+#testimonials .refresh-indicator {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #4CAF50;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#testimonials .refresh-indicator.show {
+    opacity: 1;
+}
+
+/* Logo */
+#testimonials .business-logo {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f3f3f3;
+}
+
+/* Business text */
+#testimonials .business-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #3e2723;
+    margin-bottom: 4px;
+}
+
+#testimonials .business-category {
+    font-size: 14px;
+    color: #8d6e63;
+    margin-bottom: 8px;
+}
+
+/* Rating */
+#testimonials .rating-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+#testimonials .rating-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #d2691e;
+}
+
+#testimonials .rating-stars {
+    color: #ffc107;
+    font-size: 20px;
+    letter-spacing: 2px;
+}
+
+/* Review Button */
+#testimonials .review-btn {
+    background: #3e2723;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+#testimonials .review-btn:hover {
+    background: #5d4037;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(62, 39, 35, 0.25);
+}
+
+/* Carousel */
+#testimonials .carousel-container {
+    position: relative;
+    padding: 0 60px;
+}
+
+#testimonials .reviews-wrapper {
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+#testimonials .reviews-track {
+    display: flex;
+    gap: 25px;
+    transition: transform 0.5s ease;
+}
+
+/* Review Card */
+#testimonials .review-card {
+    min-width: 300px;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+#testimonials .review-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+}
+
+#testimonials .reviewer-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #3e2723;
+}
+
+#testimonials .review-stars {
+    color: #ffc107;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+#testimonials .review-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Navigation buttons */
+#testimonials .nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    color: #3e2723;
+    transition: all 0.3s ease;
+}
+
+#testimonials .nav-button:hover {
+    background: #3e2723;
+    color: white;
+    transform: translateY(-50%) scale(1.1);
+}
+
+#testimonials .nav-button.prev {
+    left: 0;
+}
+
+#testimonials .nav-button.next {
+    right: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    #testimonials {
+        padding: 60px 15px;
+    }
+
+    #testimonials .section-title {
+        font-size: 32px;
+    }
+
+    #testimonials .carousel-container {
+        padding: 0 20px;
+    }
+
+    #testimonials .review-card {
+        min-width: 300px;
+    }
+
+    #testimonials .business-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+}

@@ -438,6 +438,62 @@ app.post("/api/verify-payment", (req, res) => {
     }
 });
 
+// --- Reviews API (Localhost) ---
+app.get('/api/reviews', (req, res) => {
+    // Shared review data (Keep in sync with api/reviews.js & reviews.js)
+    const reviews = [
+        {
+            name: "Jamaliya G",
+            initials: "JG",
+            rating: 5,
+            text: "Chocoblossom supported our Diwali gifting requirements with great efficiency. The chocolates were well received by our clients and the service team was responsive throughout.",
+            source: "Google Review",
+            time: "Verified Customer"
+        },
+        {
+            name: "Ashok Ab",
+            initials: "AA",
+            rating: 5,
+            text: "Our Diwali corporate gifting was executed smoothly by Chocoblossom. Timely delivery, consistent product quality, and well-designed festive boxes made it a reliable choice.",
+            source: "Google Review",
+            time: "Verified Customer"
+        },
+        {
+            name: "Gaurang J",
+            initials: "GJ",
+            rating: 5,
+            text: "During Diwali, we selected Chocoblossom for corporate gifting and the overall experience was very positive. The chocolates were of premium quality and the festive packaging reflected elegance and professionalism.",
+            source: "Google Review",
+            time: "Verified Customer"
+        },
+        {
+            name: "Muskaan Gupta",
+            initials: "MG",
+            rating: 5,
+            text: "Very nice experience decorating cake.",
+            source: "Google Review",
+            time: "Verified Customer"
+        },
+        {
+            name: "Patel Sir",
+            initials: "PS",
+            rating: 5,
+            text: "I'm buy all type of Chocolate and Ice-Cream. All Item Are Very Hygienic And Very Testy. And Specially Gelato Is Very Superb Item. And Im Visited to factory unit, the unit is very hygienic.",
+            source: "Local Guide",
+            time: "Verified Customer"
+        },
+        {
+            name: "Aagam Shah",
+            initials: "AS",
+            rating: 5,
+            text: "I recently ordered from ChocoBlossom, and I was genuinely impressed! Their gift box looked beautiful, felt premium, and made the perfect present. The attention to detail and the elegant packaging really stood out.",
+            source: "Local Guide",
+            time: "Verified Customer"
+        }
+    ];
+    res.json(reviews);
+});
+
 /* -------------------- ADMIN AUTH -------------------- */
 const adminAuth = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -524,3 +580,142 @@ process.on("uncaughtException", (err) => {
 process.on("unhandledRejection", (err) => {
     console.error("UNHANDLED REJECTION:", err);
 });
+
+
+// Code of Google Reviews API (for future use, not currently integrated)
+
+require("dotenv").config();
+const axios = require("axios");
+
+// Simple cache to avoid hitting Google API too frequently
+let cachedReviews = null;
+let cacheTime = null;
+const CACHE_DURATION = 2 * 60 * 1000; // 2 minutes - refreshes faster to show new reviews
+
+app.get("/reviews", async (req, res) => {
+    try {
+        // Check if we have cached data and it's still valid
+        if (cachedReviews && cacheTime && (Date.now() - cacheTime < CACHE_DURATION)) {
+            console.log("✅ Returning cached reviews");
+            return res.json(cachedReviews);
+        }
+
+        // Validate environment variables
+        if (!process.env.API_KEY || !process.env.PLACE_ID) {
+            return res.status(500).json({
+                error: "Server configuration error",
+                details: "API_KEY or PLACE_ID not configured properly"
+            });
+        }
+
+        const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${process.env.PLACE_ID}&fields=name,rating,user_ratings_total,reviews,photos&key=${process.env.API_KEY}`;
+
+        console.log("📡 Fetching reviews from Google Places API...");
+        const response = await axios.get(url);
+
+        console.log("GOOGLE RESPONSE STATUS:", response.data.status);
+
+        if (response.data.status !== "OK") {
+            console.error("❌ Google API Error:", response.data.status);
+            console.error("Error Message:", response.data.error_message);
+
+            // Return user-friendly error with instructions
+            return res.status(400).json({
+                error: "Google API Configuration Error",
+                status: response.data.status,
+                message: response.data.error_message,
+                instructions: {
+                    step1: "Go to Google Cloud Console: https://console.cloud.google.com/",
+                    step2: "Select your project or create a new one",
+                    step3: "Enable 'Places API' in the API Library",
+                    step4: "Make sure your API key has 'Places API' enabled",
+                    step5: "Check API key restrictions and add your IP/domain if needed"
+                },
+                details: response.data
+            });
+        }
+
+        // Cache the successful response
+        cachedReviews = response.data.result;
+        cacheTime = Date.now();
+
+        console.log(`✅ Successfully fetched ${response.data.result.reviews?.length || 0} reviews`);
+        res.json(response.data.result);
+
+    } catch (error) {
+        console.error("❌ SERVER ERROR:", error.message);
+
+        res.status(500).json({
+            error: "Server failed to fetch reviews",
+            details: error.response?.data || error.message
+        });
+    }
+});
+
+// Health check endpoint
+app.get("/health", (req, res) => {
+    res.json({
+        status: "OK",
+        timestamp: new Date().toISOString(),
+        cache: {
+            hasCache: !!cachedReviews,
+            cacheAge: cacheTime ? Math.floor((Date.now() - cacheTime) / 1000) : null
+        }
+    });
+});
+
+// Clear cache endpoint (for testing)
+app.get("/clear-cache", (req, res) => {
+    cachedReviews = null;
+    cacheTime = null;
+    console.log("🧹 Cache cleared");
+    res.json({ message: "Cache cleared successfully" });
+});
+
+// Demo endpoint with sample data
+app.get("/demo", (req, res) => {
+    res.json({
+        name: "Chocoblossom",
+        rating: 4.4,
+        user_ratings_total: 127,
+        reviews: [
+            {
+                author_name: "Parth Mistry",
+                rating: 5,
+                text: "Excellent chocolates! The quality is outstanding and the presentation is beautiful. Highly recommend for gifts.",
+                time: 1612137600,
+                profile_photo_url: ""
+            },
+            {
+                author_name: "Wg Cdr Varghese",
+                rating: 5,
+                text: "Highly professional people to interact and trade with. Given professional help in choosing the right decorative lights. Had a great experience.",
+                time: 1609459200,
+                profile_photo_url: ""
+            },
+            {
+                author_name: "Bhavin Patel",
+                rating: 5,
+                text: "Lighting Manufacturing Unit, Customized Lights, Decorative Lights, UV Boxes Aluminium LED Light Profile, Lighting accessories, Panel lights. Best quality products.",
+                time: 1580515200,
+                profile_photo_url: ""
+            },
+            {
+                author_name: "Sneha Shah",
+                rating: 5,
+                text: "Amazing chocolate collection! Perfect for special occasions. The taste is incredible and packaging is premium.",
+                time: 1643673600,
+                profile_photo_url: ""
+            },
+            {
+                author_name: "Rajesh Kumar",
+                rating: 4,
+                text: "Great experience shopping here. Wide variety of chocolates and very helpful staff. Definitely coming back!",
+                time: 1638316800,
+                profile_photo_url: ""
+            }
+        ]
+    });
+});
+
+// Note: server already started earlier in the file (avoid duplicate listen)

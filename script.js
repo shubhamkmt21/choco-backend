@@ -88,9 +88,37 @@ window.getCart = getCart;
 window.saveCart = saveCart;
 
 // --- Helper: Fetch with Retry (For Sleeping Servers) ---
+<<<<<<< HEAD
 // --- Helper: Fetch (Simplified) ---
 // Vercel/Localhost is instant, so no retry logic needed.
 const fetchWithRetry = null;
+=======
+async function fetchWithRetry(url, options, msgElement, retries = 3, backoff = 1000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const res = await fetch(url, options);
+            if (!res.ok) {
+                if (res.status >= 500) throw new Error(`Server Error: ${res.status}`);
+                return await res.json(); // Return error response from server if 4xx
+            }
+            return await res.json(); // Success
+        } catch (err) {
+            console.warn(`Attempt ${i + 1} failed: ${err.message}`);
+
+            if (i < retries - 1) {
+                if (msgElement) {
+                    msgElement.textContent = `Waking up secure server... (Attempt ${i + 1}/${retries})`;
+                    msgElement.style.color = 'orange';
+                }
+                // Wait before retrying (exponential backoff: 1s, 2s, 4s)
+                await new Promise(r => setTimeout(r, backoff * (i + 1)));
+            } else {
+                throw err; // Final failure
+            }
+        }
+    }
+}
+>>>>>>> b8dd3af (Products Are Now Visible on All Pages)
 
 // --- Aggressive Wake-Up on Cart Interaction ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -233,6 +261,12 @@ async function fetchProducts() {
         container.innerHTML = '<p class="text-center">Failed to load products. Is the server running?</p>';
     }
 }
+
+// --- Helper: Find Product by ID (Used by product_detail.html) ---
+window.findProductById = function (id) {
+    if (!window.PRODUCTS_DATA) return null;
+    return window.PRODUCTS_DATA.find(p => p.id == id);
+};
 
 // --- Homepage Bestsellers Logic ---
 // --- Homepage Bestsellers Logic ---

@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+// Admin Dashboard Logic
+
+// --- Authentication ---
+function adminLogin() {
+    const pass = document.getElementById('admin-pass').value;
+    const errorMsg = document.getElementById('login-error');
+
+    // Simple PIN for demo
+    if (pass === '1234' || pass === 'admin') {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        initDashboard();
+    } else {
+        errorMsg.textContent = 'Invalid Password';
+        errorMsg.style.display = 'block';
+=======
 const API_URL = (window.location.port === '3000')
     ? '/api'
     : 'http://localhost:3000/api';
@@ -58,10 +75,20 @@ function adminLogin() {
         location.reload();
     } else {
         document.getElementById('login-error').innerText = 'Invalid Password';
+>>>>>>> b8dd3af (Products Are Now Visible on All Pages)
     }
 }
 
 function logout() {
+<<<<<<< HEAD
+    document.getElementById('login-overlay').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('admin-pass').value = '';
+}
+
+// --- Navigation ---
+function switchView(viewName) {
+=======
     localStorage.removeItem('adminToken');
     location.reload();
 }
@@ -608,23 +635,26 @@ async function exportToPDF() {
 
 // --- VIEW NAVIGATION ---
 function switchView(view) {
+>>>>>>> b8dd3af (Products Are Now Visible on All Pages)
     // Hide all views
     document.getElementById('view-orders').style.display = 'none';
     document.getElementById('view-products').style.display = 'none';
 
+<<<<<<< HEAD
+    // Deactivate nav buttons
+=======
     // Deactivate navs
+>>>>>>> b8dd3af (Products Are Now Visible on All Pages)
     document.getElementById('nav-orders').classList.remove('active');
     document.getElementById('nav-products').classList.remove('active');
 
     // Show selected
-    document.getElementById(`view-${view}`).style.display = 'block';
-    document.getElementById(`nav-${view}`).classList.add('active');
-
-    if (view === 'products') {
-        loadProducts();
-    }
+<<<<<<< HEAD
+    document.getElementById(`view-${viewName}`).style.display = 'block';
+    document.getElementById(`nav-${viewName}`).classList.add('active');
 }
 
+<<<<<<<< HEAD:legacy_backup/admin.js
 // --- PRODUCT MANAGEMENT ---
 // --- PRODUCT MANAGEMENT ---
 async function loadProducts() {
@@ -678,6 +708,149 @@ function editProduct(product) {
     // Simplified: We now pass the full object in the onclick.
     if (product) {
         openProductModal(product);
+========
+// --- Dashboard Initialization ---
+function initDashboard() {
+    renderProducts();
+    // Orders would typically fetch from API. For now, we can show stats based on local or dummy data.
+    updateStats();
+}
+
+
+// --- Product Management ---
+function renderProducts() {
+    const tbody = document.getElementById('products-list');
+    if (!tbody) return;
+
+    const products = window.PRODUCTS_DATA || [];
+    tbody.innerHTML = '';
+
+    if (products.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No products found.</td></tr>';
+        return;
+    }
+
+    products.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><img src="${p.image}" class="prod-thumb" onerror="this.src='https://placehold.co/50x50?text=No+Img'"></td>
+            <td style="font-weight: 600;">${p.name}</td>
+            <td><span class="status-badge" style="background:#EEE; color:#333;">${p.category}</span></td>
+            <td>₹${p.price}</td>
+            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #666;">${p.description || '-'}</td>
+            <td>
+                <button class="action-btn" onclick="alert('Edit feature coming soon!')"><i class="fas fa-edit"></i> Edit</button>
+                <button class="action-btn btn-delete" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
+=======
+    document.getElementById(`view-${view}`).style.display = 'block';
+    document.getElementById(`nav-${view}`).classList.add('active');
+
+    if (view === 'products') {
+        loadProducts();
+    }
+}
+
+// --- PRODUCT MANAGEMENT ---
+// Get products from LocalStorage OR revert to default Data.js
+function getProductList() {
+    let products = [];
+    const stored = localStorage.getItem('adminProducts');
+    if (stored) {
+        products = JSON.parse(stored);
+    }
+
+    // Merge logic: If we have static data (window.PRODUCTS_DATA), make sure they are in the list
+    if (window.PRODUCTS_DATA) {
+        // 1. Add missing items
+        const currentIds = new Set(products.map(p => p.id));
+        const newItems = window.PRODUCTS_DATA.filter(p => !currentIds.has(p.id));
+
+        if (newItems.length > 0) {
+            console.log(`Merging ${newItems.length} new products from static data into Admin`);
+            products = [...products, ...newItems];
+            // Update storage immediately so they persist
+            localStorage.setItem('adminProducts', JSON.stringify(products));
+        }
+
+        // 2. Sync Images (Fix for "No Image" issue if static path update)
+        let changed = false;
+        window.PRODUCTS_DATA.forEach(staticP => {
+            const match = products.find(p => p.id == staticP.id);
+            if (match && match.image !== staticP.image) {
+                console.log(`Syncing image for ${match.name}`);
+                match.image = staticP.image;
+                changed = true;
+            }
+        });
+
+        if (changed) {
+            localStorage.setItem('adminProducts', JSON.stringify(products));
+        }
+    }
+
+    // Fallback: If still empty and no static data
+    if (products.length === 0 && window.PRODUCTS_DATA) {
+        products = window.PRODUCTS_DATA;
+        localStorage.setItem('adminProducts', JSON.stringify(products));
+    }
+
+    return products;
+}
+
+function loadProducts() {
+    const products = getProductList();
+    const tbody = document.getElementById('products-list');
+    tbody.innerHTML = '';
+
+    products.forEach(p => {
+        const tr = document.createElement('tr');
+        // Escape content to prevent HTML injection
+        const safeName = p.name.replace(/"/g, '&quot;');
+
+        tr.innerHTML = `
+            <td><img src="${p.image}" class="prod-thumb" onerror="this.src='https://placehold.co/50x50?text=No+Img'"></td>
+            <td style="font-weight: 600;">${p.name}</td>
+            <td><span class="status-badge status-shipped" style="background: #f0f0f0; color: #555;">${p.category}</span></td>
+            <td>₹${p.price}</td>
+            <td style="font-size: 0.85rem; color: #777; max-width: 250px;">${p.description.substring(0, 50)}...</td>
+            <td>
+                <div style="display: flex; gap: 5px;">
+                    <button class="action-btn" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn btn-delete" onclick="deleteProduct(${p.id})"><i class="fas fa-trash-alt"></i></button>
+                </div>
+>>>>>>> b8dd3af (Products Are Now Visible on All Pages)
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+<<<<<<< HEAD
+function deleteProduct(id) {
+    if (confirm('Are you sure you want to delete this product? (This is a local simulation)')) {
+        // In a real app, this would call API
+        // For local demo, we just remove from DOM to show interaction
+        const products = window.PRODUCTS_DATA || [];
+        const idx = products.findIndex(p => p.id === id);
+        if (idx !== -1) {
+            products.splice(idx, 1);
+            renderProducts();
+        }
+>>>>>>>> b8dd3af (Products Are Now Visible on All Pages):admin.js
+    }
+}
+
+// --- Modal Logic ---
+function openProductModal() {
+    document.getElementById('product-modal').style.display = 'flex';
+=======
+function editProduct(id) {
+    const products = getProductList();
+    const product = products.find(p => p.id == id);
+    if (product) {
+        openProductModal(product);
+    } else {
+        alert("Product not found!");
     }
 }
 
@@ -720,13 +893,19 @@ function openProductModal(product = null) {
             reader.readAsDataURL(file);
         }
     };
+>>>>>>> b8dd3af (Products Are Now Visible on All Pages)
 }
 
 function closeProductModal() {
     document.getElementById('product-modal').style.display = 'none';
 }
 
+<<<<<<< HEAD
+<<<<<<<< HEAD:legacy_backup/admin.js
 async function saveProduct() {
+=======
+function saveProduct() {
+>>>>>>> b8dd3af (Products Are Now Visible on All Pages)
     const id = document.getElementById('p-id').value;
     const name = document.getElementById('p-name').value;
     const category = document.getElementById('p-category').value;
@@ -734,6 +913,7 @@ async function saveProduct() {
     const image = document.getElementById('p-image').value || 'https://placehold.co/600x600?text=No+Image';
     const description = document.getElementById('p-desc').value;
 
+<<<<<<< HEAD
     if (!name || isNaN(price)) {
         alert("Name and valid Price are required!");
         return;
@@ -781,4 +961,65 @@ async function deleteProduct(id) {
         console.error("Delete Error:", e);
         alert("Server connection failed.");
     }
+========
+function saveProduct() {
+    // Basic implementation to close modal
+    alert("Product saving is simulated in this local view.");
+    closeProductModal();
 }
+
+
+// --- Stats (Dummy) ---
+function updateStats() {
+    document.getElementById('total-orders').textContent = '12';
+    document.getElementById('total-revenue').textContent = '₹8,450';
+    document.getElementById('pending-orders').textContent = '3';
+>>>>>>>> b8dd3af (Products Are Now Visible on All Pages):admin.js
+}
+
+// --- Exports ---
+window.adminLogin = adminLogin;
+window.logout = logout;
+window.switchView = switchView;
+window.openProductModal = openProductModal;
+window.closeProductModal = closeProductModal;
+window.saveProduct = saveProduct;
+window.deleteProduct = deleteProduct;
+window.exportToCSV = () => alert("Export feature coming soon!");
+window.resetDatabase = () => alert("Reset feature coming soon!");
+=======
+    if (!name || !price) {
+        alert("Name and Price are required!");
+        return;
+    }
+
+    let products = getProductList();
+
+    if (id) {
+        // Edit Mode
+        const index = products.findIndex(p => p.id == id);
+        if (index !== -1) {
+            products[index] = { ...products[index], name, category, price, image, description };
+        }
+    } else {
+        // Add Mode
+        const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+        products.push({ id: newId, name, category, price, image, description });
+    }
+
+    localStorage.setItem('adminProducts', JSON.stringify(products));
+    closeProductModal();
+    loadProducts();
+    alert("Product Saved!");
+}
+
+function deleteProduct(id) {
+    if (!confirm("Delete this product?")) return;
+
+    let products = getProductList();
+    products = products.filter(p => p.id != id);
+
+    localStorage.setItem('adminProducts', JSON.stringify(products));
+    loadProducts();
+}
+>>>>>>> b8dd3af (Products Are Now Visible on All Pages)
