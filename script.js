@@ -1,6 +1,9 @@
 // --- CONFIGURATION ---
-// Vercel handles API routing automatically via vercel.json
-const API_URL = '/api';
+// Hostinger PHP Managers
+const PRODUCTS_API = 'products_manager.php';
+const ORDERS_API = 'order_manager.php';
+const RAZORPAY_API = 'razorpay_manager.php';
+const REVIEWS_API = 'reviews_manager.php';
 
 // --- Auto-Wake Server (REMOVED) ---
 // Vercel Serverless functions wake up instantly. No ping needed.
@@ -64,14 +67,22 @@ function getCart() {
         if (!stored) return [];
         return JSON.parse(stored) || [];
     } catch (e) {
-        console.error("Cart data corrupted, resetting.", e);
-        localStorage.removeItem('chocoCart');
+        console.error("Cart data corrupted or localStorage disabled, resetting.", e);
+        try {
+            localStorage.removeItem('chocoCart');
+        } catch (ex) {
+            console.warn("localStorage is not accessible:", ex);
+        }
         return [];
     }
 }
 
 function saveCart(cart) {
-    localStorage.setItem('chocoCart', JSON.stringify(cart));
+    try {
+        localStorage.setItem('chocoCart', JSON.stringify(cart));
+    } catch (e) {
+        console.warn("Failed to save cart to localStorage:", e);
+    }
     updateCartMetadata(); // Updates header count
 }
 
@@ -88,12 +99,11 @@ window.getCart = getCart;
 window.saveCart = saveCart;
 
 // --- Helper: Fetch with Retry (For Sleeping Servers) ---
-<<<<<<< HEAD
-// --- Helper: Fetch (Simplified) ---
-// Vercel/Localhost is instant, so no retry logic needed.
+// --- Helper: Fetch with Retry (For Sleeping Servers) ---
+// Vercel Serverless functions wake up instantly. No ping needed.
 const fetchWithRetry = null;
-=======
-async function fetchWithRetry(url, options, msgElement, retries = 3, backoff = 1000) {
+
+async function fetchWithRetryLegacy(url, options, msgElement, retries = 3, backoff = 1000) {
     for (let i = 0; i < retries; i++) {
         try {
             const res = await fetch(url, options);
@@ -118,7 +128,7 @@ async function fetchWithRetry(url, options, msgElement, retries = 3, backoff = 1
         }
     }
 }
->>>>>>> b8dd3af (Products Are Now Visible on All Pages)
+
 
 // --- Aggressive Wake-Up on Cart Interaction ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -133,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Also ping if we are on cart page specifically
     if (window.location.pathname.includes('cart.html')) {
-        fetch(`${API_URL.replace('/api', '')}/`).catch(() => { });
+        fetch('products_manager.php?action=ping').catch(() => { });
     }
 });
 
@@ -222,7 +232,7 @@ async function fetchProducts() {
     const activeCategory = document.querySelector('#category-filters li.active')?.dataset.value || 'All Products';
     const activePrice = document.querySelector('#price-filters li.active')?.dataset.value || '';
 
-    let url = `${API_URL}/products?category=${encodeURIComponent(activeCategory)}`;
+    let url = `${PRODUCTS_API}?category=${encodeURIComponent(activeCategory)}&t=${Date.now()}`;
     if (activePrice) {
         url += `&priceRange=${encodeURIComponent(activePrice)}`;
     }
@@ -263,25 +273,34 @@ async function fetchProducts() {
 }
 
 // --- Helper: Find Product by ID (Used by product_detail.html) ---
-window.findProductById = function (id) {
-    if (!window.PRODUCTS_DATA) return null;
-    return window.PRODUCTS_DATA.find(p => p.id == id);
+window.findProductById = async function (id) {
+    await syncProductsWithServer();
+    return (window.PRODUCTS_DATA || []).find(p => p.id == id);
 };
 
-// --- Homepage Bestsellers Logic ---
-// --- Homepage Bestsellers Logic ---
-function fetchBestsellers() {
-    // OPTIMIZATION: Use Local Data for Zero Latency
-    // Bestsellers are critical for first impressions, so we render them instantly
-    // instead of waiting for the backend to wake up.
-    const container = document.getElementById('bestseller-grid');
-    if (!container) return; // Exit if not on homepage
+// Central Product Sync
+async function syncProductsWithServer() {
+    try {
+        const res = await fetch(`${PRODUCTS_API}?t=${Date.now()}`);
+        const json = await res.json();
+        window.PRODUCTS_DATA = json.data;
+        console.log("✅ Live Products Synced from Server");
+    } catch (e) {
+        console.error("Failed to sync live products", e);
+    }
+}
 
-    console.log("Rendering Bestsellers (Instant Local Mode)");
+// --- Homepage Bestsellers Logic ---
+async function fetchBestsellers() {
+    const container = document.getElementById('bestseller-grid');
+    if (!container) return; 
+
+    // Sync with server to get latest changes
+    await syncProductsWithServer();
 
     // Curate Bestsellers: Specific IDs requested by user
-    // 12: Pistachio Kunafa Bar, 9: Roasted Almond Bar, 110: Valentine's Gift Box
-    const BESTSELLER_IDS = [12, 9, 110];
+    // 12: Kunafa, 107: Almond Rocca, 103: Choco Drenched, 6: Candied Orange
+    const BESTSELLER_IDS = [12, 107, 103, 6];
 
     // Use the global PRODUCTS_DATA from data.js
     const sourceData = window.PRODUCTS_DATA || [];
@@ -296,8 +315,9 @@ function fetchBestsellers() {
     if (bestsellers.length === 0) {
         bestsellers = [
             { id: 12, name: "Pistachio Kunafa Bar", category: "Bars", price: 750, image: "images/bar_kunafa.jpg" },
-            { id: 9, name: "Roasted Almond Bar", category: "Bars", price: 480, image: "images/bar_roasted_almond.jpg" },
-            { id: 110, name: "Valentine's Gift Box", category: "Valentines", price: 400, image: "images/valentines_box_1.jpg?v=1" }
+            { id: 107, name: "Almond Rocca", category: "Rocca", price: 650, image: "images/almond_rocca_3.png?v=2" },
+            { id: 103, name: "Chocolate Drenched", category: "Cookies", price: 550, image: "images/chocolate_drenched_new.jpg?v=2" },
+            { id: 6, name: "Candied Orange Bar", category: "Bars", price: 450, image: "images/bar_candied_orange.jpg" }
         ];
     }
 
@@ -461,8 +481,8 @@ async function placeOrder() {
     try {
         const amount = Math.round(total);
 
-        // Vercel Serverless Call (Action: create_order)
-        const orderRes = await fetch(`${API_URL}/razorpay`, {
+        // Hostinger PHP Manager Call (Action: create_order)
+        const orderRes = await fetch(RAZORPAY_API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -495,7 +515,7 @@ async function placeOrder() {
                 msg.textContent = "Payment successful! Verifying...";
 
                 // 4. Verify Payment on Server (Action: verify_payment)
-                const verifyRes = await fetch(`${API_URL}/razorpay`, {
+                const verifyRes = await fetch(RAZORPAY_API, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -513,10 +533,10 @@ async function placeOrder() {
                         customer_email: email,
                         customer_phone: phone, // Added for WhatsApp
                         shipping_address: {
-                            street: "Razorpay Checkout",
-                            city: "India",
+                            street: document.getElementById('cust-street')?.value || "",
+                            city: document.getElementById('cust-city')?.value || "",
                             pincode: document.getElementById('pincode-input')?.value || "000000",
-                            state: "NA"
+                            state: document.getElementById('cust-state')?.value || ""
                         },
                         total_amount: total,
                         items: cart,
@@ -562,8 +582,8 @@ async function placeOrder() {
     } catch (err) {
         console.error(err);
         if (err.message.includes("Failed to fetch")) {
-            msg.textContent = "Error: Backend unreachable. Check Render Server.";
-            alert("Connection Failed! 🛑\n\nYour Backend Server (Render) appears to be DOWN or SLEEPING.\nPlease go to your Render Dashboard and check the status.");
+            msg.textContent = "Error: Backend unreachable. Check Server.";
+            alert("Connection Failed! 🛑\n\nYour Backend Server appears to be DOWN.");
         } else {
             msg.textContent = 'Payment Error: ' + (err.message || 'Connection failed');
         }
@@ -573,7 +593,7 @@ async function placeOrder() {
 
 async function saveOrderToDB(orderData, msg) {
     try {
-        const res = await fetch(`${API_URL}/orders`, {
+        const res = await fetch(ORDERS_API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData)
@@ -583,7 +603,11 @@ async function saveOrderToDB(orderData, msg) {
         if (result.message === 'success') {
             msg.textContent = `Order placed successfully! Order ID: ${result.orderId}`;
             msg.style.color = 'green';
-            localStorage.removeItem('chocoCart');
+            try {
+                localStorage.removeItem('chocoCart');
+            } catch (ex) {
+                console.warn("Could not clear cart from localStorage:", ex);
+            }
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 2000);

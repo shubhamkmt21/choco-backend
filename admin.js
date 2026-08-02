@@ -259,7 +259,7 @@ async function loadOrders() {
                         addr = JSON.parse(addr);
                     }
                     if (addr && typeof addr === 'object') {
-                        addressHtml = `<small>${addr.street || ''}, ${addr.city || ''} - ${addr.pincode || ''}</small>`;
+                        addressHtml = `<small>${addr.street || ''}, ${addr.city || ''}, ${addr.state || ''} - ${addr.pincode || ''}</small>`;
                     } else {
                         addressHtml = `<small>${addr}</small>`;
                     }
