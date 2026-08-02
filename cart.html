@@ -947,6 +947,20 @@
                                 v-model="address.phone" placeholder="9876543210"></div>
                     </div>
 
+                    <div class="form-grid" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <label>Delivery Preference</label>
+                            <select id="cust-delivery-type" v-model="address.delivery_type" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; font-size: 0.9rem; background: white;">
+                                <option value="regular">Regular Delivery</option>
+                                <option value="specific">Specific Date Delivery</option>
+                            </select>
+                        </div>
+                        <div class="form-group" v-if="address.delivery_type === 'specific'">
+                            <label>Select Delivery Date</label>
+                            <input type="date" id="cust-delivery-date" v-model="address.delivery_date" :min="minDeliveryDate" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; font-size: 0.9rem;">
+                        </div>
+                    </div>
+
                     <div class="form-group" style="margin-top: 1rem;">
                         <label>Greetings / Gift Message (Optional)</label>
                         <textarea id="cust-greetings" v-model="address.greetings" rows="2" placeholder="Write a sweet message to include with your gift..." style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; font-size: 0.9rem; resize: vertical;"></textarea>
@@ -1128,7 +1142,7 @@
     </footer>
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="script.js?v=1.5"></script>
+    <script src="script.js?v=1.6"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
@@ -1141,7 +1155,7 @@
                     cart: [],
                     shipping: 0,
                     address: {
-                        name: '', email: '', street: '', city: '', state: '', pincode: '', phone: '', greetings: ''
+                        name: '', email: '', street: '', city: '', state: '', pincode: '', phone: '', greetings: '', delivery_type: 'regular', delivery_date: ''
                     },
                     deliveryDetails: null,
                     isValidPin: false,
@@ -1191,6 +1205,13 @@
                 },
                 total() {
                     return this.subtotal + this.shipping;
+                },
+                minDeliveryDate() {
+                    const today = new Date();
+                    const yyyy = today.getFullYear();
+                    const mm = String(today.getMonth() + 1).padStart(2, '0');
+                    const dd = String(today.getDate()).padStart(2, '0');
+                    return `${yyyy}-${mm}-${dd}`;
                 }
             },
             mounted() {
@@ -1269,6 +1290,10 @@
                 proceedToPay() {
                     if (!this.address.name || !this.address.email || !this.address.street || !this.address.pincode || !this.address.phone || !this.address.state || !this.address.city) {
                         alert("Please fill in all address details.");
+                        return;
+                    }
+                    if (this.address.delivery_type === 'specific' && !this.address.delivery_date) {
+                        alert("Please select a delivery date.");
                         return;
                     }
                     if (!/^\d{10}$/.test(this.address.phone)) {

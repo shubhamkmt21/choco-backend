@@ -282,10 +282,23 @@ async function loadOrders() {
                 ${o.transaction_id ? `<div style="font-size: 0.7rem; color: #888;">${o.transaction_id}</div>` : ''}
             `;
             
+            // Format Delivery Preference
+            let deliveryPrefHtml = "";
+            if (o.delivery_type === 'specific' && o.delivery_date) {
+                // Formatting delivery date nicely
+                const delivDate = new Date(o.delivery_date).toLocaleDateString();
+                deliveryPrefHtml = `<div style="margin-top: 5px; font-size: 0.72rem; color: #b71c1c; font-weight: 600; background: #ffebee; padding: 2px 5px; border-radius: 4px; display: inline-block;">📅 Specific: ${delivDate}</div>`;
+            } else {
+                deliveryPrefHtml = `<div style="margin-top: 5px; font-size: 0.72rem; color: #555; background: #f5f5f5; padding: 2px 5px; border-radius: 4px; display: inline-block;">⚡ Regular</div>`;
+            }
+
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td style="font-weight: 700;">#${o.id}</td>
-                <td>${date}</td>
+                <td>
+                    <div>${date}</div>
+                    ${deliveryPrefHtml}
+                </td>
                 <td>
                     <div style="font-weight: 600;">${o.customer_name}</div>
                     <div style="font-size: 0.75rem; color: #777;">${o.customer_email}</div>
@@ -356,7 +369,7 @@ async function exportToCSV() {
         }
 
         // CSV Headers associated with Excel columns
-        const headers = ["Order ID", "Date", "Customer Name", "Customer Phone", "Customer Email", "Items Summary", "Total Amount (INR)", "Payment Method", "Payment Status", "Transaction ID", "Status", "Shipping Address", "Greetings"];
+        const headers = ["Order ID", "Date", "Customer Name", "Customer Phone", "Customer Email", "Items Summary", "Total Amount (INR)", "Payment Method", "Payment Status", "Transaction ID", "Status", "Shipping Address", "Greetings", "Delivery Preference", "Delivery Date"];
 
         // Map Data to CSV Rows
         const rows = orders.map(order => {
@@ -415,7 +428,9 @@ async function exportToCSV() {
                 escape(order.transaction_id),
                 escape(order.status),
                 escape(addrStr),
-                escape(order.greetings || "")
+                escape(order.greetings || ""),
+                escape(order.delivery_type || "regular"),
+                escape(order.delivery_date || "")
             ].join(",");
         });
 

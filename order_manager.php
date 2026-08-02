@@ -271,6 +271,8 @@ switch ($method) {
             "customer_email" => $input['customer_email'] ?? '',
             "shipping_address" => $input['shipping_address'] ?? [],
             "greetings" => $input['greetings'] ?? '',
+            "delivery_type" => $input['delivery_type'] ?? 'regular',
+            "delivery_date" => $input['delivery_date'] ?? '',
             "total_amount" => $input['total_amount'],
             "items" => $input['items'],
             "payment_status" => $input['payment_status'] ?? 'Pending',

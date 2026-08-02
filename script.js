@@ -540,6 +540,8 @@ async function placeOrder() {
                             state: document.getElementById('cust-state')?.value || ""
                         },
                         greetings: document.getElementById('cust-greetings')?.value || "",
+                        delivery_type: document.getElementById('cust-delivery-type')?.value || "regular",
+                        delivery_date: document.getElementById('cust-delivery-date')?.value || "",
                         total_amount: total,
                         items: cart,
                         payment_method: "Razorpay",
