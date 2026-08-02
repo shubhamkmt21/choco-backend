@@ -273,6 +273,7 @@ async function loadOrders() {
             tbody.appendChild(tr);
         });
     } catch (e) {
+        console.error("Error loading orders:", e);
         tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error loading orders.</td></tr>';
     }
 }
