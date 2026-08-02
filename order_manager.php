@@ -270,6 +270,7 @@ switch ($method) {
             "customer_phone" => $input['customer_phone'] ?? '',
             "customer_email" => $input['customer_email'] ?? '',
             "shipping_address" => $input['shipping_address'] ?? [],
+            "greetings" => $input['greetings'] ?? '',
             "total_amount" => $input['total_amount'],
             "items" => $input['items'],
             "payment_status" => $input['payment_status'] ?? 'Pending',

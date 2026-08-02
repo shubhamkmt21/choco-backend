@@ -285,6 +285,7 @@ async function loadOrders() {
                     <div style="font-weight: 600;">${o.customer_name}</div>
                     <div style="font-size: 0.75rem; color: #777;">${o.customer_email}</div>
                     ${o.customer_phone ? `<div style="font-size: 0.75rem; color: #777;">${o.customer_phone}</div>` : ''}
+                    ${o.greetings ? `<div style="margin-top: 5px; padding: 4px 6px; background: #fff3e0; border-left: 3px solid #ff9800; font-size: 0.75rem; border-radius: 2px; max-width: 200px; line-height: 1.2;"><strong>Greeting:</strong> "${o.greetings}"</div>` : ''}
                 </td>
                 <td style="font-size: 0.85rem; max-width: 250px;">${items}</td>
                 <td style="font-weight: 700;">₹${o.total_amount}</td>

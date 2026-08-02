@@ -538,6 +538,7 @@ async function placeOrder() {
                             pincode: document.getElementById('pincode-input')?.value || "000000",
                             state: document.getElementById('cust-state')?.value || ""
                         },
+                        greetings: document.getElementById('cust-greetings')?.value || "",
                         total_amount: total,
                         items: cart,
                         payment_method: "Razorpay",
