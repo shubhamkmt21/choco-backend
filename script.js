@@ -473,7 +473,8 @@ async function placeOrder() {
     }
 
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const total = subtotal + currentShipping;
+    const shipping = subtotal > 2500 ? 0 : 99;
+    const total = subtotal + shipping;
 
     msg.textContent = "Processing payment...";
     msg.style.color = 'blue';
