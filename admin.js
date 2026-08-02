@@ -339,4 +339,104 @@ async function resetDatabase() {
     } catch (e) { alert("Reset failed."); }
 }
 
+async function exportToCSV() {
+    try {
+        const res = await fetch(ORDERS_API, {
+            headers: { 'Authorization': AUTH_TOKEN }
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch orders for export");
+
+        const json = await res.json();
+        const orders = json.data || [];
+
+        if (orders.length === 0) {
+            alert("No orders to export!");
+            return;
+        }
+
+        // CSV Headers associated with Excel columns
+        const headers = ["Order ID", "Date", "Customer Name", "Customer Phone", "Customer Email", "Items Summary", "Total Amount (INR)", "Payment Method", "Payment Status", "Transaction ID", "Status", "Shipping Address", "Greetings"];
+
+        // Map Data to CSV Rows
+        const rows = orders.map(order => {
+            // Flatten Items
+            let itemsStr = "";
+            try {
+                let itemsArray = [];
+                if (typeof order.items === 'string') {
+                    itemsArray = JSON.parse(order.items || '[]');
+                } else if (Array.isArray(order.items)) {
+                    itemsArray = order.items;
+                }
+                itemsStr = itemsArray.map(i => `${i.name} x${i.quantity}`).join(' | ');
+            } catch (e) {
+                itemsStr = "Error";
+            }
+
+            // Flatten Address
+            let addrStr = "";
+            try {
+                if (order.shipping_address) {
+                    let addr = order.shipping_address;
+                    if (typeof addr === 'string') {
+                        addr = JSON.parse(addr);
+                    }
+                    if (addr && typeof addr === 'object') {
+                        addrStr = `${addr.street || ''}, ${addr.city || ''}, ${addr.state || ''} - ${addr.pincode || ''}`;
+                    } else {
+                        addrStr = String(addr);
+                    }
+                }
+            } catch (e) {
+                addrStr = "N/A";
+            }
+
+            // Escape commas/quotes/newlines for CSV
+            const escape = (text) => {
+                if (text === null || text === undefined) return "";
+                const str = String(text);
+                if (str.includes(",") || str.includes("\n") || str.includes('"')) {
+                    return `"${str.replace(/"/g, '""')}"`;
+                }
+                return str;
+            };
+
+            return [
+                order.id,
+                new Date(order.created_at).toLocaleDateString(),
+                escape(order.customer_name),
+                escape(order.customer_phone),
+                escape(order.customer_email),
+                escape(itemsStr),
+                order.total_amount,
+                escape(order.payment_method),
+                escape(order.payment_status),
+                escape(order.transaction_id),
+                escape(order.status),
+                escape(addrStr),
+                escape(order.greetings || "")
+            ].join(",");
+        });
+
+        // Combine Header and Rows
+        const csvContent = [headers.join(","), ...rows].join("\n");
+
+        // Create Blob and Download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `choco_orders_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    } catch (e) {
+        console.error("Export Error:", e);
+        alert("Failed to export data.");
+    }
+}
+
 window.onload = checkAuth;
