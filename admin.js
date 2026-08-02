@@ -226,7 +226,7 @@ async function deleteProduct(id) {
 
 async function loadOrders() {
     const tbody = document.getElementById('orders-list');
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading orders...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;">Loading orders...</td></tr>';
 
     try {
         const res = await fetch(ORDERS_API, {
@@ -249,6 +249,33 @@ async function loadOrders() {
                 itemsArray = o.items;
             }
             const items = itemsArray.map(i => `${i.name} (x${i.quantity})`).join(', ');
+
+            // Parse Shipping Address
+            let addressHtml = 'N/A';
+            try {
+                if (o.shipping_address) {
+                    let addr = o.shipping_address;
+                    if (typeof addr === 'string') {
+                        addr = JSON.parse(addr);
+                    }
+                    if (addr && typeof addr === 'object') {
+                        addressHtml = `<small>${addr.street || ''}, ${addr.city || ''} - ${addr.pincode || ''}</small>`;
+                    } else {
+                        addressHtml = `<small>${addr}</small>`;
+                    }
+                }
+            } catch (e) {
+                addressHtml = '<small>Invalid Format</small>';
+            }
+
+            // Payment HTML
+            const paymentMethod = (o.payment_method || 'N/A').toUpperCase();
+            const paymentStatus = o.payment_status || 'Pending';
+            const paymentHtml = `
+                <div><strong>${paymentMethod}</strong></div>
+                <div style="font-size: 0.75rem; color: ${paymentStatus === 'Paid' ? '#2e7d32' : '#f57c00'}; font-weight: 600;">${paymentStatus}</div>
+                ${o.transaction_id ? `<div style="font-size: 0.7rem; color: #888;">${o.transaction_id}</div>` : ''}
+            `;
             
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -257,9 +284,12 @@ async function loadOrders() {
                 <td>
                     <div style="font-weight: 600;">${o.customer_name}</div>
                     <div style="font-size: 0.75rem; color: #777;">${o.customer_email}</div>
+                    ${o.customer_phone ? `<div style="font-size: 0.75rem; color: #777;">${o.customer_phone}</div>` : ''}
                 </td>
                 <td style="font-size: 0.85rem; max-width: 250px;">${items}</td>
                 <td style="font-weight: 700;">₹${o.total_amount}</td>
+                <td style="font-size: 0.85rem; max-width: 200px;">${addressHtml}</td>
+                <td>${paymentHtml}</td>
                 <td><span class="status-badge status-${o.status}">${o.status}</span></td>
                 <td>
                     <select onchange="updateOrderStatus(${o.id}, this.value)" style="padding: 4px; border-radius: 4px; border: 1px solid #ddd;">
@@ -274,7 +304,7 @@ async function loadOrders() {
         });
     } catch (e) {
         console.error("Error loading orders:", e);
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error loading orders.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:red;">Error loading orders.</td></tr>';
     }
 }
 
