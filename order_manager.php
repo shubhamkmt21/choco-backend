@@ -54,7 +54,8 @@ function sendWhatsapp($phone, $name) {
 function sendEmail($email, $name, $order) {
     if (empty($email)) return false;
 
-    $subject = "Order Confirmed! Your Choco Blossom Sweet Treats are on the way 🍫✨";
+    $orderId = $order['id'];
+    $subject = "Tax Invoice for Order #$orderId - Choco Blossom 🍫";
     
     // Parse address
     $addr = $order['shipping_address'] ?? [];
@@ -75,30 +76,45 @@ function sendEmail($email, $name, $order) {
     }
     
     $itemsHtml = "";
+    $subtotal = 0;
     if (is_array($items)) {
         foreach ($items as $item) {
             $itemName = htmlspecialchars($item['name']);
             $itemQty = (int)$item['quantity'];
-            $itemPrice = number_format((float)$item['price'], 2);
-            $itemTotal = number_format((float)($item['price'] * $itemQty), 2);
+            $itemPrice = (float)$item['price'];
+            $itemTotal = $itemPrice * $itemQty;
+            $subtotal += $itemTotal;
+            
+            $formattedPrice = number_format($itemPrice, 2);
+            $formattedTotal = number_format($itemTotal, 2);
+            
             $itemsHtml .= "
                 <tr>
                     <td style='padding: 10px; border-bottom: 1px solid #eee;'>$itemName</td>
                     <td style='padding: 10px; border-bottom: 1px solid #eee; text-align: center;'>$itemQty</td>
-                    <td style='padding: 10px; border-bottom: 1px solid #eee; text-align: right;'>₹$itemPrice</td>
-                    <td style='padding: 10px; border-bottom: 1px solid #eee; text-align: right;'>₹$itemTotal</td>
+                    <td style='padding: 10px; border-bottom: 1px solid #eee; text-align: right;'>₹$formattedPrice</td>
+                    <td style='padding: 10px; border-bottom: 1px solid #eee; text-align: right;'>₹$formattedTotal</td>
                 </tr>
             ";
         }
     }
 
-    $orderId = $order['id'];
-    $totalAmount = number_format((float)$order['total_amount'], 2);
+    $totalAmountVal = (float)$order['total_amount'];
+    $shippingCharge = $totalAmountVal - $subtotal;
+    if ($shippingCharge < 0) $shippingCharge = 0;
+
+    $formattedSubtotal = number_format($subtotal, 2);
+    $formattedShipping = number_format($shippingCharge, 2);
+    $formattedTotal = number_format($totalAmountVal, 2);
+
+    $paymentMethod = htmlspecialchars(strtoupper($order['payment_method'] ?? 'Razorpay'));
+    $paymentStatus = htmlspecialchars($order['payment_status'] ?? 'Paid');
+    $transactionId = htmlspecialchars($order['transaction_id'] ?? 'N/A');
 
     $message = "
     <html>
     <head>
-        <title>Order Confirmation</title>
+        <title>Order Tax Invoice</title>
         <meta charset='utf-8'>
     </head>
     <body style=\"font-family: 'Segoe UI', Arial, sans-serif; background-color: #faf6f0; color: #2D1B18; margin: 0; padding: 20px;\">
@@ -106,48 +122,70 @@ function sendEmail($email, $name, $order) {
             <!-- Header -->
             <div style='background-color: #5D4037; padding: 30px; text-align: center; color: #ffffff;'>
                 <h1 style='margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px;'>Choco Blossom</h1>
-                <p style='margin: 5px 0 0 0; font-size: 14px; color: #d7ccc8;'>Thank you for your order!</p>
+                <p style='margin: 5px 0 0 0; font-size: 14px; color: #d7ccc8;'>TAX INVOICE / RECEIPT</p>
             </div>
             <!-- Body -->
             <div style='padding: 30px;'>
                 <p style='font-size: 16px; line-height: 1.6; margin-top: 0;'>Dear <strong>" . htmlspecialchars($name) . "</strong>,</p>
-                <p style='font-size: 14px; line-height: 1.6;'>We are absolutely thrilled to let you know that your order has been successfully placed! Our chocolatiers are already starting to prepare your treats with care and passion. ✨</p>
+                <p style='font-size: 14px; line-height: 1.6;'>Thank you for shopping with Choco Blossom. Your order has been successfully placed. Please find your official purchase invoice details below:</p>
                 
-                <!-- Order summary box -->
-                <div style='background: #faf6f0; border-radius: 8px; padding: 15px; margin: 20px 0; border-left: 4px solid #5D4037;'>
-                    <p style='margin: 0 0 8px 0; font-size: 14px;'><strong>Order ID:</strong> #$orderId</p>
-                    <p style='margin: 0 0 8px 0; font-size: 14px;'><strong>Date:</strong> " . date('d M Y, h:i A') . "</p>
-                    <p style='margin: 0; font-size: 14px;'><strong>Shipping Address:</strong> " . htmlspecialchars($addressStr) . "</p>
-                </div>
+                <!-- Invoice Details Grid -->
+                <table style='width: 100%; font-size: 13px; margin: 20px 0; border-collapse: collapse;'>
+                    <tr>
+                        <td style='vertical-align: top; width: 50%; padding-right: 10px;'>
+                            <h4 style='margin: 0 0 5px 0; color: #5D4037;'>Billed To:</h4>
+                            <strong>" . htmlspecialchars($name) . "</strong><br>
+                            Email: " . htmlspecialchars($email) . "<br>
+                            Phone: " . htmlspecialchars($order['customer_phone'] ?? '') . "<br>
+                            Address: " . htmlspecialchars($addressStr) . "
+                        </td>
+                        <td style='vertical-align: top; width: 50%; padding-left: 10px; border-left: 1px solid #eee;'>
+                            <h4 style='margin: 0 0 5px 0; color: #5D4037;'>Invoice Details:</h4>
+                            <strong>Invoice No:</strong> #CB-INV-$orderId<br>
+                            <strong>Date:</strong> " . date('d M Y, h:i A') . "<br>
+                            <strong>Payment Method:</strong> $paymentMethod<br>
+                            <strong>Payment Status:</strong> $paymentStatus<br>
+                            <strong>Txn ID:</strong> $transactionId
+                        </td>
+                    </tr>
+                </table>
 
                 <!-- Items Table -->
-                <h3 style='color: #5D4037; border-bottom: 2px solid #5D4037; padding-bottom: 5px; margin-top: 25px;'>Order Items</h3>
-                <table style='width: 100%; border-collapse: collapse; font-size: 14px;'>
+                <h3 style='color: #5D4037; border-bottom: 2px solid #5D4037; padding-bottom: 5px; margin-top: 25px; font-size: 15px;'>Invoice Summary</h3>
+                <table style='width: 100%; border-collapse: collapse; font-size: 13px;'>
                     <thead>
                         <tr style='background: #f5ece1; color: #5D4037;'>
-                            <th style='padding: 10px; text-align: left;'>Item</th>
+                            <th style='padding: 10px; text-align: left;'>Item Description</th>
                             <th style='padding: 10px; text-align: center; width: 50px;'>Qty</th>
-                            <th style='padding: 10px; text-align: right; width: 80px;'>Price</th>
+                            <th style='padding: 10px; text-align: right; width: 80px;'>Unit Price</th>
                             <th style='padding: 10px; text-align: right; width: 90px;'>Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         $itemsHtml
                         <tr>
-                            <td colspan='3' style='padding: 15px 10px 10px 10px; text-align: right; font-weight: bold;'>Grand Total:</td>
-                            <td style='padding: 15px 10px 10px 10px; text-align: right; font-weight: bold; font-size: 16px; color: #5D4037;'>₹$totalAmount</td>
+                            <td colspan='3' style='padding: 10px 10px 5px 10px; text-align: right; font-weight: bold; color: #555;'>Subtotal:</td>
+                            <td style='padding: 10px 10px 5px 10px; text-align: right; color: #555;'>₹$formattedSubtotal</td>
+                        </tr>
+                        <tr>
+                            <td colspan='3' style='padding: 5px 10px 5px 10px; text-align: right; font-weight: bold; color: #555;'>Shipping & Handling:</td>
+                            <td style='padding: 5px 10px 5px 10px; text-align: right; color: #555;'>₹$formattedShipping</td>
+                        </tr>
+                        <tr style='border-top: 1px solid #ddd;'>
+                            <td colspan='3' style='padding: 15px 10px 10px 10px; text-align: right; font-weight: bold; font-size: 14px;'>Grand Total Paid:</td>
+                            <td style='padding: 15px 10px 10px 10px; text-align: right; font-weight: bold; font-size: 16px; color: #5D4037;'>₹$formattedTotal</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <p style='font-size: 14px; line-height: 1.6; margin-top: 30px;'>Once your order is dispatched, you will receive a tracking link to follow your sweet package on its way.</p>
+                <p style='font-size: 14px; line-height: 1.6; margin-top: 30px;'>Our chocolatiers are preparing your order. You will receive a shipment notification once it's on the way!</p>
                 
-                <p style='font-size: 14px; line-height: 1.6; margin-bottom: 0;'>If you have any questions, please reach out to us at <a href='mailto:chocoblossom12@gmail.com' style='color: #5D4037; text-decoration: underline;'>chocoblossom12@gmail.com</a>.</p>
+                <p style='font-size: 13px; line-height: 1.6; color: #666;'>For support or queries, email us at <a href='mailto:chocoblossom12@gmail.com' style='color: #5D4037; text-decoration: underline;'>chocoblossom12@gmail.com</a>.</p>
             </div>
             <!-- Footer -->
             <div style='background-color: #faf6f0; text-align: center; padding: 20px; font-size: 12px; color: #777; border-top: 1px solid #e7d8c9;'>
                 <p style='margin: 0;'>&copy; " . date('Y') . " Choco Blossom India. All rights reserved.</p>
-                <p style='margin: 5px 0 0 0;'>Crafting premium artisanal chocolates with love 🍫❤️</p>
+                <p style='margin: 5px 0 0 0;'>Thank you for choosing Choco Blossom 🍫❤️</p>
             </div>
         </div>
     </body>
