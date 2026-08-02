@@ -164,6 +164,82 @@ function sendEmail($email, $name, $order) {
     return mail($email, $subject, $message, $headers);
 }
 
+function sendOrderStatusEmail($email, $name, $orderId, $status) {
+    if (empty($email)) return false;
+
+    $statusTitle = ucfirst($status);
+    $subject = "Order #$orderId Status Update: $statusTitle 🍫";
+
+    // Friendly messages based on status
+    $statusDescription = "";
+    switch (strtolower($status)) {
+        case 'processing':
+            $statusDescription = "Our chocolatiers are currently crafting your premium chocolates with care. They will be ready to ship very soon! 🍫✨";
+            break;
+        case 'shipped':
+            $statusDescription = "Exciting news! Your sweet package is now on the way and has been handed over to our delivery partner. 🚚💨";
+            break;
+        case 'delivered':
+            $statusDescription = "Yay! Your delicious chocolates have been successfully delivered. We hope they bring a smile to your face! We'd love to hear your feedback. 🍫❤️";
+            break;
+        case 'pending':
+        default:
+            $statusDescription = "Your order status has been set to Pending. We are verifying details and will begin preparation shortly.";
+            break;
+    }
+
+    $message = "
+    <html>
+    <head>
+        <title>Order Status Update</title>
+        <meta charset='utf-8'>
+    </head>
+    <body style=\"font-family: 'Segoe UI', Arial, sans-serif; background-color: #faf6f0; color: #2D1B18; margin: 0; padding: 20px;\">
+        <div style='max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e7d8c9; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03);'>
+            <!-- Header -->
+            <div style='background-color: #5D4037; padding: 30px; text-align: center; color: #ffffff;'>
+                <h1 style='margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px;'>Choco Blossom</h1>
+                <p style='margin: 5px 0 0 0; font-size: 14px; color: #d7ccc8;'>Order Status Update</p>
+            </div>
+            <!-- Body -->
+            <div style='padding: 30px;'>
+                <p style='font-size: 16px; line-height: 1.6; margin-top: 0;'>Dear <strong>" . htmlspecialchars($name) . "</strong>,</p>
+                <p style='font-size: 14px; line-height: 1.6;'>We are writing to let you know that the status of your order <strong>#$orderId</strong> has been updated.</p>
+                
+                <!-- Status Badge -->
+                <div style='text-align: center; margin: 25px 0;'>
+                    <span style='background-color: #f5ece1; color: #5D4037; font-size: 18px; font-weight: bold; padding: 10px 25px; border-radius: 50px; border: 1px dashed #5D4037; display: inline-block; text-transform: uppercase; letter-spacing: 1px;'>
+                        $statusTitle
+                    </span>
+                </div>
+
+                <!-- Status details description -->
+                <div style='background: #faf6f0; border-radius: 8px; padding: 20px; text-align: center; line-height: 1.6; font-size: 14px; border: 1px solid #e7d8c9;'>
+                    $statusDescription
+                </div>
+
+                <p style='font-size: 14px; line-height: 1.6; margin-top: 30px;'>If you have any questions or concerns regarding this update, please don't hesitate to reach out to us at <a href='mailto:chocoblossom12@gmail.com' style='color: #5D4037; text-decoration: underline;'>chocoblossom12@gmail.com</a>.</p>
+            </div>
+            <!-- Footer -->
+            <div style='background-color: #faf6f0; text-align: center; padding: 20px; font-size: 12px; color: #777; border-top: 1px solid #e7d8c9;'>
+                <p style='margin: 0;'>&copy; " . date('Y') . " Choco Blossom India. All rights reserved.</p>
+                <p style='margin: 5px 0 0 0;'>Crafting premium artisanal chocolates with love 🍫❤️</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    ";
+
+    // Set headers
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= 'From: Choco Blossom <orders@chocoblossomindia.com>' . "\r\n";
+    $headers .= 'Reply-To: chocoblossom12@gmail.com' . "\r\n";
+    $headers .= 'X-Mailer: PHP/' . phpversion();
+
+    return mail($email, $subject, $message, $headers);
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
 
@@ -228,16 +304,21 @@ switch ($method) {
         $input = json_decode(file_get_contents('php://input'), true);
         $orders = getOrders($file);
         $found = false;
+        $updatedOrder = null;
 
         foreach ($orders as &$o) {
             if ($o['id'] === $id) {
                 $o['status'] = $input['status'];
                 $found = true;
+                $updatedOrder = $o;
                 break;
             }
         }
 
         if ($found && saveOrders($file, $orders)) {
+            if ($updatedOrder && !empty($updatedOrder['customer_email'])) {
+                sendOrderStatusEmail($updatedOrder['customer_email'], $updatedOrder['customer_name'], $updatedOrder['id'], $updatedOrder['status']);
+            }
             echo json_encode(["message" => "success"]);
         } else {
             http_response_code(404);
