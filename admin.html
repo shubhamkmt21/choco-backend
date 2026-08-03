@@ -327,7 +327,7 @@
             padding: 1rem 1.5rem;
             border-bottom: 1px solid #F0F0F0;
             font-size: 0.95rem;
-            vertical-align: top;
+            vertical-align: middle;
         }
 
         .orders-table tr:last-child td {
@@ -352,17 +352,7 @@
             color: #B76E00;
         }
 
-        .status-processing {
-            background: #E8F0FE;
-            color: #1A73E8;
-        }
-
         .status-shipped {
-            background: #F3E8FF;
-            color: #7E22CE;
-        }
-
-        .status-delivered {
             background: #E6F4EA;
             color: #137333;
         }
@@ -482,18 +472,14 @@
             <h2 style="font-size: 1.5rem; color: #2D1B18; margin-bottom: 0.5rem;">Admin Portal</h2>
             <p style="color: #7F8C8D; margin-bottom: 1rem; font-size: 0.9rem;">Secure access for store management</p>
             <input type="password" id="admin-pass" placeholder="Enter PIN or Password"
-                style="width: 100%; padding: 1rem; margin: 1.5rem 0 1rem; font-size: 1.1rem; border: 1px solid #ddd; border-radius: 8px; background: #fff; text-align: center; letter-spacing: 2px;">
+                style="width: 100%; padding: 1rem; margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1.1rem; border: 1px solid #ddd; border-radius: 8px; background: #fff; text-align: center; letter-spacing: 2px;">
             
-            <!-- Captcha Container -->
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem; justify-content: center; width: 100%;">
-                <canvas id="captcha-canvas" width="140" height="45" onclick="generateCaptcha()" title="Click to refresh captcha" style="border: 1px solid #ddd; border-radius: 6px; background: #fdfaf7; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03); cursor: pointer;"></canvas>
-                <button type="button" onclick="generateCaptcha()" style="background: none; border: none; color: #5D4037; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; padding: 5px;" title="Refresh Captcha">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
+            <!-- Captcha block -->
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: center; margin-bottom: 1rem; width: 100%;">
+                <span id="captcha-code" style="font-weight: bold; background: #faf6f0; padding: 0.6rem 1rem; border-radius: 6px; letter-spacing: 4px; font-size: 1.1rem; user-select: none; font-style: italic; color: #5D4037; border: 1px dashed #5D4037; font-family: monospace;"></span>
+                <button type="button" style="background: none; border: none; color: #5D4037; cursor: pointer; padding: 5px; font-size: 1rem;" onclick="generateCaptcha()"><i class="fas fa-sync-alt"></i></button>
             </div>
-            
-            <input type="text" id="captcha-input" placeholder="Verify Captcha Code"
-                style="width: 100%; padding: 0.8rem; margin-bottom: 1.5rem; font-size: 1rem; border: 1px solid #ddd; border-radius: 8px; background: #fff; text-align: center; text-transform: uppercase;">
+            <input type="text" id="captcha-input" placeholder="Enter Captcha Code" style="width: 100%; padding: 0.8rem; margin-bottom: 1.5rem; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-size: 1rem; background: #fff; text-transform: uppercase;">
 
             <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="adminLogin()">
                 Access Dashboard <i class="fas fa-arrow-right"></i>
@@ -748,7 +734,7 @@
     </div>
 
     <script src="data.js"></script>
-    <script src="admin.js?v=1.1.0"></script>
+    <script src="admin.js?v=1.0.9"></script>
 </body>
 
 </html>
