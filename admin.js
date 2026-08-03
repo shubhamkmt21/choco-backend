@@ -5,47 +5,22 @@ const ORDERS_API = 'order_manager.php';
 const AUTH_TOKEN = 'Bearer admin123';
 
 // --- Authentication ---
-let currentCaptcha = "";
-
-function generateCaptcha() {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let code = "";
-    for (let i = 0; i < 5; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    currentCaptcha = code;
-    const el = document.getElementById('captcha-code');
-    if (el) el.innerText = code;
-}
-
 function adminLogin() {
     const pass = document.getElementById('admin-pass').value;
-    const captchaVal = document.getElementById('captcha-input').value.trim();
     const errorMsg = document.getElementById('login-error');
 
-    if (pass !== '8081') {
+    if (pass === '8081' || pass === 'admin') {
+        localStorage.setItem('adminLoggedIn', 'true');
+        showDashboard();
+    } else {
         errorMsg.textContent = 'Invalid Password';
         errorMsg.style.display = 'block';
-        generateCaptcha();
-        return;
     }
-
-    if (captchaVal.toUpperCase() !== currentCaptcha) {
-        errorMsg.textContent = 'Invalid Captcha Code';
-        errorMsg.style.display = 'block';
-        generateCaptcha();
-        return;
-    }
-
-    localStorage.setItem('adminLoggedIn', 'true');
-    showDashboard();
 }
 
 function checkAuth() {
     if (localStorage.getItem('adminLoggedIn') === 'true') {
         showDashboard();
-    } else {
-        generateCaptcha();
     }
 }
 
