@@ -472,7 +472,19 @@
             <h2 style="font-size: 1.5rem; color: #2D1B18; margin-bottom: 0.5rem;">Admin Portal</h2>
             <p style="color: #7F8C8D; margin-bottom: 1rem; font-size: 0.9rem;">Secure access for store management</p>
             <input type="password" id="admin-pass" placeholder="Enter PIN or Password"
-                style="width: 100%; padding: 1rem; margin: 1.5rem 0; font-size: 1.1rem; border: 1px solid #ddd; border-radius: 8px; background: #fff; text-align: center; letter-spacing: 2px;">
+                style="width: 100%; padding: 1rem; margin: 1.5rem 0 1rem; font-size: 1.1rem; border: 1px solid #ddd; border-radius: 8px; background: #fff; text-align: center; letter-spacing: 2px;">
+            
+            <!-- Captcha Container -->
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem; justify-content: center; width: 100%;">
+                <canvas id="captcha-canvas" width="140" height="45" onclick="generateCaptcha()" title="Click to refresh captcha" style="border: 1px solid #ddd; border-radius: 6px; background: #fdfaf7; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03); cursor: pointer;"></canvas>
+                <button type="button" onclick="generateCaptcha()" style="background: none; border: none; color: #5D4037; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; padding: 5px;" title="Refresh Captcha">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+            
+            <input type="text" id="captcha-input" placeholder="Verify Captcha Code"
+                style="width: 100%; padding: 0.8rem; margin-bottom: 1.5rem; font-size: 1rem; border: 1px solid #ddd; border-radius: 8px; background: #fff; text-align: center; text-transform: uppercase;">
+
             <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="adminLogin()">
                 Access Dashboard <i class="fas fa-arrow-right"></i>
             </button>
@@ -726,7 +738,7 @@
     </div>
 
     <script src="data.js"></script>
-    <script src="admin.js?v=1.0.8"></script>
+    <script src="admin.js?v=1.0.9"></script>
 </body>
 
 </html>

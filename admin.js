@@ -5,22 +5,92 @@ const ORDERS_API = 'order_manager.php';
 const AUTH_TOKEN = 'Bearer admin123';
 
 // --- Authentication ---
+let currentCaptcha = "";
+
+function generateCaptcha() {
+    const canvas = document.getElementById("captcha-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Background noise dots
+    ctx.fillStyle = "#faf6f0";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Characters list (excluding confusing ones like I, l, 1, 0, O)
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+    currentCaptcha = "";
+    for (let i = 0; i < 5; i++) {
+        currentCaptcha += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    
+    // Write captcha text with rotation/scaling/skewing
+    ctx.font = "bold 24px 'Outfit', 'Inter', sans-serif";
+    ctx.textBaseline = "middle";
+    for (let i = 0; i < currentCaptcha.length; i++) {
+        const char = currentCaptcha[i];
+        ctx.save();
+        const x = 12 + i * 24 + Math.random() * 5;
+        const y = canvas.height / 2 + (Math.random() * 8 - 4);
+        const angle = (Math.random() * 30 - 15) * Math.PI / 180;
+        
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        
+        ctx.fillStyle = `hsl(${Math.random() * 360}, 50%, 30%)`;
+        ctx.fillText(char, 0, 0);
+        ctx.restore();
+    }
+    
+    // Add noise lines
+    for (let i = 0; i < 3; i++) {
+        ctx.strokeStyle = `rgba(${Math.random() * 150}, ${Math.random() * 150}, ${Math.random() * 150}, 0.3)`;
+        ctx.lineWidth = 1 + Math.random() * 1.5;
+        ctx.beginPath();
+        ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        ctx.stroke();
+    }
+}
+
 function adminLogin() {
     const pass = document.getElementById('admin-pass').value;
+    const captchaVal = document.getElementById('captcha-input').value.trim();
     const errorMsg = document.getElementById('login-error');
 
-    if (pass === '1234' || pass === 'admin') {
+    // 1. Verify Captcha
+    if (!captchaVal) {
+        errorMsg.textContent = 'Please enter the captcha code';
+        errorMsg.style.display = 'block';
+        return;
+    }
+    if (captchaVal.toLowerCase() !== currentCaptcha.toLowerCase()) {
+        errorMsg.textContent = 'Invalid Captcha Code';
+        errorMsg.style.display = 'block';
+        generateCaptcha(); // Regenerate captcha on failure
+        document.getElementById('captcha-input').value = "";
+        return;
+    }
+
+    // 2. Verify Password
+    if (pass === '8081' || pass === 'admin') {
         localStorage.setItem('adminLoggedIn', 'true');
         showDashboard();
     } else {
         errorMsg.textContent = 'Invalid Password';
         errorMsg.style.display = 'block';
+        generateCaptcha(); // Regenerate captcha on failure
+        document.getElementById('captcha-input').value = "";
     }
 }
 
 function checkAuth() {
     if (localStorage.getItem('adminLoggedIn') === 'true') {
         showDashboard();
+    } else {
+        generateCaptcha();
     }
 }
 
