@@ -8,13 +8,10 @@
     <link rel="icon" href="images/logo.png" type="image/png">
     <meta name="description"
         content="Experience the finest handcrafted chocolates at Choco Blossom India. Perfect for gifts, festivals, and self-indulgence.">
-    <link rel="stylesheet" href="./style.css?v=1.1">
+    <link rel="stylesheet" href="./style.css?v=1.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Maps API Removed in favor of local reviews -->
 </head>
-
 
 <body class="home">
 
@@ -114,6 +111,7 @@
                 </a>
                 <div class="mobile-toggle">
                     <i class="fas fa-bars"></i>
+                    <span style="font-size: 10px; display: block; font-weight: bold;">MENU</span>
                 </div>
             </div>
         </div>
@@ -123,12 +121,12 @@
     <section class="hero">
         <!-- Live Wallpaper (Video Background) -->
         <!-- Live Wallpaper (Chocolate Making Video) -->
-        <!-- Hero Image Slider -->
         <div class="hero-slider">
-            <div class="hero-slide active" style="background-image: url('images/hero1.png');"></div>
-            <div class="hero-slide" style="background-image: url('images/hero2.png');"></div>
-            <div class="hero-slide" style="background-image: url('images/hero3.png');"></div>
-            <div class="hero-slide" style="background-image: url('images/hero4.png');"></div>
+            <div class="hero-slide active" style="background-image: url('images/hero_new_1.jpg');"></div>
+            <div class="hero-slide" style="background-image: url('images/hero_new_2.jpg');"></div>
+            <div class="hero-slide" style="background-image: url('images/hero_new_3.jpg');"></div>
+            <div class="hero-slide" style="background-image: url('images/hero_new_4.jpg');"></div>
+            <div class="hero-slide" style="background-image: url('images/hero_new_5.jpg');"></div>
         </div>
 
         <div class="hero-content">
@@ -164,30 +162,31 @@
             <!-- Spotlight Slider Wrapper -->
             <div class="spotlight-slider">
 
-                <!-- Slide 1: Valentine's Special -->
+                <!-- Slide 1: Signature Collection -->
                 <div class="spotlight-slide active" id="spotlight-1">
                     <div class="spotlight-grid">
                         <div class="spotlight-image reveal">
-                            <img src="images/valentines_box_1.jpg?v=1" alt="Valentine's Gift Box"
-                                onerror="this.src='https://placehold.co/600x400/E91E63/FFF?text=Valentines+Box'">
+                            <img src="images/classic_truffles.jpg" alt="Classic Truffles Box"
+                                onerror="this.src='https://placehold.co/600x400/3E2723/FFF?text=Classic+Truffles'">
                         </div>
                         <div class="spotlight-content reveal" style="transition-delay: 0.2s;">
-                            <span class="spotlight-badge" style="background: #E91E63; color: white;">Valentine's
-                                Exclusive</span>
-                            <h2 class="liquid-reveal">Valentine's Gift Box</h2>
-                            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Celebrate love with our exclusive
-                                Valentine's Gift Box. An elegant assortment of hand-crafted chocolates, each piece
-                                designed to melt hearts. The perfect gesture for your special someone.</p>
+                            <span class="spotlight-badge"
+                                style="background: var(--color-primary); color: white;">Signature
+                                Collection</span>
+                            <h2 class="liquid-reveal">Classic Truffles</h2>
+                            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Indulge in our signature Classic
+                                Truffles, featuring a velvety smooth ganache center encased in a crisp chocolate shell.
+                                A timeless masterpiece for true chocolate connoisseurs.</p>
 
-                            <p style="color: #E91E63; font-weight: 500; margin-bottom: 1rem;"><i
-                                    class="fas fa-heart"></i> Limited Edition Assortment</p>
+                            <p style="color: var(--color-primary); font-weight: 500; margin-bottom: 1rem;"><i
+                                    class="fas fa-star" style="color: #FFD700;"></i> Bestselling Assortment</p>
 
                             <div style="display: flex; gap: 1rem;">
                                 <button class="btn btn-primary"
-                                    onclick="addToCart({id: 110, name: 'Valentine\'s Gift Box', price: 400, image: 'images/valentines_box_1.jpg?v=1'})"
-                                    style="background: #E91E63; border-color: #E91E63;">Add to Cart - ₹400</button>
-                                <a href="product_detail.html?id=110" class="btn btn-outline"
-                                    style="color: #E91E63; border-color: #E91E63;">View
+                                    onclick="addToCart({id: 13, name: 'Classic Truffles', price: 900, image: 'images/classic_truffles.jpg'})">Add
+                                    to Cart - ₹900</button>
+                                <a href="product_detail.html?id=13" class="btn btn-outline"
+                                    style="color: var(--color-primary); border-color: var(--color-primary);">View
                                     Details</a>
                             </div>
                         </div>
@@ -262,66 +261,78 @@
         </div>
     </section>
 
-    <!--Google Review section-->
-    <section id="testimonials" class="testimonial-section-wrapper">
+    <!-- Real-Time Google Reviews -->
+    <!-- Real-Time Google Reviews -->
+    <section class="section google-reviews-section" id="testimonials" style="background-color: #f8f9fa;">
+        <div class="container"
+            style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 40px;">
 
-        <div class="testimonial-section">
-            <div class="section-header">
-                <div class="section-tag">Testimonial</div>
-                <h1 class="section-title">Satisfied Clients<br>Say About Us</h1>
-            </div>
+            <!-- LEFT COLUMN: Info & Badge -->
+            <div class="testimonial-info" style="flex: 1; min-width: 300px; max-width: 400px;">
+                <!-- Header -->
+                <div class="reviews-header" style="margin-bottom: 2rem; text-align: left;">
+                    <h4
+                        style="color: #d2691e; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; font-weight: 600; margin-bottom: 10px;">
+                        Testimonial</h4>
+                    <h2
+                        style="color: #3e2723; font-size: 2.5rem; font-weight: 700; font-family: 'Playfair Display', serif;">
+                        Satisfied Clients<br>Say About Us</h2>
+                </div>
 
-            <div style="text-align: center;">
-                <div class="business-info">
-                    <div class="refresh-indicator" id="refreshIndicator">🔄 Checking for new reviews...</div>
-                    <img src="images/logo.png" alt="Choco Blossom Logo" class="business-logo" id="businessLogo">
-                    <div class="business-details">
-                        <div class="business-name" id="businessName">Chocoblossom</div>
-                        <div class="business-category" id="businessCategory">Premium Chocolates & Gifts</div>
-                        <div class="rating-display">
-                            <span class="rating-number" id="overallRating">--</span>
-                            <div class="rating-stars" id="overallStars">★★★★★</div>
+                <!-- Central Badge (Now Left Aligned Context) -->
+                <div class="central-badge"
+                    style="background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; width: 100%;">
+                    <h3 style="color: #3e2723; font-size: 1.5rem; font-weight: 700; margin-bottom: 5px;">Chocoblossom
+                    </h3>
+                    <p style="color: #777; font-size: 0.9rem; margin-bottom: 15px;">Premium Chocolates & Gifts</p>
+
+                    <div
+                        style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <img src="images/logo.png" style="width: 50px; height: auto;" alt="Logo">
+                        <div style="text-align: left;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #d2691e; line-height: 1;">4.8</div>
                         </div>
-
-                        <div class="powered-by"
-                            style="display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.85rem; color: #888; margin-bottom: 15px;">
-                            powered by
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
-                                alt="Google" style="height: 18px;">
-                        </div>
-
-                        <a href="https://search.google.com/local/writereview?placeid=ChIJOzO8HRaFXjkRWE5nVxXK_Xs"
-                            target="_blank" class="review-btn">
-                            review us on
-                            <svg class="google-icon-btn" viewBox="0 0 48 48"
-                                style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
-                                <path fill="#EA4335"
-                                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-                                <path fill="#4285F4"
-                                    d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-                                <path fill="#FBBC05"
-                                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-                                <path fill="#34A853"
-                                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-                            </svg>
-                        </a>
+                        <div class="stars-static" id="rating-stars" style="color: #ffc107; font-size: 1.2rem;"></div>
                     </div>
+
+                    <p style="font-size: 0.8rem; color: #999; margin-bottom: 20px;">powered by <span
+                            style="color: #4285F4; font-weight: bold;">G</span><span
+                            style="color: #EA4335; font-weight: bold;">o</span><span
+                            style="color: #FBBC05; font-weight: bold;">o</span><span
+                            style="color: #4285F4; font-weight: bold;">g</span><span
+                            style="color: #34A853; font-weight: bold;">l</span><span
+                            style="color: #EA4335; font-weight: bold;">e</span></p>
+
+                    <a href="https://www.google.com/search?sca_esv=d7358c9ad4b11281&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOfZ0SQTL9qX9G7XvAPDP33BTl72c1C8cUFzfp0uy1agm3SDYDn-ugMrXixd5_zdfQcNT7FXk_0iBV0jSkDM6AL8lzTCi&q=Chocoblossom+Reviews&sa=X&ved=2ahUKEwi1jOTdwdmSAxV04jgGHbC3GBQQ0bkNegQIORAH&biw=1536&bih=730&dpr=1.25#lrd=0x395e85161dbc333b:0x7bfdca1557674e58,3,,,,"
+                        target="_blank"
+                        style="display: inline-flex; align-items: center; gap: 10px; background: #3e2723; color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                        review us on <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                            style="width: 16px; filter: brightness(0) invert(1);">
+                    </a>
                 </div>
             </div>
 
-            <div class="carousel-container">
-                <button class="nav-button prev" onclick="slideReviews(-1)">‹</button>
-                <div class="reviews-wrapper">
-                    <div class="reviews-track" id="reviewsTrack">
-                        <div class="loading">Loading reviews...</div>
+            <!-- RIGHT COLUMN: Carousel -->
+            <div class="testimonial-carousel-wrapper" style="flex: 1; min-width: 300px; position: relative;">
+                <div class="reviews-carousel-container" style="position: relative; width: 100%;">
+                    <button class="review-nav prev" onclick="scrollReviews(-1)"
+                        style="position: absolute; left: -15px; top: 50%; transform: translateY(-50%); z-index: 10; background: #fff; border: 1px solid #eee; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); color: #3e2723;"><i
+                            class="fas fa-chevron-left"></i></button>
+
+                    <div class="reviews-carousel" id="reviews-track"
+                        style="display: flex; overflow-x: auto; gap: 20px; padding: 20px 5px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;">
+                        <div class="loading-reviews" style="text-align: center; width: 100%;">Loading reviews...</div>
                     </div>
+
+                    <button class="review-nav next" onclick="scrollReviews(1)"
+                        style="position: absolute; right: -15px; top: 50%; transform: translateY(-50%); z-index: 10; background: #fff; border: 1px solid #eee; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); color: #3e2723;"><i
+                            class="fas fa-chevron-right"></i></button>
                 </div>
-                <button class="nav-button next" onclick="slideReviews(1)">›</button>
             </div>
+
         </div>
-
     </section>
-
 
     <!-- Newsletter -->
     <section class="section" style="background-color: var(--color-primary); color: #fff;">
@@ -408,6 +419,7 @@
         </div>
     </div>
 
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -490,7 +502,6 @@
     </footer>
 
     <script src="data.js"></script>
-    <script src="reviews.js"></script>
     <script src="script.js"></script>
     <script>
         // Polyglot Analytics: Send data to Django Service (Python) 🐍
@@ -499,210 +510,150 @@
                 page: window.location.pathname || 'home'
             };
 
-            fetch('http://localhost:8000/api/analytics/track', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(pageData)
-            })
-                .then(res => res.json())
-                .then(data => console.log('Django Analytics:', data))
-                .catch(err => console.error('Django Analytics Error:', err));
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                fetch('http://localhost:8000/api/analytics/track', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(pageData)
+                })
+                    .then(res => res.json())
+                    .then(data => console.log('Django Analytics:', data))
+                    .catch(err => console.error('Django Analytics Error:', err));
+            }
+
+            // --- Google Reviews Integration ---
+            const placeId = 'ChIJOzO8HRaFXjkRWE5nVxXK_Xs'; // User Provided Place ID
+            const reviewsContainer = document.getElementById('google-reviews-container');
+            const ratingDisplay = document.querySelector('.big-rating');
+            const starsDisplay = document.querySelector('.stars-static');
+            let autoScrollInterval;
         });
-
-        // Backend code of Google review Section
-
-        let currentSlide = 0;
-        let reviews = [];
-        let reviewsPerView = 3;
-
-        function updateReviewsPerView() {
-            if (window.innerWidth < 768) {
-                reviewsPerView = 1;
-            } else if (window.innerWidth < 1200) {
-                reviewsPerView = 2;
-            } else {
-                reviewsPerView = 3;
-            }
-        }
-
-        function getInitials(name) {
-            return name.split(' ').map(word => word[0]).join('').toUpperCase().substring(0, 2);
-        }
-
-        function getRandomGradient() {
-            const gradients = [
-                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
-            ];
-            return gradients[Math.floor(Math.random() * gradients.length)];
-        }
-
-        function getTimeAgo(timestamp) {
-            const now = new Date();
-            const reviewDate = new Date(timestamp * 1000);
-            const years = now.getFullYear() - reviewDate.getFullYear();
-            const months = now.getMonth() - reviewDate.getMonth() + (years * 12);
-
-            if (years > 0) return `${years} year${years > 1 ? 's' : ''} ago`;
-            if (months > 0) return `${months} month${months > 1 ? 's' : ''} ago`;
-
-            const days = Math.floor((now - reviewDate) / (1000 * 60 * 60 * 24));
-            if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-
-            return 'Recently';
-        }
-
-        function slideReviews(direction) {
-            updateReviewsPerView();
-            const maxSlide = Math.max(0, reviews.length - reviewsPerView);
-            currentSlide = Math.max(0, Math.min(maxSlide, currentSlide + direction));
-
-            const track = document.getElementById('reviewsTrack');
-            const cardWidth = 300 + 25;
-            track.style.transform = `translateX(-${currentSlide * cardWidth}px)`;
-        }
-
-        // Updated Reviews Logic to use Local Data (reviews.js)
+    </script>
+    <script src="reviews.js"></script>
+    <script>
+        // --- Reviews Logic ---
         async function loadReviews() {
+            const reviewsContainer = document.getElementById('reviews-track');
+            const ratingDisplay = document.getElementById('rating-display');
+            const starsDisplay = document.getElementById('rating-stars');
+
+            if (!reviewsContainer) return;
+
+            let reviews = [];
+
+            // 1. Try Fetching from API (Progressive Enhancement)
             try {
-                // Check if local data is available (Instant Load)
-                if (window.REVIEWS_DATA) {
-                    renderReviews(window.REVIEWS_DATA);
-                    return;
-                }
-
-                // Fallback to API if local data missing (e.g. valid in some deployments)
-                const res = await fetch("/api/reviews");
-                const result = await res.json();
-
-                if (Array.isArray(result)) {
-                    renderReviews(result);
+                const res = await fetch('reviews_manager.php');
+                if (res.ok) {
+                    const json = await res.json();
+                    reviews = Array.isArray(json) ? json : (json.data || []);
+                    console.log('Reviews loaded from API');
                 } else {
-                    console.error("Invalid review data format");
+                    throw new Error('API request failed');
                 }
-            } catch (err) {
-                console.error("Error loading reviews:", err);
-                // Fail silently or show default placeholder if needed
-            }
-        }
-
-        function showErrorMessage(errorData) {
-            // Function kept but unused for now as we have local data
-            console.warn("Review loading error:", errorData);
-        }
-
-        function renderReviews(data) {
-            // Handle both array (direct list) or object (API response wrapper)
-            const reviewsList = Array.isArray(data) ? data : (data.reviews || []);
-
-            // Render business stats (Updated to 4.7 as requested)
-            if (document.getElementById("overallRating")) {
-                document.getElementById("overallRating").textContent = "4.7";
-                document.getElementById("overallStars").innerHTML = "★★★★<span style='opacity: 0.3'>★</span>";
+            } catch (e) {
+                console.warn('API unavailable, falling back to local data:', e);
+                // 2. Fallback to Local Data
+                reviews = window.REVIEWS_DATA || [];
             }
 
-            reviews = reviewsList;
+            if (reviews.length > 0) {
+                reviewsContainer.innerHTML = '';
 
-            // Render reviews
-            const track = document.getElementById('reviewsTrack');
-            track.innerHTML = '';
+                // Calculate Average Rating
+                const totalRating = reviews.reduce((acc, r) => acc + r.rating, 0);
+                const avgRating = (totalRating / reviews.length).toFixed(1);
 
-            reviews.forEach((review) => {
-                const card = document.createElement('div');
-                card.className = 'review-card';
+                // Update Header
+                if (ratingDisplay) ratingDisplay.textContent = avgRating;
+                if (starsDisplay) updateStars(avgRating, starsDisplay);
 
-                // Avatar Logic: Use Photo if available, else Initials
-                // Random gradient for variety
-                const gradient = getRandomGradient();
-                let avatarHTML = '';
+                // Colors for Avatars
+                const avatarColors = ['#1a237e', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#009688', '#4caf50', '#ff9800', '#ff5722', '#795548', '#607d8b'];
 
-                if (review.profile_photo_url) {
-                    avatarHTML = `<img src="${review.profile_photo_url}" alt="${review.name}" class="reviewer-avatar" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">`;
-                } else {
-                    avatarHTML = `<div class="reviewer-initials" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: ${gradient}; border-radius: 50%; color: white; font-weight: 700; font-size: 16px;">${review.initials || getInitials(review.name)}</div>`;
-                }
+                reviews.forEach((review, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'review-card';
+                    card.style.cssText = 'flex: 0 0 300px; padding: 25px; background: #fff; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-right: 25px; display: flex; flex-direction: column; border: 1px solid #f0f0f0;';
 
-                card.innerHTML = `
-            <div class="review-header" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                ${avatarHTML}
-                <div class="reviewer-info">
-                  <div class="reviewer-name" style="font-weight: 700; color: #3E2723;">${review.name}</div>
-                  <div class="review-time" style="font-size: 0.85rem; color: #888;">${review.time || 'Verified Customer'}</div>
-                </div>
-                <!-- Google G Icon -->
-                <div style="margin-left: auto;">
-                    <svg class="google-icon" viewBox="0 0 48 48" style="width: 24px; height: 24px;">
-                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <div class="review-stars" style="color: #FFC107; margin-bottom: 10px;">${'★'.repeat(review.rating || 5)}${'☆'.repeat(5 - (review.rating || 5))}</div>
-            
-            <p class="review-text" style="color: #555; line-height: 1.6; font-size: 0.95rem;">${review.text}</p>
-        `;
-                track.appendChild(card);
-            });
-
-            updateReviewsPerView();
-        }
-
-        // Auto-slide functionality
-        let autoSlideInterval;
-        let autoRefreshInterval;
-
-        function startAutoSlide() {
-            autoSlideInterval = setInterval(() => {
-                if (reviews.length > reviewsPerView) {
-                    const maxSlide = Math.max(0, reviews.length - reviewsPerView);
-                    if (currentSlide >= maxSlide) {
-                        currentSlide = 0;
+                    // Avatar Logic
+                    let avatarHTML = '';
+                    if (review.profile_photo_url) {
+                        avatarHTML = `<img src="${review.profile_photo_url}" alt="${review.name}" style="width: 45px; height: 45px; border-radius: 50%; margin-right: 15px; object-fit: cover;">`;
                     } else {
-                        currentSlide++;
+                        const nameParts = review.name ? review.name.split(' ') : ['A', 'A'];
+                        const initials = (nameParts[0][0] + (nameParts.length > 1 ? nameParts[1][0] : '')).toUpperCase().substring(0, 2);
+                        const color = avatarColors[index % avatarColors.length];
+                        avatarHTML = `<div style="width: 45px; height: 45px; background: ${color}; color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 16px; font-weight: 600; margin-right: 15px;">${initials}</div>`;
                     }
-                    const track = document.getElementById('reviewsTrack');
-                    const cardWidth = 300 + 25;
-                    track.style.transform = `translateX(-${currentSlide * cardWidth}px)`;
+
+                    // Stars
+                    const stars = '★'.repeat(Math.floor(review.rating)) + (review.rating % 1 !== 0 ? '½' : '') + '☆'.repeat(5 - Math.ceil(review.rating));
+
+                    card.innerHTML = `
+                        <div class="review-header" style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+                            ${avatarHTML}
+                            <div class="reviewer-info" style="flex: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div>
+                                        <div class="reviewer-name" style="font-weight: 700; color: #3E2723; font-size: 1rem; margin-bottom: 2px;">${review.name}</div>
+                                        <div class="review-time" style="font-size: 0.75rem; color: #999;">Verified Customer</div>
+                                    </div>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" style="width: 18px; height: 18px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-stars" style="color: #FFC107; margin-bottom: 15px; font-size: 1rem; letter-spacing: 2px;">${stars}</div>
+                        <p class="review-text" style="color: #666; line-height: 1.6; font-size: 0.95rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin: 0;">"${review.text}"</p>
+                    `;
+                    reviewsContainer.appendChild(card);
+                });
+
+                startAutoScroll();
+            } else {
+                reviewsContainer.innerHTML = '<div style="text-align:center; padding: 20px;">No reviews available.</div>';
+            }
+        }
+
+        function updateStars(rating, element) {
+            const rounded = Math.round(rating);
+            let starsHTML = '';
+            for (let i = 0; i < 5; i++) {
+                starsHTML += i < rounded ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+            }
+            element.innerHTML = starsHTML;
+        }
+
+        // --- Carousel Logic (Native Scroll) ---
+        let autoScrollInterval;
+
+        window.scrollReviews = function (direction) {
+            const container = document.getElementById('reviews-track');
+            if (container) {
+                const scrollAmount = 320; // 300px card + 20px gap
+                container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+                // Reset timer on manual interaction
+                startAutoScroll();
+            }
+        };
+
+        function startAutoScroll() {
+            if (autoScrollInterval) clearInterval(autoScrollInterval);
+            autoScrollInterval = setInterval(() => {
+                const container = document.getElementById('reviews-track');
+                if (container) {
+                    // Check if at end
+                    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+                        container.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        container.scrollBy({ left: 320, behavior: 'smooth' });
+                    }
                 }
-            }, 5000); // Slide every 5 seconds
-        }
-
-        function showRefreshIndicator(message, isRefreshing = false) {
-            const indicator = document.getElementById('refreshIndicator');
-            indicator.textContent = message;
-            indicator.className = 'refresh-indicator show' + (isRefreshing ? ' refreshing' : '');
-
-            setTimeout(() => {
-                indicator.classList.remove('show');
-            }, 3000);
-        }
-
-        function startAutoRefresh() {
-            // Disabled: We are using local reviews.js
+            }, 5000);
         }
 
         // Initialize
-        loadReviews().then(() => {
-            startAutoSlide();
-            // startAutoRefresh(); // Disabled
-            console.log('✅ Reviews loaded.');
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            updateReviewsPerView();
-            currentSlide = 0;
-            const track = document.getElementById('reviewsTrack');
-            track.style.transform = 'translateX(0)';
-        });
-
+        document.addEventListener('DOMContentLoaded', loadReviews);
     </script>
 </body>
 
