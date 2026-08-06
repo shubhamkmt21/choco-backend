@@ -298,20 +298,22 @@ async function fetchBestsellers() {
     // Sync with server to get latest changes
     await syncProductsWithServer();
 
-    // Curate Bestsellers: Specific IDs requested by user
-    // 12: Kunafa, 107: Almond Rocca, 103: Choco Drenched, 6: Candied Orange
-    const BESTSELLER_IDS = [12, 107, 103, 6];
-
     // Use the global PRODUCTS_DATA from data.js
     const sourceData = window.PRODUCTS_DATA || [];
-    let bestsellers = sourceData.filter(p => BESTSELLER_IDS.includes(p.id));
+    
+    // Filter products selected as bestseller in admin panel
+    let bestsellers = sourceData.filter(p => p.bestseller === true || p.bestseller === "true" || p.bestseller === 1);
 
-    // Sort them to match the requested order
-    bestsellers.sort((a, b) => {
-        return BESTSELLER_IDS.indexOf(a.id) - BESTSELLER_IDS.indexOf(b.id);
-    });
+    // If no products are marked as bestseller, fallback to default curated list
+    if (bestsellers.length === 0) {
+        const BESTSELLER_IDS = [12, 107, 103, 6];
+        bestsellers = sourceData.filter(p => BESTSELLER_IDS.includes(p.id));
+        bestsellers.sort((a, b) => {
+            return BESTSELLER_IDS.indexOf(a.id) - BESTSELLER_IDS.indexOf(b.id);
+        });
+    }
 
-    // If local data missing for some reason, fallback to hardcoded safety net
+    // If still empty (e.g. data load issue), fallback to hardcoded safety net
     if (bestsellers.length === 0) {
         bestsellers = [
             { id: 12, name: "Pistachio Kunafa Bar", category: "Bars", price: 750, image: "images/bar_kunafa.jpg" },

@@ -125,6 +125,7 @@ async function openEditModal(id) {
     document.getElementById('p-price').value = p.price;
     document.getElementById('p-image').value = p.image;
     document.getElementById('p-desc').value = p.description;
+    document.getElementById('p-bestseller').checked = p.bestseller === true || p.bestseller === "true" || p.bestseller === 1;
     document.getElementById('modal-title').innerText = 'Edit Product';
 
     document.getElementById('product-modal').style.display = 'flex';
@@ -138,6 +139,7 @@ function openProductModal() {
     document.getElementById('p-image').value = '';
     document.getElementById('p-image-file').value = '';
     document.getElementById('p-desc').value = '';
+    document.getElementById('p-bestseller').checked = false;
     document.getElementById('modal-title').innerText = 'Add New Product';
     document.getElementById('product-modal').style.display = 'flex';
 }
@@ -180,12 +182,15 @@ async function saveProduct() {
         }
     }
 
+    const bestseller = document.getElementById('p-bestseller').checked;
+
     const data = {
         name: name,
         category: category,
         price: price,
         image: imageUrl,
-        description: desc
+        description: desc,
+        bestseller: bestseller
     };
 
     const url = id ? `${PRODUCTS_API}?id=${id}` : PRODUCTS_API;
