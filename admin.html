@@ -125,6 +125,23 @@
             font-size: 1rem;
         }
 
+        .modal-input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: #fff;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .modal-input:focus {
+            border-color: #5D4037;
+            outline: none;
+        }
+
         .login-btn {
             width: 100%;
             padding: 0.8rem;
@@ -630,21 +647,20 @@
     <!-- Product Modal -->
     <div id="product-modal"
         style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 3000; justify-content: center; align-items: center;">
-        <div class="login-card" style="max-width: 500px; text-align: left;">
-            <h3 id="modal-title" style="margin-bottom: 1.5rem;">Add New Product</h3>
+        <div class="login-card" style="max-width: 500px; text-align: left; padding: 2.5rem; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee;">
+            <h3 id="modal-title" style="margin-bottom: 1.5rem; color: #5D4037; font-weight: 700;">Add New Product</h3>
 
             <input type="hidden" id="p-id">
 
             <div class="form-group" style="margin-bottom: 1rem;">
                 <label style="font-size: 0.9rem; font-weight: 600;">Product Name</label>
-                <input type="text" id="p-name" placeholder="e.g. Dark Truffle Box" style="margin: 0.5rem 0;">
+                <input type="text" id="p-name" class="modal-input" placeholder="e.g. Dark Truffle Box">
             </div>
 
-            <div class="form-group" style="margin-bottom: 1rem; display: flex; gap: 10px;">
-                <div style="flex: 1;">
+            <div class="form-group" style="margin-bottom: 1rem; display: flex; gap: 12px;">
+                <div style="flex: 1.5;">
                     <label style="font-size: 0.9rem; font-weight: 600;">Category</label>
-                    <select id="p-category"
-                        style="width: 100%; padding: 0.8rem; margin: 0.5rem 0; border: 1px solid #E0E0E0; border-radius: 8px;">
+                    <select id="p-category" class="modal-input">
                         <option value="Truffles">Truffles</option>
                         <option value="Bars">Bars</option>
                         <option value="Assorted Chocolates">Assorted Chocolates</option>
@@ -692,52 +708,46 @@
                         </optgroup>
                     </select>
                 </div>
-                <div style="flex: 1; display: flex; gap: 10px;">
-                    <div style="flex: 1;">
-                        <label style="font-size: 0.9rem; font-weight: 600;">Price (₹)</label>
-                        <input type="number" id="p-price" placeholder="e.g. 500" style="margin: 0.5rem 0;">
-                    </div>
-                    <div style="flex: 1;">
-                        <label style="font-size: 0.9rem; font-weight: 600;">Stock Qty</label>
-                        <input type="number" id="p-stock" placeholder="e.g. 100" style="margin: 0.5rem 0;">
-                    </div>
+                <div style="flex: 1;">
+                    <label style="font-size: 0.9rem; font-weight: 600;">Price (₹)</label>
+                    <input type="number" id="p-price" class="modal-input" placeholder="500">
+                </div>
+                <div style="flex: 1;">
+                    <label style="font-size: 0.9rem; font-weight: 600;">Stock Qty</label>
+                    <input type="number" id="p-stock" class="modal-input" placeholder="100">
                 </div>
             </div>
 
             <div class="form-group" style="margin-bottom: 1rem;">
                 <label style="font-size: 0.9rem; font-weight: 600;">Product Image</label>
                 <!-- File Upload Option -->
-                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 0.5rem;">
+                <div style="display: flex; gap: 10px; align-items: center; margin-top: 0.4rem; margin-bottom: 0.4rem;">
                     <input type="file" id="p-image-file" accept="image/*" style="font-size: 0.9rem;">
                     <span style="font-size: 0.8rem; color: #888;">OR</span>
                 </div>
                 <!-- URL Fallback -->
-                <input type="text" id="p-image" placeholder="Paste Image URL or select file above"
-                    style="margin: 0.5rem 0;">
-                <small style="color: #888; display: block;">Images are saved locally. For permanent images, use a
-                    URL.</small>
+                <input type="text" id="p-image" class="modal-input" placeholder="Paste Image URL or select file above">
+                <small style="color: #888; display: block; margin-top: -2px; font-size: 0.8rem;">Images are saved locally. For permanent images, use a URL.</small>
             </div>
 
             <div class="form-group" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
-                <input type="checkbox" id="p-bestseller" style="width: auto; margin: 0; cursor: pointer;">
-                <label for="p-bestseller" style="font-size: 0.9rem; font-weight: 600; cursor: pointer; margin: 0;">Show in Bestsellers on Homepage</label>
+                <input type="checkbox" id="p-bestseller" style="width: auto; margin: 0; cursor: pointer; transform: scale(1.15);">
+                <label for="p-bestseller" style="font-size: 0.9rem; font-weight: 600; cursor: pointer; margin: 0; color: #5D4037;">Show in Bestsellers on Homepage</label>
             </div>
 
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label style="font-size: 0.9rem; font-weight: 600;">Description</label>
-                <textarea id="p-desc" rows="3"
-                    style="width: 100%; padding: 0.8rem; border: 1px solid #E0E0E0; border-radius: 8px; font-family: inherit;"
-                    placeholder="Product details..."></textarea>
+                <textarea id="p-desc" class="modal-input" rows="3" placeholder="Product details..." style="resize: vertical;"></textarea>
             </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button class="btn btn-outline" onclick="closeProductModal()">Cancel</button>
-                <button class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+                <button class="btn btn-outline" onclick="closeProductModal()" style="padding: 0.6rem 1.5rem;">Cancel</button>
+                <button class="btn btn-primary" onclick="saveProduct()" style="padding: 0.6rem 1.5rem;">Save Product</button>
             </div>
         </div>
     </div>
 
     <script src="data.js"></script>
-    <script src="admin.js?v=1.1.0"></script>
+    <script src="admin.js?v=1.1.1"></script>
 </body>
 </html>
