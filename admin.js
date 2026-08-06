@@ -140,6 +140,7 @@ async function openEditModal(id) {
     document.getElementById('p-price').value = p.price;
     document.getElementById('p-stock').value = p.stock !== undefined ? p.stock : '';
     document.getElementById('p-image').value = p.image;
+    document.getElementById('p-ingredients').value = p.ingredients || '';
     document.getElementById('p-desc').value = p.description;
     document.getElementById('p-bestseller').checked = p.bestseller === true || p.bestseller === "true" || p.bestseller === 1;
     document.getElementById('modal-title').innerText = 'Edit Product';
@@ -155,6 +156,7 @@ function openProductModal() {
     document.getElementById('p-stock').value = '';
     document.getElementById('p-image').value = '';
     document.getElementById('p-image-file').value = '';
+    document.getElementById('p-ingredients').value = '';
     document.getElementById('p-desc').value = '';
     document.getElementById('p-bestseller').checked = false;
     document.getElementById('modal-title').innerText = 'Add New Product';
@@ -202,6 +204,7 @@ async function saveProduct() {
     const bestseller = document.getElementById('p-bestseller').checked;
     const stockVal = document.getElementById('p-stock').value;
     const stock = stockVal !== "" ? parseInt(stockVal) : null;
+    const ingredients = document.getElementById('p-ingredients').value;
 
     const data = {
         name: name,
@@ -209,6 +212,7 @@ async function saveProduct() {
         price: price,
         stock: stock,
         image: imageUrl,
+        ingredients: ingredients,
         description: desc,
         bestseller: bestseller
     };
