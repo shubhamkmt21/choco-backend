@@ -611,6 +611,7 @@
                                     <th>Name</th>
                                     <th>Category</th>
                                     <th>Price (₹)</th>
+                                    <th>Stock</th>
                                     <th>Description</th>
                                     <th>Actions</th>
                                 </tr>
@@ -691,9 +692,15 @@
                         </optgroup>
                     </select>
                 </div>
-                <div style="flex: 1;">
-                    <label style="font-size: 0.9rem; font-weight: 600;">Price (₹)</label>
-                    <input type="number" id="p-price" placeholder="e.g. 500" style="margin: 0.5rem 0;">
+                <div style="flex: 1; display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">Price (₹)</label>
+                        <input type="number" id="p-price" placeholder="e.g. 500" style="margin: 0.5rem 0;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">Stock Qty</label>
+                        <input type="number" id="p-stock" placeholder="e.g. 100" style="margin: 0.5rem 0;">
+                    </div>
                 </div>
             </div>
 

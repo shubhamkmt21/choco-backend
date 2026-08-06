@@ -78,7 +78,7 @@ async function updateStats() {
 
 async function loadProducts() {
     const tbody = document.getElementById('products-list');
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading products...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading products...</td></tr>';
 
     try {
         const res = await fetch(PRODUCTS_API);
@@ -87,17 +87,32 @@ async function loadProducts() {
 
         tbody.innerHTML = '';
         if (products.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No products found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No products found.</td></tr>';
             return;
         }
 
         products.forEach(p => {
             const tr = document.createElement('tr');
+            
+            // Stock styling (red if low or out of stock)
+            const stockQty = p.stock !== undefined && p.stock !== null && p.stock !== "" ? parseInt(p.stock) : null;
+            let stockHtml = "";
+            if (stockQty === null) {
+                stockHtml = `<span style="color: #777;">Unlimited</span>`;
+            } else if (stockQty <= 0) {
+                stockHtml = `<span class="status-badge" style="background: #ffebee; color: #c62828; font-weight: bold; padding: 3px 8px; border-radius: 4px;">Out of Stock</span>`;
+            } else if (stockQty <= 10) {
+                stockHtml = `<span class="status-badge" style="background: #fff3e0; color: #ef6c00; font-weight: bold; padding: 3px 8px; border-radius: 4px;">Low: ${stockQty}</span>`;
+            } else {
+                stockHtml = `<span style="color: #2e7d32; font-weight: 600;">${stockQty}</span>`;
+            }
+
             tr.innerHTML = `
                 <td><img src="${p.image}" class="prod-thumb" onerror="this.src='https://placehold.co/50x50?text=No+Img'"></td>
                 <td style="font-weight: 600;">${p.name}</td>
                 <td><span class="status-badge" style="background:#EEE; color:#333;">${p.category}</span></td>
                 <td>₹${p.price}</td>
+                <td>${stockHtml}</td>
                 <td style="font-size: 0.85rem; color: #777; max-width: 200px;">${(p.description || '').substring(0, 50)}...</td>
                 <td>
                     <div style="display: flex; gap: 5px;">
@@ -109,7 +124,7 @@ async function loadProducts() {
             tbody.appendChild(tr);
         });
     } catch (e) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Error loading products.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error loading products.</td></tr>';
     }
 }
 
@@ -123,6 +138,7 @@ async function openEditModal(id) {
     document.getElementById('p-name').value = p.name;
     document.getElementById('p-category').value = p.category;
     document.getElementById('p-price').value = p.price;
+    document.getElementById('p-stock').value = p.stock !== undefined ? p.stock : '';
     document.getElementById('p-image').value = p.image;
     document.getElementById('p-desc').value = p.description;
     document.getElementById('p-bestseller').checked = p.bestseller === true || p.bestseller === "true" || p.bestseller === 1;
@@ -136,6 +152,7 @@ function openProductModal() {
     document.getElementById('p-name').value = '';
     document.getElementById('p-category').value = 'Truffles';
     document.getElementById('p-price').value = '';
+    document.getElementById('p-stock').value = '';
     document.getElementById('p-image').value = '';
     document.getElementById('p-image-file').value = '';
     document.getElementById('p-desc').value = '';
@@ -183,11 +200,14 @@ async function saveProduct() {
     }
 
     const bestseller = document.getElementById('p-bestseller').checked;
+    const stockVal = document.getElementById('p-stock').value;
+    const stock = stockVal !== "" ? parseInt(stockVal) : null;
 
     const data = {
         name: name,
         category: category,
         price: price,
+        stock: stock,
         image: imageUrl,
         description: desc,
         bestseller: bestseller
