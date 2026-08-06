@@ -542,30 +542,31 @@
                                             <div className="product-info">
                                                 <div className="product-category">{p.category}</div>
                                                 <h3 className="product-title">{p.name}</h3>
-                                                <div className="product-price">₹{p.price}</div>
-                                                {p.stock !== undefined && p.stock !== null && p.stock !== "" && (
-                                                    <div style={{ marginTop: '5px', fontSize: '0.8rem', fontWeight: '600' }}>
-                                                        {parseInt(p.stock) <= 0 ? (
-                                                            <span style={{ color: '#d32f2f', background: '#ffebee', padding: '2px 6px', borderRadius: '4px', display: 'inline-block' }}>Out of Stock</span>
+                                                <div className="product-price" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                    <span>₹{p.price}</span>
+                                                    {p.stock !== undefined && p.stock !== null && p.stock !== "" && (
+                                                        parseInt(p.stock) <= 0 ? (
+                                                            <span style={{ fontSize: '0.72rem', color: '#c62828', fontWeight: 'bold', background: '#ffebee', padding: '2px 6px', borderRadius: '4px' }}>Out of Stock</span>
                                                         ) : parseInt(p.stock) <= 10 ? (
-                                                            <span style={{ color: '#ef6c00', background: '#fff3e0', padding: '2px 6px', borderRadius: '4px', display: 'inline-block' }}>Only {p.stock} left</span>
+                                                            <span style={{ fontSize: '0.72rem', color: '#ef6c00', fontWeight: 'bold', background: '#fff3e0', padding: '2px 6px', borderRadius: '4px' }}>Only {p.stock} left</span>
                                                         ) : (
-                                                            <span style={{ color: '#2e7d32', background: '#e8f5e9', padding: '2px 6px', borderRadius: '4px', display: 'inline-block' }}>{p.stock} in stock</span>
-                                                        )}
-                                                    </div>
-                                                )}
-                                                {p.description && <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '10px', marginBottom: '1rem', lineHeight: '1.4' }}>{p.description}</p>}
+                                                            <span style={{ fontSize: '0.72rem', color: '#2e7d32', fontWeight: 'bold', background: '#e8f5e9', padding: '2px 6px', borderRadius: '4px' }}>In Stock</span>
+                                                        )
+                                                    )}
+                                                </div>
+                                                {p.description && <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', lineHeight: '1.4' }}>{p.description}</p>}
                                             </div>
                                         </a>
                                         <div style={{ padding: '0 1.5rem 1.5rem' }}>
-                                            <button 
-                                                className="add-btn" 
-                                                disabled={p.stock !== undefined && p.stock !== null && p.stock !== "" && parseInt(p.stock) <= 0}
-                                                style={p.stock !== undefined && p.stock !== null && p.stock !== "" && parseInt(p.stock) <= 0 ? { background: '#ccc', color: '#888', cursor: 'not-allowed', borderColor: '#ddd' } : {}}
-                                                onClick={(e) => { e.stopPropagation(); handleAddToCart(p); }}
-                                            >
-                                                {p.stock !== undefined && p.stock !== null && p.stock !== "" && parseInt(p.stock) <= 0 ? 'Sold Out' : 'Add to Cart'}
-                                            </button>
+                                            {p.stock !== undefined && p.stock !== null && p.stock !== "" && parseInt(p.stock) <= 0 ? (
+                                                <button className="add-btn" style={{ background: '#eee', color: '#888', border: '1px solid #ddd', cursor: 'not-allowed' }} disabled>
+                                                    Sold Out
+                                                </button>
+                                            ) : (
+                                                <button className="add-btn" onClick={(e) => { e.stopPropagation(); handleAddToCart(p); }}>
+                                                    Add to Cart
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 ))}

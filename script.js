@@ -248,26 +248,6 @@ async function fetchProducts() {
         products.forEach(p => {
             const card = document.createElement('div');
             card.className = 'product-card';
-
-            const stockQty = p.stock !== undefined && p.stock !== null && p.stock !== "" ? parseInt(p.stock) : null;
-            let stockTextHtml = "";
-            let buttonDisabled = "";
-            let buttonStyle = "";
-            let buttonText = "Add to Cart";
-
-            if (stockQty !== null) {
-                if (stockQty <= 0) {
-                    stockTextHtml = `<div style="margin-top: 5px; font-size: 0.8rem; font-weight: 600; color: #d32f2f; background: #ffebee; padding: 2px 6px; border-radius: 4px; display: inline-block;">Out of Stock</div>`;
-                    buttonDisabled = "disabled";
-                    buttonStyle = "style='background: #ccc; color: #888; cursor: not-allowed; border-color: #ddd;'";
-                    buttonText = "Sold Out";
-                } else if (stockQty <= 10) {
-                    stockTextHtml = `<div style="margin-top: 5px; font-size: 0.8rem; font-weight: 600; color: #ef6c00; background: #fff3e0; padding: 2px 6px; border-radius: 4px; display: inline-block;">Only ${stockQty} left</div>`;
-                } else {
-                    stockTextHtml = `<div style="margin-top: 5px; font-size: 0.8rem; font-weight: 600; color: #2e7d32; background: #e8f5e9; padding: 2px 6px; border-radius: 4px; display: inline-block;">${stockQty} in stock</div>`;
-                }
-            }
-
             card.innerHTML = `
                 <a href="product_detail.html?id=${p.id}" style="text-decoration: none; color: inherit; display: block;">
                     <div class="product-image">
@@ -277,11 +257,10 @@ async function fetchProducts() {
                         <div class="product-category">${p.category}</div>
                         <h3 class="product-title">${p.name}</h3>
                         <div class="product-price">₹${p.price}</div>
-                        ${stockTextHtml}
                     </div>
                 </a>
                 <div style="padding: 0 1.5rem 1.5rem;">
-                     <button class="add-btn" ${buttonDisabled} ${buttonStyle} onclick='event.stopPropagation(); addToCart(${JSON.stringify(p)})'>${buttonText}</button>
+                     <button class="add-btn" onclick='event.stopPropagation(); addToCart(${JSON.stringify(p)})'>Add to Cart</button>
                 </div>
             `;
             container.appendChild(card);
@@ -353,21 +332,17 @@ async function fetchBestsellers() {
         card.style.transitionDelay = `${index * 0.1}s`;
 
         const stockQty = p.stock !== undefined && p.stock !== null && p.stock !== "" ? parseInt(p.stock) : null;
-        let stockTextHtml = "";
-        let buttonDisabled = "";
-        let buttonStyle = "";
-        let buttonText = "Add to Cart";
-
+        let stockBadgeHtml = "";
+        let buttonHtml = `<button class="add-btn" onclick='event.stopPropagation(); addToCart(${JSON.stringify(p)})'>Add to Cart</button>`;
+        
         if (stockQty !== null) {
             if (stockQty <= 0) {
-                stockTextHtml = `<div style="margin-top: 5px; font-size: 0.8rem; font-weight: 600; color: #d32f2f; background: #ffebee; padding: 2px 6px; border-radius: 4px; display: inline-block;">Out of Stock</div>`;
-                buttonDisabled = "disabled";
-                buttonStyle = "style='background: #ccc; color: #888; cursor: not-allowed; border-color: #ddd;'";
-                buttonText = "Sold Out";
+                stockBadgeHtml = `<span style="font-size: 0.75rem; color: #c62828; font-weight: bold; background: #ffebee; padding: 2px 6px; border-radius: 4px;">Out of Stock</span>`;
+                buttonHtml = `<button class="add-btn" style="background: #eee; color: #888; border: 1px solid #ddd; cursor: not-allowed;" disabled>Sold Out</button>`;
             } else if (stockQty <= 10) {
-                stockTextHtml = `<div style="margin-top: 5px; font-size: 0.8rem; font-weight: 600; color: #ef6c00; background: #fff3e0; padding: 2px 6px; border-radius: 4px; display: inline-block;">Only ${stockQty} left</div>`;
+                stockBadgeHtml = `<span style="font-size: 0.75rem; color: #ef6c00; font-weight: bold; background: #fff3e0; padding: 2px 6px; border-radius: 4px;">Only ${stockQty} left</span>`;
             } else {
-                stockTextHtml = `<div style="margin-top: 5px; font-size: 0.8rem; font-weight: 600; color: #2e7d32; background: #e8f5e9; padding: 2px 6px; border-radius: 4px; display: inline-block;">${stockQty} in stock</div>`;
+                stockBadgeHtml = `<span style="font-size: 0.75rem; color: #2e7d32; font-weight: bold; background: #e8f5e9; padding: 2px 6px; border-radius: 4px;">In Stock</span>`;
             }
         }
 
@@ -379,12 +354,14 @@ async function fetchBestsellers() {
                 <div class="product-info">
                     <div class="product-category">${p.category}</div>
                     <h3 class="product-title">${p.name}</h3>
-                    <div class="product-price">₹${p.price}</div>
-                    ${stockTextHtml}
+                    <div class="product-price" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>₹${p.price}</span>
+                        ${stockBadgeHtml}
+                    </div>
                 </div>
             </a>
             <div style="padding: 0 1.5rem 1.5rem;">
-                 <button class="add-btn" ${buttonDisabled} ${buttonStyle} onclick='event.stopPropagation(); addToCart(${JSON.stringify(p)})'>${buttonText}</button>
+                 ${buttonHtml}
             </div>
         `;
         container.appendChild(card);
