@@ -914,10 +914,7 @@
                         </div>
                         <div class="form-group">
                             <label>City</label>
-                            <select id="cust-city" v-model="address.city">
-                                <option value="" disabled>Select City</option>
-                                <option v-for="city in availableCities" :key="city" :value="city">{{ city }}</option>
-                            </select>
+                            <input type="text" id="cust-city" v-model="address.city" placeholder="e.g. Ahmedabad">
                         </div>
                     </div>
                     <div class="form-grid">
@@ -1142,7 +1139,7 @@
     </footer>
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="script.js?v=1.6"></script>
+    <script src="script.js?v=1.8"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
@@ -1186,19 +1183,7 @@
                     availableCities: []
                 };
             },
-            watch: {
-                'address.state': function (newState) {
-                    if (newState && this.indianStates[newState]) {
-                        this.availableCities = this.indianStates[newState];
-                        // Reset city if not in new state
-                        if (!this.availableCities.includes(this.address.city)) {
-                            this.address.city = '';
-                        }
-                    } else {
-                        this.availableCities = [];
-                    }
-                }
-            },
+            watch: {},
             computed: {
                 subtotal() {
                     return this.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
