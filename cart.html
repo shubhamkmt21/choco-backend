@@ -1234,7 +1234,7 @@
                     this.cart = this.cart.filter(i => i.id !== id);
                     this.saveCart();
                 },
-                calculateShipping() {
+                async calculateShipping() {
                     const pin = this.address.pincode;
                     this.deliveryDetails = null;
                     this.isValidPin = false;
@@ -1244,7 +1244,6 @@
 
                         // Auto-select State & City based on Pincode (Mock Logic)
                         const pinPrefix = pin.substring(0, 3);
-                        // Simple Map for correct dropdown selection
                         const pinMap = {
                             '400': { s: 'Maharashtra', c: 'Mumbai' }, // Mumbai
                             '411': { s: 'Maharashtra', c: 'Pune' },   // Pune
@@ -1263,14 +1262,30 @@
                             });
                         }
 
-                        // Simulate API Call for Delivery Time
-                        setTimeout(() => {
+                        try {
+                            const res = await fetch(`delhivery_manager.php?pincode=${pin}`);
+                            const data = await res.json();
+                            
+                            if (data.is_serviceable) {
+                                this.deliveryDetails = {
+                                    days: data.days || "3-5 Days Delivery",
+                                    courier: data.courier || "Delhivery Express"
+                                };
+                                if (data.state) this.address.state = data.state;
+                                if (data.city) this.address.city = data.city;
+                            } else {
+                                this.deliveryDetails = {
+                                    days: "Pincode not serviceable",
+                                    courier: "Delhivery (Unavailable)"
+                                };
+                            }
+                        } catch (e) {
                             this.deliveryDetails = {
-                                days: "2-3 Days Delivery",
-                                courier: "BlueDart Express"
+                                days: "3-5 Days Delivery",
+                                courier: "Delhivery Express"
                             };
-                            this.shipping = this.subtotal > 2500 ? 0 : 99; // Free shipping over 2500
-                        }, 800);
+                        }
+                        this.shipping = this.subtotal > 2500 ? 0 : 99; // Free shipping over 2500
                     }
                 },
                 proceedToPay() {

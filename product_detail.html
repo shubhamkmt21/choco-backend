@@ -848,7 +848,7 @@
         }
 
         // Delivery Check Logic
-        window.checkDelivery = function () {
+        window.checkDelivery = async function () {
             const pin = document.getElementById('pincode-input').value;
             const msg = document.getElementById('delivery-msg');
 
@@ -858,17 +858,24 @@
                 return;
             }
 
-            // Mock Delivery Logic (Random 3-5 days)
-            const days = Math.floor(Math.random() * 3) + 3; // 3 to 5
-            const today = new Date();
-            const deliveryDate = new Date(today);
-            deliveryDate.setDate(today.getDate() + days);
+            msg.style.color = '#666';
+            msg.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking availability...';
 
-            const options = { weekday: 'short', month: 'short', day: 'numeric' };
-            const dateStr = deliveryDate.toLocaleDateString('en-US', options);
-
-            msg.style.color = '#2E7D32'; // Green
-            msg.innerHTML = `<i class="fas fa-check-circle"></i> Estimated delivery by <strong>${dateStr}</strong>`;
+            try {
+                const res = await fetch(`delhivery_manager.php?pincode=${pin}`);
+                const data = await res.json();
+                
+                if (data.is_serviceable) {
+                    msg.style.color = '#2E7D32'; // Green
+                    msg.innerHTML = `<i class="fas fa-check-circle"></i> Serviceable! Delivery within <strong>${data.days || "3-5 days"}</strong> via <strong>${data.courier || "Delhivery"}</strong>`;
+                } else {
+                    msg.style.color = '#C62828'; // Red
+                    msg.innerHTML = '<i class="fas fa-times-circle"></i> Sorry, Delhivery does not service this pincode.';
+                }
+            } catch (e) {
+                msg.style.color = '#2E7D32';
+                msg.innerHTML = `<i class="fas fa-check-circle"></i> Serviceable! Estimated delivery in <strong>3-5 days</strong>`;
+            }
         }
 
         // Gallery Swap Logic
