@@ -41,7 +41,8 @@ if ($httpCode !== 200 || !$response) {
         "city" => "",
         "state" => "",
         "days" => "3-5 Days Delivery",
-        "courier" => "Delhivery Courier"
+        "courier" => "Delhivery Courier",
+        "shipping_charge" => 99
     ]);
     exit;
 }
@@ -65,11 +66,42 @@ $isServiceable = ($info['is_serviceable'] ?? 'N') === 'Y' || ($info['pre_paid'] 
 $city = $info['district'] ?? $info['city'] ?? '';
 $state = $info['state_name'] ?? '';
 
+// Calculate shipping charge as per Delhivery logistics regions
+$shippingCharge = 99; // Default rate
+if ($isServiceable) {
+    $normalizedState = strtolower(trim($state));
+    $normalizedCity = strtolower(trim($city));
+    
+    if (strpos($normalizedState, 'gujarat') !== false) {
+        if (strpos($normalizedCity, 'ahmedabad') !== false) {
+            $shippingCharge = 60; // Local Ahmedabad
+        } else {
+            $shippingCharge = 80; // Rest of Gujarat
+        }
+    } else {
+        // Metro regions
+        $metroStates = ['maharashtra', 'delhi', 'karnataka', 'telangana', 'west bengal', 'tamil nadu'];
+        $isMetro = false;
+        foreach ($metroStates as $metro) {
+            if (strpos($normalizedState, $metro) !== false) {
+                $isMetro = true;
+                break;
+            }
+        }
+        if ($isMetro) {
+            $shippingCharge = 100; // Major Metro Cities
+        } else {
+            $shippingCharge = 120; // Rest of India (National)
+        }
+    }
+}
+
 echo json_encode([
     "status" => "success",
     "is_serviceable" => $isServiceable,
     "city" => $city,
     "state" => $state,
     "days" => $isServiceable ? "2-4 Days Delivery" : "",
-    "courier" => "Delhivery Express"
+    "courier" => "Delhivery Express",
+    "shipping_charge" => $shippingCharge
 ]);

@@ -1262,6 +1262,7 @@
                             });
                         }
 
+                        let charge = 99; // Default shipping rate
                         try {
                             const res = await fetch(`delhivery_manager.php?pincode=${pin}`);
                             const data = await res.json();
@@ -1273,6 +1274,9 @@
                                 };
                                 if (data.state) this.address.state = data.state;
                                 if (data.city) this.address.city = data.city;
+                                if (data.shipping_charge !== undefined) {
+                                    charge = parseFloat(data.shipping_charge);
+                                }
                             } else {
                                 this.deliveryDetails = {
                                     days: "Pincode not serviceable",
@@ -1285,7 +1289,7 @@
                                 courier: "Delhivery Express"
                             };
                         }
-                        this.shipping = this.subtotal > 2500 ? 0 : 99; // Free shipping over 2500
+                        this.shipping = this.subtotal > 2500 ? 0 : charge; // Free shipping over 2500
                     }
                 },
                 proceedToPay() {
