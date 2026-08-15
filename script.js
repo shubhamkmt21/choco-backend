@@ -671,10 +671,10 @@ function checkDelivery() {
     msg.textContent = 'Checking availability...';
     msg.style.color = 'var(--color-primary)';
 
-    // Mock Shiprocket Response
+    // Mock Delhivery Response
     setTimeout(() => {
         let days;
-        let partner = "Shiprocket";
+        let partner = "Delhivery";
 
         if (pincode.startsWith('400')) {
             days = "1-2 Business Days";

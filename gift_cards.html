@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Gift Cards | Choco Blossom India</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link rel="stylesheet" href="./style.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gift-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* Interactive Gift Card Preview */
+        .card-preview-sticky {
+            position: sticky;
+            top: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .gift-card-visual {
+            width: 100%;
+            max-width: 450px;
+            height: 260px;
+            border-radius: 16px;
+            padding: 2rem;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 15px 35px rgba(62, 39, 35, 0.25);
+            background: linear-gradient(135deg, #2b1810 0%, #170a05 100%);
+            border: 2px solid #d4af37;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .gift-card-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 80%);
+            pointer-events: none;
+        }
+
+        .gift-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .gift-card-logo {
+            height: 45px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            padding: 2px;
+        }
+
+        .gift-card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #d4af37;
+            text-transform: uppercase;
+        }
+
+        .gift-card-middle {
+            margin: 1.5rem 0;
+        }
+
+        .gift-card-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .gift-card-details {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Form Styling */
+        .gift-form-panel {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
+        }
+
+        .gift-form-panel h2 {
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .amount-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .amount-btn {
+            padding: 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background: #fbf9f6;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--color-text-main);
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .amount-btn:hover {
+            border-color: var(--color-primary);
+            background: #f5ece5;
+        }
+
+        .amount-btn.active {
+            background: var(--color-primary);
+            color: #fff;
+            border-color: var(--color-primary);
+        }
+
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--color-text-main);
+            font-size: 0.9rem;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+
+        .template-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .template-thumb {
+            height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background-size: cover;
+            background-position: center;
+            transition: all 0.2s;
+        }
+
+        .template-thumb.active {
+            border-color: #d4af37;
+            transform: scale(1.05);
+        }
+
+        /* Themes styles */
+        .theme-classic {
+            background: linear-gradient(135deg, #2b1810 0%, #170a05 100%);
+            border-color: #d4af37;
+        }
+        .theme-birthday {
+            background: linear-gradient(135deg, #d32f2f 0%, #7b1fa2 100%);
+            border-color: #ffd54f;
+        }
+        .theme-anniversary {
+            background: linear-gradient(135deg, #ec407a 0%, #ad1457 100%);
+            border-color: #f8bbd0;
+        }
+        .theme-festive {
+            background: linear-gradient(135deg, #1b5e20 0%, #006064 100%);
+            border-color: #ffd700;
+        }
+
+        @media (max-width: 900px) {
+            .gift-container {
+                grid-template-columns: 1fr;
+            }
+            .card-preview-sticky {
+                position: relative;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <p><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above ₹2500 via Delhivery</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Choco Blossom Logo">
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">Our Story</a>
+                <a href="products.html">Collections</a>
+                <div class="dropdown mega-dropdown">
+                    <a href="products.html" class="dropbtn">Occasions <i class="fas fa-chevron-down" style="margin-left: 6px; font-size: 0.7em;"></i></a>
+                    <div class="mega-content">
+                        <div class="mega-grid">
+                            <div class="mega-column">
+                                <h4>Celebrations</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Birthday">Birthday Gifts</a></li>
+                                    <li><a href="products.html?category=Wedding">Wedding Gifts</a></li>
+                                    <li><a href="products.html?category=Anniversary">Anniversary</a></li>
+                                    <li><a href="products.html?category=Baby+Shower">Baby Shower</a></li>
+                                    <li><a href="products.html?category=Baby+Announcement">Baby Announcement</a></li>
+                                    <li><a href="products.html?category=House+Warming">House Warming</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <h4>Festivals</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Diwali">Diwali Gifts</a></li>
+                                    <li><a href="products.html?category=Rakhi">Rakhi Gifts</a></li>
+                                    <li><a href="products.html?category=Christmas">Christmas & New Year</a></li>
+                                    <li><a href="products.html?category=Holi">Holi Gifts</a></li>
+                                    <li><a href="products.html?category=Ramadan">Ramadan Gifts</a></li>
+                                    <li><a href="products.html?category=Bhai+Dooj">Bhai Dooj</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <h4>Special Days</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Valentines">Valentine’s Day</a></li>
+                                    <li><a href="products.html?category=Mothers+Day">Mother’s Day</a></li>
+                                    <li><a href="products.html?category=Fathers+Day">Father’s Day</a></li>
+                                    <li><a href="products.html?category=Womens+Day">Women’s Day</a></li>
+                                    <li><a href="products.html?category=Kids">Kid's Gifts</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <h4>Collections</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Bestsellers">Best Sellers</a></li>
+                                    <li><a href="products.html?category=Corporate">Corporate Gifts</a></li>
+                                    <li><a href="products.html?category=Dark">Dark Chocolates</a></li>
+                                    <li><a href="products.html?category=Pick+Mix">Pick & Mix Gifts</a></li>
+                                    <li><a href="products.html?category=Studio">Studio Creations</a></li>
+                                    <li><a href="gift_cards.html" class="active">Gift Cards</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="corporate.html">Corporate Gifting</a>
+                <a href="wedding.html">Wedding Gifts</a>
+                <a href="partners.html">Growth Partner</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+            <div class="nav-icons">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search...">
+                    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
+                </div>
+                <a href="cart.html" class="cart-icon" id="cart-btn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count">(0)</span>
+                </a>
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="section" style="background: var(--color-background); padding: 120px 0 30px; text-align: center;">
+        <div class="container">
+            <h1 class="liquid-reveal">Share the Joy of Luxury</h1>
+            <p style="max-width: 600px; margin: 0 auto;">Choose a design, add your message, and send an instant premium chocolate gift card to your loved ones.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container gift-container">
+        <!-- Sticky Preview Column -->
+        <div class="card-preview-sticky">
+            <div class="gift-card-visual theme-classic" id="card-visual">
+                <div class="gift-card-header">
+                    <div class="gift-card-title">Choco Blossom</div>
+                    <img src="images/logo.png" alt="Logo" class="gift-card-logo">
+                </div>
+                <div class="gift-card-middle">
+                    <div class="gift-card-value" id="preview-amount">₹1,000</div>
+                </div>
+                <div class="gift-card-details">
+                    <div id="preview-to">To: Someone Special</div>
+                    <div id="preview-message">"Wishing you a sweet day!"</div>
+                </div>
+            </div>
+            <p style="color: #666; font-size: 0.9rem; text-align: center; max-width: 380px;">
+                <i class="fas fa-info-circle"></i> E-Gift Cards are delivered instantly to the recipient's email address upon checkout confirmation.
+            </p>
+        </div>
+
+        <!-- Form Customization Column -->
+        <div class="gift-form-panel">
+            <h2>Customize E-Gift Card</h2>
+            
+            <!-- Select Template Theme -->
+            <div class="input-group">
+                <label>Select Theme Design</label>
+                <div class="template-selector">
+                    <div class="template-thumb active theme-classic" onclick="setTheme('classic', this)" title="Classic Gold"></div>
+                    <div class="template-thumb theme-birthday" onclick="setTheme('birthday', this)" title="Birthday Bash"></div>
+                    <div class="template-thumb theme-anniversary" onclick="setTheme('anniversary', this)" title="Anniversary Love"></div>
+                    <div class="template-thumb theme-festive" onclick="setTheme('festive', this)" title="Festive Sparkle"></div>
+                </div>
+            </div>
+
+            <!-- Predefined & Custom Amounts -->
+            <div class="input-group">
+                <label>Select Amount</label>
+                <div class="amount-selector">
+                    <button class="amount-btn" onclick="setAmount(500, this)">₹500</button>
+                    <button class="amount-btn active" onclick="setAmount(1000, this)">₹1000</button>
+                    <button class="amount-btn" onclick="setAmount(2000, this)">₹2000</button>
+                    <button class="amount-btn" onclick="setAmount(5000, this)">₹5000</button>
+                </div>
+                <input type="number" id="custom-amount" placeholder="Or enter custom amount (Min: ₹100)" oninput="handleCustomAmount(this)" style="margin-top: 10px;">
+            </div>
+
+            <!-- Recipient Information -->
+            <div class="input-group">
+                <label for="rec-name">Recipient Name *</label>
+                <input type="text" id="rec-name" placeholder="Who is this gift card for?" oninput="updatePreviewText('to', 'To: ' + this.value, 'To: Someone Special')">
+            </div>
+
+            <div class="input-group">
+                <label for="rec-email">Recipient Email *</label>
+                <input type="email" id="rec-email" placeholder="Recipient's email address">
+            </div>
+
+            <!-- Sender Information -->
+            <div class="input-group">
+                <label for="send-name">Your Name *</label>
+                <input type="text" id="send-name" placeholder="Enter your name">
+            </div>
+
+            <!-- Custom Message -->
+            <div class="input-group">
+                <label for="gift-msg">Personalized Message</label>
+                <textarea id="gift-msg" rows="3" placeholder="Enter your personalized card message..." oninput="updatePreviewText('message', '&ldquo;' + this.value + '&rdquo;', '&ldquo;Wishing you a sweet day!&rdquo;')"></textarea>
+            </div>
+
+            <!-- Action Button -->
+            <button class="add-btn" style="width: 100%; padding: 15px; font-size: 1.1rem;" onclick="addGiftCardToCart()">
+                <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i> Add Gift Card to Cart
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="images/logo.png" alt="Choco Blossom" style="width: 140px; margin-bottom: 1rem; border-radius: 8px;">
+                    <p style="color: rgba(255,255,255,0.7);">Crafting memories with premium chocolates. Based in Ahmedabad, delivering happiness nationwide.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/chocoblossomIndia/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/chocoblossomindia/" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@Choco-blossom" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.linkedin.com/company/chocoblossom/" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Shop All</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Care</h4>
+                    <ul class="footer-links">
+                        <li><a href="shipping.html">Shipping Policy</a></li>
+                        <li><a href="returns.html">Returns & Refunds</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="https://www.delhivery.com/track/" target="_blank">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-links">
+                        <li style="color: rgba(255,255,255,0.8); display: flex; gap: 10px;">
+                            <i class="fas fa-map-marker-alt" style="margin-top: 5px;"></i>
+                            <a href="https://maps.app.goo.gl/Jihe6SA3eRXgMHd29" target="_blank" style="color: inherit; text-decoration: none;">
+                                <span>28, Saurasthra Society, Paldi, Ahmedabad, Gujarat 380007</span>
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="tel:+919227088688" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-phone" style="width: 20px;"></i> +91 92270 88688
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="mailto:chocoblossom12@gmail.com" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-envelope" style="width: 20px;"></i> chocoblossom12@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div style="text-align: center;">
+                    <p>&copy; 2026 Choco Blossom. All rights reserved.</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.2rem;">Based in Ahmedabad, Gujarat</p>
+                </div>
+                <div class="payment-icons">
+                    <i class="fab fa-google-pay"></i>
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-american-express"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="script.js?v=1.2"></script>
+
+    <script>
+        let selectedAmount = 1000;
+        let selectedTheme = 'classic';
+        let selectedThemeName = 'Classic Gold';
+
+        function setTheme(theme, element) {
+            // Remove active from allthumbs
+            document.querySelectorAll('.template-thumb').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            
+            // Remove old theme classes and add new one
+            const card = document.getElementById('card-visual');
+            card.className = 'gift-card-visual theme-' + theme;
+            
+            selectedTheme = theme;
+            
+            if (theme === 'classic') selectedThemeName = 'Classic Gold';
+            if (theme === 'birthday') selectedThemeName = 'Birthday Celebration';
+            if (theme === 'anniversary') selectedThemeName = 'Anniversary Love';
+            if (theme === 'festive') selectedThemeName = 'Festive Sparkle';
+        }
+
+        function setAmount(amount, element) {
+            // Remove active from preset buttons
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('active'));
+            if (element) {
+                element.classList.add('active');
+            }
+            
+            // Clear custom amount input
+            document.getElementById('custom-amount').value = '';
+            
+            selectedAmount = amount;
+            document.getElementById('preview-amount').innerText = '₹' + amount.toLocaleString('en-IN');
+        }
+
+        function handleCustomAmount(input) {
+            // Remove active class from preset buttons
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('active'));
+            
+            let val = parseInt(input.value);
+            if (isNaN(val) || val <= 0) {
+                selectedAmount = 0;
+                document.getElementById('preview-amount').innerText = '₹0';
+            } else {
+                selectedAmount = val;
+                document.getElementById('preview-amount').innerText = '₹' + val.toLocaleString('en-IN');
+            }
+        }
+
+        function updatePreviewText(elementId, value, defaultValue) {
+            const el = document.getElementById('preview-' + elementId);
+            if (value.trim() && value.trim() !== 'To: ' && value.trim() !== '""') {
+                el.innerHTML = value;
+            } else {
+                el.innerHTML = defaultValue;
+            }
+        }
+
+        function addGiftCardToCart() {
+            const recipientName = document.getElementById('rec-name').value.trim();
+            const recipientEmail = document.getElementById('rec-email').value.trim();
+            const senderName = document.getElementById('send-name').value.trim();
+            const giftMsg = document.getElementById('gift-msg').value.trim() || 'Wishing you a sweet day!';
+
+            // Simple validation
+            if (!recipientName || !recipientEmail || !senderName) {
+                alert("Please fill in the Recipient Name, Recipient Email, and Your Name.");
+                return;
+            }
+
+            if (selectedAmount < 100) {
+                alert("The minimum Gift Card amount is ₹100.");
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(recipientEmail)) {
+                alert("Please enter a valid recipient email address.");
+                return;
+            }
+
+            // Create Gift Card Product
+            const giftCardProduct = {
+                id: 'gift_card_' + Date.now(),
+                name: 'E-Gift Card (' + selectedThemeName + ')',
+                category: 'Gift Cards',
+                price: selectedAmount,
+                image: 'images/logo.png', // Fallback standard image
+                description: 'To: ' + recipientName + ' (' + recipientEmail + ') | From: ' + senderName + ' | Msg: "' + giftMsg + '"',
+                quantity: 1,
+                isGiftCard: true
+            };
+
+            // Call standard cart addition function
+            if (window.addToCart) {
+                window.addToCart(giftCardProduct);
+                // Redirect to cart to complete checkout
+                setTimeout(() => {
+                    window.location.href = 'cart.html';
+                }, 800);
+            } else {
+                alert("Failed to access cart system. Please try again.");
+            }
+        }
+    </script>
+</body>
+
+</html>
+

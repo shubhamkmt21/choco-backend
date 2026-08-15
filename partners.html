@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Partner | Choco Blossom India</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link rel="stylesheet" href="./style.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <p><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders Above ₹2500 via Delhivery
+            </p>
+        </div>
+    </div>
+
+    <header>
+        <div class="container navbar">
+            <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Choco Blossom Logo"></a></div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">Our Story</a>
+                <a href="products.html">Collections</a>
+                <div class="dropdown mega-dropdown">
+                    <a href="products.html" class="dropbtn">Occasions <i class="fas fa-chevron-down"
+                            style="margin-left: 6px; font-size: 0.7em;"></i></a>
+                    <div class="mega-content">
+                        <div class="mega-grid">
+                            <!-- Column 1: Celebrations -->
+                            <div class="mega-column">
+                                <h4>Celebrations</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Birthday">Birthday Gifts</a></li>
+                                    <li><a href="products.html?category=Wedding">Wedding Gifts</a></li>
+                                    <li><a href="products.html?category=Anniversary">Anniversary</a></li>
+                                    <li><a href="products.html?category=Baby+Shower">Baby Shower</a></li>
+                                    <li><a href="products.html?category=Baby+Announcement">Baby Announcement</a></li>
+                                    <li><a href="products.html?category=House+Warming">House Warming</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 2: Festivals -->
+                            <div class="mega-column">
+                                <h4>Festivals</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Diwali">Diwali Gifts</a></li>
+                                    <li><a href="products.html?category=Rakhi">Rakhi Gifts</a></li>
+                                    <li><a href="products.html?category=Christmas">Christmas & New Year</a></li>
+                                    <li><a href="products.html?category=Holi">Holi Gifts</a></li>
+                                    <li><a href="products.html?category=Ramadan">Ramadan Gifts</a></li>
+                                    <li><a href="products.html?category=Bhai+Dooj">Bhai Dooj</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 3: Special Days -->
+                            <div class="mega-column">
+                                <h4>Special Days</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Valentines">Valentine’s Day</a></li>
+                                    <li><a href="products.html?category=Mothers+Day">Mother’s Day</a></li>
+                                    <li><a href="products.html?category=Fathers+Day">Father’s Day</a></li>
+                                    <li><a href="products.html?category=Womens+Day">Women’s Day</a></li>
+                                    <li><a href="products.html?category=Kids">Kid's Gifts</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 4: Collections -->
+                            <div class="mega-column">
+                                <h4>Collections</h4>
+                                <ul>
+                                    <li><a href="products.html?category=Bestsellers">Best Sellers</a></li>
+                                    <li><a href="products.html?category=Corporate">Corporate Gifts</a></li>
+                                    <li><a href="products.html?category=Dark">Dark Chocolates</a></li>
+                                    <li><a href="products.html?category=Pick+Mix">Pick & Mix Gifts</a></li>
+                                    <li><a href="products.html?category=Studio">Studio Creations</a></li>
+                                    <li><a href="gift_cards.html">Gift Cards</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="corporate.html">Corporate Gifting</a>
+                <a href="wedding.html">Wedding Gifts</a>
+                <a href="partners.html" class="active">Growth Partner</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+            <div class="nav-icons">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search...">
+                    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
+                </div>
+                <a href="cart.html" class="cart-icon"><i class="fas fa-shopping-bag"></i><span
+                        id="cart-count">(0)</span></a>
+                <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+            </div>
+        </div>
+    </header>
+    <!-- Partners Hero Section -->
+    <section class="partners-hero">
+        <!-- Overlay removed for transparent look -->
+        <div class="container hero-content text-center">
+            <h1 class="liquid-reveal">Partner with Choco Blossom</h1>
+            <p class="hero-subtitle">Join us in spreading happiness through premium handcrafted chocolates.</p>
+            <p class="hero-desc">We collaborate with retailers, distributors, and event planners to create memorable
+                experiences. Let's grow together.</p>
+        </div>
+    </section>
+
+    <style>
+        .partners-hero {
+            position: relative;
+            background: transparent;
+            /* Transparent as requested */
+            padding: 80px 0 40px;
+            /* Spacing instead of fixed height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 80px;
+            color: var(--color-primary);
+            /* Dark text */
+        }
+
+        .partners-hero .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .partners-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .partners-hero .hero-subtitle {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--color-secondary);
+            /* Gold accent */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .partners-hero .hero-desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555555;
+            /* Dark grey for readability */
+        }
+
+        @media (max-width: 768px) {
+            .partners-hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+
+    <!-- Partner Application Form -->
+    <section class="section" style="background-color: #f9f5f0; padding-bottom: 5rem;">
+        <style>
+            @media (max-width: 768px) {
+                .form-grid {
+                    grid-template-columns: 1fr !important;
+                    gap: 1rem !important;
+                }
+
+                .partner-form-container {
+                    padding: 1.5rem !important;
+                }
+            }
+        </style>
+        <div class="container">
+            <div class="partner-form-container"
+                style="max-width: 800px; margin: 0 auto; background: #fff; padding: 3rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(62, 39, 35, 0.1);">
+
+                <h2
+                    style="text-align: center; color: var(--color-primary); font-family: 'Playfair Display', serif; margin-bottom: 1rem;">
+                    Become a Growth Partner</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 2.5rem;">Join our expanding network.
+                    Whether
+                    you are a retailer, distributor, or event planner, we have tailored solutions for you.</p>
+
+                <form action="https://formsubmit.co/chocoblossomb2b@gmail.com" method="POST" class="partner-form">
+                    <!-- Config Fields -->
+                    <input type="hidden" name="_subject" value="New Partner Application - Choco Blossom">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next"
+                        value="https://lawngreen-seal-537564.hostingersite.com/partners.html">
+                    <input type="hidden" name="_autoresponse"
+                        value="Thank you for your interest! Our team will review your application and get back to you within 24-48 hours.">
+
+                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #444;">Your
+                                Name</label>
+                            <input type="text" name="name" required placeholder="Full Name"
+                                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit;">
+                        </div>
+                        <div class="form-group">
+                            <label
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #444;">Business
+                                Name</label>
+                            <input type="text" name="business_name" required placeholder="Company / Shop Name"
+                                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit;">
+                        </div>
+                    </div>
+
+                    <div class="form-grid"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                        <div class="form-group">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #444;">Email
+                                Address</label>
+                            <input type="email" name="email" required placeholder="partner@business.com"
+                                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit;">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #444;">Phone
+                                Number</label>
+                            <input type="tel" name="phone" required placeholder="+91 98765 43210"
+                                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit;">
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="margin-top: 1.5rem;">
+                        <div class="form-group">
+                            <label
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #444;">Business
+                                Type</label>
+                            <select name="business_type" required
+                                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; background-color: #fff;">
+                                <option value="" disabled selected>Select your business type...</option>
+                                <option value="Interested in Franchise">Interested in Franchise</option>
+                                <option value="Interested in Startup">Interested in Startup</option>
+                                <option value="Retailer">Dry fruit shop</option>
+                                <option value="Distributor">Sweet Shop</option>
+                                <option value="Corporate">Grocessry Store</option>
+                                <option value="Event Planner">Gifting Shop</option>
+                                <option value="Franchisee">Hotel/Restaurent</option>
+                                
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="margin-top: 1.5rem;">
+                        <div class="form-group">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #444;">Message
+                                / Requirements</label>
+                            <textarea name="message" rows="4"
+                                placeholder="Tell us about your business location and partnership requirements..."
+                                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; resize: vertical;"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="partner-submit-btn"
+                        style="width: 100%; margin-top: 2rem; padding: 15px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                        Submit Partnership Request
+                    </button>
+
+                    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #888;">
+                        <i class="fas fa-lock"></i> Your information is secure with us.
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Professional Success Modal -->
+        <div id="success-modal"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+            <div
+                style="background: white; padding: 2.5rem; border-radius: 12px; max-width: 400px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: fadeInUp 0.4s ease-out;">
+                <div
+                    style="width: 70px; height: 70px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                    <i class="fas fa-check" style="font-size: 35px; color: #43a047;"></i>
+                </div>
+                <h3
+                    style="font-family: 'Playfair Display', serif; color: var(--color-primary); margin-bottom: 0.5rem; font-size: 1.8rem;">
+                    Request Sent!</h3>
+                <p style="color: #666; margin-bottom: 2rem; line-height: 1.6;">Thank you for your interest. We have
+                    received your partnership request and will be in touch shortly.</p>
+                <button onclick="closeModal()"
+                    style="background: var(--color-primary); color: white; border: none; padding: 12px 30px; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background 0.3s;">
+                    Close
+                </button>
+            </div>
+        </div>
+
+        <style>
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+
+        <script>
+            const form = document.querySelector('.partner-form');
+            const submitBtn = document.getElementById('partner-submit-btn');
+            const originalBtnText = submitBtn.innerHTML;
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitBtn.style.opacity = '0.8';
+
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Success handling
+                            document.getElementById('success-modal').style.display = 'flex';
+                            form.reset();
+                        } else {
+                            alert('Something went wrong. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        alert('Error submitting form. Please check your internet connection.');
+                    })
+                    .finally(() => {
+                        // Reset button
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.style.opacity = '1';
+                    });
+            });
+
+            function closeModal() {
+                document.getElementById('success-modal').style.display = 'none';
+            }
+        </script>
+    </section>
+    <!-- Shipping Marquee -->
+    <div class="shipping-marquee">
+        <div class="marquee-content">
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders
+                Above
+                ₹2500 via Delhivery</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders
+                Above
+                ₹2500 via Delhivery</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders
+                Above
+                ₹2500 via Delhivery</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders
+                Above
+                ₹2500 via Delhivery</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders
+                Above
+                ₹2500 via Delhivery</div>
+            <div class="marquee-item"><i class="fas fa-truck-fast"></i> Complimentary Pan-India Delivery on Orders
+                Above
+                ₹2500 via Delhivery</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="images/logo.png" alt="Choco Blossom"
+                        style="width: 140px; margin-bottom: 1rem; border-radius: 8px;">
+                    <p style="color: rgba(255,255,255,0.7);">Crafting memories with premium chocolates. Based
+                        in Ahmedabad, delivering happiness nationwide.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/chocoblossomIndia/" target="_blank" class="social-icon"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/chocoblossomindia/" target="_blank" class="social-icon"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@Choco-blossom" target="_blank" class="social-icon"><i
+                                class="fab fa-youtube"></i></a>
+                        <a href="https://www.linkedin.com/company/chocoblossom/" target="_blank" class="social-icon"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Shop All</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Customer Care</h4>
+                    <ul class="footer-links">
+                        <li><a href="shipping.html">Shipping Policy</a></li>
+                        <li><a href="returns.html">Returns & Refunds</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="https://www.delhivery.com/track/" target="_blank">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-links">
+                        <li style="color: rgba(255,255,255,0.8); display: flex; gap: 10px;">
+                            <i class="fas fa-map-marker-alt" style="margin-top: 5px;"></i>
+                            <a href="https://maps.app.goo.gl/Jihe6SA3eRXgMHd29" target="_blank"
+                                style="color: inherit; text-decoration: none;">
+                                <span>28, Saurasthra Society, Paldi, Ahmedabad, Gujarat 380007</span>
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="tel:+919227088688" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-phone" style="width: 20px;"></i> +91 92270 88688
+                            </a>
+                        </li>
+                        <li style="color: rgba(255,255,255,0.8);">
+                            <a href="mailto:chocoblossom12@gmail.com" style="color: inherit; text-decoration: none;">
+                                <i class="fas fa-envelope" style="width: 20px;"></i> chocoblossom12@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div style="text-align: center;">
+                    <p>&copy; 2026 Choco Blossom. All rights reserved.</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.2rem;">Based in Ahmedabad, Gujarat</p>
+                </div>
+                <div class="payment-icons">
+                    <i class="fab fa-google-pay"></i>
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js?v=1.2"></script>
+</body>
+
+</html>
+
