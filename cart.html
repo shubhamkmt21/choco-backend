@@ -928,14 +928,13 @@
                                         class="fas fa-check-circle"></i></span>
                             </div>
                             <!-- Delhivery Feedback -->
-                            <div v-if="deliveryDetails" class="delivery-info">
+                            <div v-if="deliveryDetails" class="delivery-info" style="display: flex; flex-direction: column; gap: 6px; padding: 12px; background: #faf9f8; border: 1px solid #eae6e1; border-radius: 8px; margin-top: 8px;">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span><i class="fas fa-truck-fast"></i> <strong>{{ deliveryDetails.days
-                                            }}</strong></span>
-                                    <span class="Delhivery-badge"><i class="fas fa-rocket"></i> Delhivery</span>
+                                    <span style="font-size: 0.9rem; color: #3e2723; font-weight: 600;">
+                                        <i class="fas fa-truck-fast" style="color: #8d6e63; margin-right: 4px;"></i> {{ deliveryDetails.days }}
+                                    </span>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Delhivery_Logo.png" alt="Delhivery" style="height: 18px; object-fit: contain;">
                                 </div>
-                                <div style="font-size: 0.75rem; color: #666; margin-top: 2px;">Fulfilled by Premium
-                                    Courier</div>
                             </div>
                             <div v-else-if="address.pincode.length === 6"
                                 style="color: red; font-size: 0.8rem; margin-top: 5px;">Checking availability...</div>
